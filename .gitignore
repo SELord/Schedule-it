@@ -2,3 +2,4 @@
 *.ini
 .vs/
 *.pdf
+*.phpproj
