@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 	// session 
 	session_start();   
     //check once again if the user is logged in
@@ -14,7 +14,7 @@
     require_once './database/dbquery.php';
     
   if ($_SERVER["REQUEST_METHOD"] != "POST") {
-    header("Location: http://web.engr.oregonstate.edu/~alasagae/Schedule-it/homepage.php");
+    header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php");
   } 
 
   // connect to database 

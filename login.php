@@ -2,7 +2,7 @@
  //phpinfo();
 // Set up some variables for CAS
 $casService = 'https://login.oregonstate.edu/idp/profile/cas';
-$thisService = 'http://web.engr.oregonstate.edu/~alasagae/Schedule-it/login.php';
+$thisService = 'http://web.engr.oregonstate.edu/~ohsa/Schedule-it/login.php';
 
 //TODO: Retrieve the upcoming events and meetings, and reserved meetings 
 //of the user to populate the calendar
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["ticket"]) {
             $newUser_stmt->execute();
           }
         }
-        header("Location: http://web.engr.oregonstate.edu/~alasagae/Schedule-it/homepage.php");
+        header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php");
       }
    }
 } else {
@@ -140,24 +140,24 @@ function uid($response) {
 <?xml version="1.0" encoding="UTF-8"?>
 <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
   <cas:authenticationSuccess>
-    <cas:user>alasagae</cas:user>
+    <cas:user>ohsa</cas:user>
       <cas:attributes>
         <cas:commonName>Alasagas, Elaine</cas:commonName>
         <cas:firstname>Elaine</cas:firstname>
-        <cas:osuprimarymail>alasagae@oregonstate.edu</cas:osuprimarymail>
+        <cas:osuprimarymail>ohsa@oregonstate.edu</cas:osuprimarymail>
         <cas:eduPersonAffiliation>student</cas:eduPersonAffiliation>
         <cas:eduPersonAffiliation>member</cas:eduPersonAffiliation>
         <cas:osupidm>3828675</cas:osupidm>
         <cas:givenName>Elaine</cas:givenName>
         <cas:osuuid>44979764121</cas:osuuid>
         <cas:lastname>Alasagas</cas:lastname>
-        <cas:uid>alasagae</cas:uid>
+        <cas:uid>ohsa</cas:uid>
         <cas:eduPersonPrimaryAffiliation>student</cas:eduPersonPrimaryAffiliation>
         <cas:UDC_IDENTIFIER>D8EAB9A5475297ED61DDDAD3422561E4</cas:UDC_IDENTIFIER>
         <cas:surname>Alasagas</cas:surname>
-        <cas:eduPersonPrincipalName>alasagae@oregonstate.edu</cas:eduPersonPrincipalName>
+        <cas:eduPersonPrincipalName>ohsa@oregonstate.edu</cas:eduPersonPrincipalName>
         <cas:fullname>Alasagas, Elaine</cas:fullname>
-        <cas:email>alasagae@oregonstate.edu</cas:email>
+        <cas:email>ohsa@oregonstate.edu</cas:email>
       </cas:attributes>
   </cas:authenticationSuccess>
 </cas:serviceResponse>
@@ -182,7 +182,7 @@ function uid($response) {
   <div id="frm" style="text-align: center; vertical-align: middle; margin-top: 200px">
     <h1>Schedule-it</h1>
     <p>
-       <a href="https://login.oregonstate.edu/idp/profile/cas/login?service=http://people.oregonstate.edu/~alasagae/schedule-it.php" role="button">
+       <a href="https://login.oregonstate.edu/idp/profile/cas/login?service=http://people.oregonstate.edu/~ohsa/schedule-it.php" role="button">
       <button type="button" class="btn btn-warning btn-primary btn-lg ">Login</a></button>
     </p>
   </div>

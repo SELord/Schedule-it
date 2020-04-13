@@ -63,7 +63,7 @@ if(!empty($_POST)) {
 
 
 
-    $query = "INSERT INTO `alasagae-db`.`Event` (`title` ,`description` , `dateStartTime` , `dateEndTime`, `duration` ,`RSVPslotLim`,`creatorID`) VALUES ('".$title."', '".$description."', '".$start_time."', '".$dateEndTime."', '".$duration."', '".$RSVPslotLim."', '".$creatorID."')";
+    $query = "INSERT INTO `ohsa-db`.`Event` (`title` ,`description` , `dateStartTime` , `dateEndTime`, `duration` ,`RSVPslotLim`,`creatorID`) VALUES ('".$title."', '".$description."', '".$start_time."', '".$dateEndTime."', '".$duration."', '".$RSVPslotLim."', '".$creatorID."')";
     /*$params = array($title, $description, $date, $start_time, $dateEndTime, $duration, $RSVPslotLim, $creatorID);*/
     //echo $query;
     //connect to server and select database

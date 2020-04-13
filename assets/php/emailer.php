@@ -24,7 +24,7 @@ function newEventEmail($conn, $eventID){
 	if (count($result) > 0){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = $result[$i]['title'];
-			$url = "http://web.engr.oregonstate.edu/~alasagae/Schedule-it/make_reservation?invite=" . $result[$i]['id'];
+			$url = "http://web.engr.oregonstate.edu/~ohsa/Schedule-it/make_reservation?invite=" . $result[$i]['id'];
 			$message = "You are invited to a new event.  Use this link to get more details and reserve your spot: " . $url;
 			sendEmail($result[$i]['email'], $subject, $message, 'newEvent');
 		}
@@ -58,7 +58,7 @@ function updateEventEmail($conn, $eventID){
 	if ($result != NULL){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = $result[$i]['title'];
-			$url = "http://web.engr.oregonstate.edu/~alasagae/Schedule-it/make_reservation?invite=" . $result[$i]['id'];
+			$url = "http://web.engr.oregonstate.edu/~ohsa/Schedule-it/make_reservation?invite=" . $result[$i]['id'];
 			$message = "An event you are invited to has been updated.  Use this link to get more details: " . $url;
 			sendEmail($result[$i]['email'], $subject, $message, 'update');
 		}
@@ -95,7 +95,7 @@ function updateSlotEmail($conn, $slotID){
 	if ($result != NULL){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = "Reservation to event " . $result[$i]['title'];
-			$url = "http://web.engr.oregonstate.edu/~alasagae/Schedule-it/view_reservation?slot=" . $result[$i]['id'];
+			$url = "http://web.engr.oregonstate.edu/~ohsa/Schedule-it/view_reservation?slot=" . $result[$i]['id'];
 			$message = "An update has been made to your reservation for an event.  Use this link to get more details: " . $url;
 			sendEmail($result[$i]['email'], $subject, $message, 'update');
 		}

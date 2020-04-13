@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 	// session 
 	session_start();   
     //check once again if the user is logged in
@@ -9,7 +9,7 @@
     }   
 	
 	if ($_SERVER["REQUEST_METHOD"] != "GET") {
-        header("Location: http://web.engr.oregonstate.edu/~alasagae/Schedule-it/homepage.php");
+        header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php");
 	}
 
 	// database connection 

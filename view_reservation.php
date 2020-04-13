@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 	// session 
 	session_start();
     //check once again if the user is logged in
     //if not, redirect back to login page
     if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {   
         session_destroy();   
-        header("Location: http://web.engr.oregonstate.edu/~alasagae/Schedule-it/login.php"); 
+        header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/login.php"); 
     }   
 	
 	// database connection 
