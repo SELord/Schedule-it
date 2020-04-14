@@ -3,3 +3,4 @@
 .vs/
 *.pdf
 *.phpproj
+dbconfig.php
