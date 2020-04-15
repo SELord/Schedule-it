@@ -32,7 +32,11 @@
 		$_SESSION["backdoor"] = TRUE;
 		
 		//var_dump($_SESSION);
-		header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php");
+		//echo "<script> alert('session id: " . session_id() . "'); </script>";
+		//echo "<script> alert('debug: " . ini_get('session.cookie_domain') . "'); </script>";
+		//header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php");
+		echo "<script type='text/javascript'> document.location = 'http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php'; </script>";
+		//echo "<script> console.log('loc1'); </script>";
 	} 
 	else {  //GET from OSU CAS
 		//TODO: Receives the ticket in the URL, then check with CAS serviceValidate endpoint
