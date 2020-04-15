@@ -1,5 +1,5 @@
 <?php
-    include 'file_path.php';
+	include 'file_path.php';
 	//This file only processes POST and GET requests. Everything else redirects back 
 	//to login page
 	if ($_SERVER["REQUEST_METHOD"] != "POST" && $_SERVER["REQUEST_METHOD"] != "GET") {
@@ -33,11 +33,7 @@
 		$_SESSION["backdoor"] = TRUE;
 		
 		//var_dump($_SESSION);
-		//echo "<script> alert('session id: " . session_id() . "'); </script>";
-		//echo "<script> alert('debug: " . ini_get('session.cookie_domain') . "'); </script>";
-		//header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php");
-		//echo "<script type='text/javascript'> document.location = 'http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php'; </script>";
-		//echo "<script> console.log('loc1'); </script>";
+		header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php");
 	} 
 	else {  //GET from OSU CAS
 		//TODO: Receives the ticket in the URL, then check with CAS serviceValidate endpoint
