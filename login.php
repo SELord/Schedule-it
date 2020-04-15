@@ -2,7 +2,7 @@
  //phpinfo();
 // Set up some variables for CAS
 $casService = 'https://login.oregonstate.edu/idp/profile/cas';
-$thisService = 'http://web.engr.oregonstate.edu/~ohsa/Schedule-it/login.php';
+$thisService = 'http://web.engr.oregonstate.edu/~' . $DEV_ONID . '/Schedule-it/login.php';
 
 //TODO: Retrieve the upcoming events and meetings, and reserved meetings 
 //of the user to populate the calendar
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["ticket"]) {
             $newUser_stmt->execute();
           }
         }
-        header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php");
+        header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php");
       }
    }
 } else {

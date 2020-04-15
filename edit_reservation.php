@@ -9,7 +9,7 @@
     }   
 	
 	if ($_SERVER["REQUEST_METHOD"] != "GET") {
-        header("Location: http://web.engr.oregonstate.edu/~ohsa/Schedule-it/homepage.php");
+        header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php");
 	}
 
 	// database connection 
