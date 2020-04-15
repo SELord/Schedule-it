@@ -15,7 +15,7 @@
     require_once './database/dbquery.php';
     
   if ($_SERVER["REQUEST_METHOD"] != "POST") {
-    header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php");
+    header("Location: " . $FILE_PATH . "homepage.php");
   } 
 
   // connect to database 

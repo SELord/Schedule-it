@@ -9,8 +9,8 @@
         session_destroy();
         session_unset();
         $_SESSION = array();
-        //header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/login.php");
-        echo "<script type='text/javascript'> document.location = 'http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/login.php'; </script>";
+        //header("Location: " . $FILE_PATH . "login.php");
+        echo "<script type='text/javascript'> document.location = '" . $FILE_PATH . "login.php'; </script>";
     }
        
     //TODO: Retrieve the upcoming events and meetings, and reserved meetings 

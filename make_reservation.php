@@ -7,7 +7,7 @@
     //if not, redirect back to login page
     if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {   
         session_destroy();   
-        header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/login.php");
+        header("Location: " . $FILE_PATH . "login.php");
     }   
 	
 	// database connection 

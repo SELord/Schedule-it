@@ -11,7 +11,7 @@
     }   
 	
 	if ($_SERVER["REQUEST_METHOD"] != "GET") {
-        header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php");
+        header("Location: " . $FILE_PATH . "homepage.php");
 	}
 
 	// database connection 

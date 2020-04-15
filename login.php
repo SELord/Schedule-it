@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["ticket"]) {
             $newUser_stmt->execute();
           }
         }
-        header("Location: http://web.engr.oregonstate.edu/~" . $DEV_ONID . "/Schedule-it/homepage.php");
+        header("Location: " . $FILE_PATH . "homepage.php");
       }
    }
 } else {
