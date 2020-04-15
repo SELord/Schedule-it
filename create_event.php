@@ -2,6 +2,7 @@
 
 
 <?php
+    include 'file_path.php';
 
     session_start();
     //check once again if the user is logged in

@@ -1,4 +1,5 @@
 <?php
+    include 'file_path.php';
  //phpinfo();
 // Set up some variables for CAS
 $casService = 'https://login.oregonstate.edu/idp/profile/cas';

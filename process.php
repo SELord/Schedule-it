@@ -1,4 +1,5 @@
 <?php
+    include 'file_path.php';
 	//This file only processes POST and GET requests. Everything else redirects back 
 	//to login page
 	if ($_SERVER["REQUEST_METHOD"] != "POST" && $_SERVER["REQUEST_METHOD"] != "GET") {

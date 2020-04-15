@@ -1,4 +1,5 @@
 <?php 
+    include 'file_path.php';
 //--------------------------------------------------------------------------------------------------
 // Function: newEventEmail(conn, eventID)
 // Description: send out an email notification for a new event to all users who are invited.

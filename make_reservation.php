@@ -1,4 +1,5 @@
 ﻿<?php 
+    include 'file_path.php';
 
 	// session 
 	session_start();   
