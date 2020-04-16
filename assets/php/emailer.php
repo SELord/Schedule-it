@@ -1,5 +1,5 @@
 <?php 
-    include 'file_path.php';
+    include '../../file_path.php';
 //--------------------------------------------------------------------------------------------------
 // Function: newEventEmail(conn, eventID)
 // Description: send out an email notification for a new event to all users who are invited.
@@ -9,6 +9,7 @@
 //		eventID: event ID on database 
 // Output: none
 function newEventEmail($conn, $eventID){
+	global $FILE_PATH;
 	$stmt = $conn->prepare("SELECT I.id, I.email, E.title FROM Event E
 			INNER JOIN Invite I ON E.id = I.eventID
 			WHERE E.id = ?");
@@ -25,7 +26,7 @@ function newEventEmail($conn, $eventID){
 	if (count($result) > 0){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = $result[$i]['title'];
-			$url = "" . $FILE_PATH . "make_reservation?invite=" . $result[$i]['id'];
+			$url = $FILE_PATH . "make_reservation?invite=" . $result[$i]['id'];
 			$message = "You are invited to a new event.  Use this link to get more details and reserve your spot: " . $url;
 			sendEmail($result[$i]['email'], $subject, $message, 'newEvent');
 		}
@@ -43,6 +44,7 @@ function newEventEmail($conn, $eventID){
 //		eventID: event ID on database 
 // Output: none
 function updateEventEmail($conn, $eventID){
+	global $FILE_PATH;
 	$stmt = $conn->prepare("SELECT I.id, I.email, E.title FROM Event E
 			INNER JOIN Invite I ON E.id = I.eventID
 			WHERE E.id = ?");
@@ -59,7 +61,7 @@ function updateEventEmail($conn, $eventID){
 	if ($result != NULL){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = $result[$i]['title'];
-			$url = "" . $FILE_PATH . "make_reservation?invite=" . $result[$i]['id'];
+			$url = $FILE_PATH . "make_reservation?invite=" . $result[$i]['id'];
 			$message = "An event you are invited to has been updated.  Use this link to get more details: " . $url;
 			sendEmail($result[$i]['email'], $subject, $message, 'update');
 		}
@@ -77,6 +79,7 @@ function updateEventEmail($conn, $eventID){
 //		eventID: slot ID on database 
 // Output: none
 function updateSlotEmail($conn, $slotID){
+	global $FILE_PATH;
 	$stmt = $conn->prepare("SELECT U.email, E.title FROM Slot S
 			INNER JOIN Reservation R ON S.id = R.slotID 
 			INNER JOIN Invite I ON R.inviteID = I.id
@@ -96,7 +99,7 @@ function updateSlotEmail($conn, $slotID){
 	if ($result != NULL){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = "Reservation to event " . $result[$i]['title'];
-			$url = "" . $FILE_PATH . "view_reservation?slot=" . $result[$i]['id'];
+			$url = $FILE_PATH . "view_reservation?slot=" . $result[$i]['id'];
 			$message = "An update has been made to your reservation for an event.  Use this link to get more details: " . $url;
 			sendEmail($result[$i]['email'], $subject, $message, 'update');
 		}
