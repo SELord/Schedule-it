@@ -1,6 +1,5 @@
 
 <?php
-    include 'file_path.php';
 
 //INSERT.PHP = CREATE NEW EVENT ON CALENDAR/WEEKLY/DAY VIEW (SETS TIME AUTOMATICALLY TO 12:00AM ON CALENDAR VIEW)
 
@@ -64,7 +63,7 @@ if(!empty($_POST)) {
 
 
 
-    $query = "INSERT INTO `" . $DEV_ONID . "`.`Event` (`title` ,`description` , `dateStartTime` , `dateEndTime`, `duration` ,`RSVPslotLim`,`creatorID`) VALUES ('".$title."', '".$description."', '".$start_time."', '".$dateEndTime."', '".$duration."', '".$RSVPslotLim."', '".$creatorID."')";
+    $query = "INSERT INTO `Event` (`title` ,`description` , `dateStartTime` , `dateEndTime`, `duration` ,`RSVPslotLim`,`creatorID`) VALUES ('".$title."', '".$description."', '".$start_time."', '".$dateEndTime."', '".$duration."', '".$RSVPslotLim."', '".$creatorID."')";
     /*$params = array($title, $description, $date, $start_time, $dateEndTime, $duration, $RSVPslotLim, $creatorID);*/
     //echo $query;
     //connect to server and select database
