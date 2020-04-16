@@ -147,7 +147,7 @@ function generateGrid() {
             if(dateStr.indexOf("T") > -1) {
               dateStr = dateStr.split("T")[0];
             }
-            console.log(dateStr);
+            //console.log(dateStr);
             $("#date").attr("value", dateStr);  
             //SOURCE: https://stackoverflow.com/questions/20518516/how-can-i-get-time-from-iso-8601-time-format-in-javascript
             var mydate = new Date(info.dateStr);
@@ -156,17 +156,17 @@ function generateGrid() {
 
             // Returns the given integer as a string and with 2 digits
             // For example: 7 --> "07"
-            console.log(time);
+            //console.log(time);
             $("#dateStartTime").attr("value", time);
             $( "#dialog-form" ).dialog();
-        },
-        eventRender: function (info) {  //To get additional object attributes from DB
-            console.log(info.event.extendedProps);
-            console.log(info.event.extendedProps.description);
-            console.log(info.event.extendedProps.location);
-            console.log(info.event.extendedProps.slots);
-            console.log(info.event.extendedProps.RSVPLim);
-        }
+        }//,
+        //eventRender: function (info) {  //To get additional object attributes from DB
+            //console.log(info.event.extendedProps);
+            //console.log(info.event.extendedProps.description);
+            //console.log(info.event.extendedProps.location);
+            //console.log(info.event.extendedProps.slots);
+            //console.log(info.event.extendedProps.RSVPLim);
+        //}
     });
 
     calendar.render();
@@ -271,12 +271,12 @@ $('#edit-submit').on('click',function(e){
 //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
 $('#signupbtn').on('click',function(e){
   e.preventDefault();
-  console.log("Inside sign-up");
+  //console.log("Inside sign-up");
   var title = $('#title').val();
   var description = $('#description').val();
   //get correct date format
   var date = dateStr;
-  console.log(date)
+  //console.log(date)
   var dateStartTime = $('#dateStartTime').val();
   var duration = $('#duration').val();
   var slots = $('#slots').val();
@@ -307,8 +307,8 @@ $('#deletebtn').on('click',function(e) {
   var id = $("#edit-delete").data('id');
   var remove = calendar.getEventSourceById(id);
   var event = calendar.getEventById(id);
-  console.log(id);
-  console.log("Delete button");
+  //console.log(id);
+  //console.log("Delete button");
   e.preventDefault();
   if(confirm("Are you sure you want to remove " + event.title + "?")) {
       $.ajax({
@@ -316,12 +316,12 @@ $('#deletebtn').on('click',function(e) {
          type:"POST",
          data:{id:id},
          success:function() {
-          console.log("Success");
+          //console.log("Success");
             calendar.refetchEvents();
             $("#edit-delete").dialog('close');
             },
          complete: function() {
-            console.log("complete");
+            //console.log("complete");
             $("#edit-delete").dialog('close');
             calendar.refetchEvents();
             },
