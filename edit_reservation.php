@@ -1,4 +1,6 @@
 <?php 
+    include 'file_path.php';
+
 	// session 
 	session_start();   
     //check once again if the user is logged in
@@ -9,7 +11,7 @@
     }   
 	
 	if ($_SERVER["REQUEST_METHOD"] != "GET") {
-        header("Location: http://web.engr.oregonstate.edu/~alasagae/Schedule-it/homepage.php");
+        header("Location: " . $FILE_PATH . "homepage.php");
 	}
 
 	// database connection 
@@ -204,7 +206,13 @@
 			<button class="btn btn-primary" type="submit" id="updatePost">Submit</button>
 			<!-- <button class="btn btn-primary" value="submit" type="submit">Submit</button> -->
 		</form>
-        
+		<!--delete post-->
+		<form action="reservation_process.php" method="post" enctype="multipart/form-data">
+			<input type="hidden" id="postID" name="postID" value=<?php echo $postID ?>>
+			<input type="hidden" id="slotID" name="slotID" value=<?php echo $slotID ?>>
+			<input type="hidden" id="deletePost" name="deletePost" value="true">
+			<button class="btn btn-primary">Delete</button>
+        </form>
     </div>
 	<script>
 		//source :https://stackoverflow.com/questions/5697605/limit-the-size-of-an-file-upload-html-input/17173301#17173301

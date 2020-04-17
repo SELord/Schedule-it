@@ -1,4 +1,5 @@
 <?php 
+    include 'file_path.php';
 
 	// session 
 	session_start();   
@@ -6,7 +7,7 @@
     //if not, redirect back to login page
     if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {   
         session_destroy();   
-        header("Location: http://web.engr.oregonstate.edu/~alasagae/Schedule-it/login.php");
+        header("Location: " . $FILE_PATH . "login.php");
     }   
 	
 	// database connection 

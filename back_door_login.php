@@ -1,3 +1,6 @@
+<?php
+	include 'file_path.php'
+?>
 <html>
 <!-- THIS DOES NOT TAKE IN USERNAME OR PASSWORD -- USES REDIRECT -->
 <head>
@@ -10,7 +13,7 @@
 		<form action="process.php" method="POST">
 			<p>
 				<label>Username:</label>
-				<input type="text" id="user" name="user"	/>
+				<input type="text" id="user" name="user"	value="<?php echo $DEV_ONID ?>"/>
 			</p>
 			<p>
 				<label>Password:</label>

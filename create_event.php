@@ -2,6 +2,7 @@
 
 
 <?php
+    include 'file_path.php';
 
     session_start();
     //check once again if the user is logged in
@@ -20,7 +21,7 @@
         session_destroy();
         session_unset();
         $_SESSION = array();
-        header("Location: http://web.engr.oregonstate.edu/~alasagae/Schedule-it/login.php");
+        header("Location: " . $FILE_PATH . "login.php");
     }
        
     //TODO: Retrieve the upcoming events and meetings, and reserved meetings 

@@ -25,9 +25,10 @@ function postMessages() {
 		tableCells[1].textContent = posts[i].firstName + ' ' + posts[i].lastName;
 		tableCells[2].textContent = posts[i].text;
 		
+		// get files
 		if(posts[i].fileName != null){
 			let fileLink = document.createElement('a');
-			fileLink.setAttribute('href',posts[i].fileName);
+			fileLink.setAttribute('href','files/' + posts[i].fileName);
 
 			fileLink.append(posts[i].fileName);
 

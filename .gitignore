@@ -4,3 +4,4 @@
 *.pdf
 *.phpproj
 dbconfig.php
+files/*
