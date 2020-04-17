@@ -47,13 +47,20 @@
             {
                 $status = "Only pdf file is permitted";
             } else {
-                $target_file = "files/FILE_".strval($_POST["slotID"])."_".strval($userID);
+                // save to "./files/" directory
+                $target_file = "files/".$_FILES["postFile"]["name"];
                 //If user previously uploaded a file, just overwrite it.
-                if (!move_uploaded_file($_FILES["postFile"]["tmp_name"], $target_file)) {
+                $moveSuccess = move_uploaded_file($_FILES["postFile"]["tmp_name"], $target_file);
+                // change permission of the file so it is accessible by the server
+                chmod($target_file, 0644);
+
+                if (!$moveSuccess) {
                     $status = "Error uploading file";
                 }
             }
         } 
+        // if post is deleted
+        //if
         // If no file upload is needed or the file upload is successful 
         if (!isset($status)) {
             if ($_POST["postID"]) {  //If the post exists, update it
