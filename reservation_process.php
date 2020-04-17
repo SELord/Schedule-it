@@ -35,10 +35,27 @@
     
     if (!isset($_POST["delete"])) {  //update or insert post
         $fileName = $_FILES["postFile"]["name"];
-        //upload or replace the file
-        //The name of the file stored on the server is FILE_<slotID>_<senderID>
+
+        // delete the message (post) from the reservation board
+        if ($_POST["deletePost"]) {
+            // delete the file first if it exists
+            $userSlotPost = userSlotPost($mysqli, $_POST["slotID"], $userID);
+            if ($userSlotPost["fileName"]) {
+                if(!unlink("files/".$userSlotPost["fileName"])) {
+                    $status = "File Delete Failed (post undeleted)";
+                }
+            }
+            // then delete the post
+            if(!isset($status)) {
+                if (postDelete($mysqli, $_POST["postID"])) {
+                    $status = "Successfully Deleted";
+                }
+            } else {
+                $status = "Delete Failed";
+            }
+        }
         //Upload the file. $status is set if failed.
-        if ($fileName) { 
+        if (!isset($status) && $fileName) { 
             //make sure that the file is truly a pdf file
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $_FILES["postFile"]["tmp_name"]);
@@ -48,7 +65,7 @@
                 $status = "Only pdf file is permitted";
             } else {
                 // save to "./files/" directory
-                $target_file = "files/".$_FILES["postFile"]["name"];
+                $target_file = "files/".$fileName;
                 //If user previously uploaded a file, just overwrite it.
                 $moveSuccess = move_uploaded_file($_FILES["postFile"]["tmp_name"], $target_file);
                 // change permission of the file so it is accessible by the server
@@ -59,8 +76,6 @@
                 }
             }
         } 
-        // if post is deleted
-        //if
         // If no file upload is needed or the file upload is successful 
         if (!isset($status)) {
             if ($_POST["postID"]) {  //If the post exists, update it
