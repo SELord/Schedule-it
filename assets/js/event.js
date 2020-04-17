@@ -147,7 +147,9 @@ function generateGrid() {
             if(dateStr.indexOf("T") > -1) {
               dateStr = dateStr.split("T")[0];
             }
+
             //console.log(dateStr);
+
             $("#date").attr("value", dateStr);  
             //SOURCE: https://stackoverflow.com/questions/20518516/how-can-i-get-time-from-iso-8601-time-format-in-javascript
             var mydate = new Date(info.dateStr);
@@ -167,6 +169,7 @@ function generateGrid() {
             //console.log(info.event.extendedProps.slots);
             //console.log(info.event.extendedProps.RSVPLim);
         //}
+
     });
 
     calendar.render();

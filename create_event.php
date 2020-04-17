@@ -1,4 +1,4 @@
-﻿<!-- DEPRECATED - CAN DELETE --->
+<!-- DEPRECATED - CAN DELETE --->
 
 
 <?php

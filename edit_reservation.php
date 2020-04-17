@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
     include 'file_path.php';
 
 	// session 

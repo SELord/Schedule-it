@@ -61,8 +61,6 @@ if(!empty($_POST)) {
     //echo "\nEnd: " . $dateEndTime;
 
 
-
-
     $query = "INSERT INTO `Event` (`title` ,`description` , `dateStartTime` , `dateEndTime`, `duration` ,`RSVPslotLim`,`creatorID`) VALUES ('".$title."', '".$description."', '".$start_time."', '".$dateEndTime."', '".$duration."', '".$RSVPslotLim."', '".$creatorID."')";
     /*$params = array($title, $description, $date, $start_time, $dateEndTime, $duration, $RSVPslotLim, $creatorID);*/
     //echo $query;
