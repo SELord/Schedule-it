@@ -13,12 +13,12 @@ function ConvertNumberToTwoDigitString(n) {
   return n > 9 ? "" + n : "0" + n;
 }
 
-//CURRENT BUG: Validationg email addresses accepts "username@" and just "username" without the @oregonstate.edu email address
+//CURRENT BUG: Validation email addresses accepts "username@" and just "username" without the @oregonstate.edu email address
 //Function to validate where email is @oregonstate.edu
-function validateEmail(email) { 
+function validateEmail(email) {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if(re.test(email)){
-      //Email valid. Procees to test if it's from the right domain (Second argument is to check that the string ENDS with this domain, and that it doesn't just contain it)
+      //Email valid. Proceed to test if it's from the right domain (Second argument is to check that the string ENDS with this domain, and that it doesn't just contain it)
       if(email.indexOf("@oregonstate.edu", email.length - "@oregonstate.edu".length) !== -1 || email.indexOf("@eecs.oregonstate.edu", email.length - "@eecs.oregonstate.edu".length) !== -1){
           //VALID
           return email;
@@ -26,7 +26,13 @@ function validateEmail(email) {
           return false; //this will automatically return an error because input type HAS to be email
       }
   }
+  else{
+    //Entered email, does not match regex, so it is not a valid email
+    return false;
+  }
 }
+
+
 
 //For list-viewing capabilities
 function generateList() {
