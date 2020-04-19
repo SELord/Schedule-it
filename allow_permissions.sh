@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-#Change the permission of the directories to 775, and files to 664
+#Change the permission of the directories to 775, and files to 644
 
 changePerm() {
 	for f in ./*
