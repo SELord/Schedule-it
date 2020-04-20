@@ -1,6 +1,6 @@
 # Schedule-it
 A meeting scheduler tool for the students, faculty, and employees of Oregon State University
 
-Original authors Xiaoqiong Dong, Grayson McArthur, & Elaine Alasagas
+Winter 2020 Team: Elaine Alasagas, Xiaoqiong Dong, Grayson McArthur.
 
-Follow on team: Victoria Fisher, Sae Hyoung, Steven Lord
+Spring 2020 Team: Victoria Fisher, Sae Hyoung, Steven Lord.
