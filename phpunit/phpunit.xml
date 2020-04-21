@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     This code sourced from https://www.youtube.com/watch?v=cQucsmbOkpE&list=PLfdtiltiRHWGXSggf05W-pJbD47-_d8bJ&index=2
+     The purpose of this file is to pass in standard configurations so that they don't have to be passed in via
+     the command line every single time. 
+-->
+
+<phpunit bootstrap="vendor/autoload.php"
+         colors="true"
+         verbose="true"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Test suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
