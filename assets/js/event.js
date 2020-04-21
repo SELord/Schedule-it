@@ -59,7 +59,7 @@ function generateList() {
         navLinks: true,  //can click day/week names to navigate views
         editable: true,
         eventLimit: true, //allow "more" link when too many events
-        events: '../Schedule-it/database/event/load.php',
+        events: '../Schedule-it/database/event/load.php?onidID='+ onidID,
         dateClick: function(info) {
             $("#date").attr("value", info.dateStr);  
             $( "#dialog-form" ).dialog();
@@ -70,6 +70,7 @@ function generateList() {
 
 //For calendaring-viewing capabilities
 function generateGrid() {
+  console.log("onidID: " + onidID);
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'interaction', 'dayGrid', 'timeGrid'],
@@ -88,10 +89,10 @@ function generateGrid() {
         selectable: true,
         eventSources: [
         {
-          url: '../Schedule-it/database/event/reservations.php?onidID='+onidID,
+          url: '../Schedule-it/database/event/reservations.php?onidID='+ onidID,
         },
         {
-          url: '../Schedule-it/database/event/load.php',
+          url: '../Schedule-it/database/event/load.php?onidID='+ onidID,
           color: 'coral'
         }
         ],
