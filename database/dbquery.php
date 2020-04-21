@@ -65,7 +65,7 @@
 //		id = id of user on database 
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, title, dateStartTime
+//		2nd dim array keys: *
 //--------------------------------------------------------------------------------------------------
 // Function: inviteHist(conn, id)
 // Description: find all events a user has been invited to in ascending order by event date 
@@ -499,9 +499,9 @@ function newReservation($conn, $info){
 //		id = id of user on database 
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, title, dateStartTime
+//		2nd dim array keys: *
 function eventCreateHist($conn, $id){
-	$stmt = $conn->prepare("SELECT id, title, dateStartTime FROM Event 
+	$stmt = $conn->prepare("SELECT * FROM Event 
 			WHERE creatorID=?
 			ORDER BY dateStartTime ASC");
 	$stmt->bind_param("i", $id);

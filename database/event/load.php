@@ -1,40 +1,38 @@
-
 <?php
+    //get onid parameter
+    $onidID = $_GET["onidID"];
 
-//load.php
-  require_once '../dbconfig.php';
+    require_once '../dbconfig.php';
+    require_once '../dbquery.php';
+    
+    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+    if ($mysqli->connect_errno) {
+          echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+          exit;
+      } 
 
-  $connect = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $dbuser, $dbpass);
-  if(!$connect) {
-      die('Could not connect: ' . MySQL_error());
+    //Find userID based off of onid
+    $data = lookupUser($mysqli, $onidID);
+    $user = json_decode($data);
+
+    // Output: if any are found, then a 2D associative array containing event info with
+    //         the first dimension being row number of result, else NULL.
+    //       2nd dim array keys: id, title, dateStartTime
+    $eventsCreatedByUser = eventCreateHist($mysqli, $onidID);
+    
+    $userEvents = array();
+    foreach ($eventsCreatedByUser as $idx => $res) {
+        $eventItem = array();
+        $eventItem["id"] = $res["id"];
+        $eventItem["title"] = $res["title"];
+        $eventItem["description"] = $res["description"];
+        $eventItem["start"] = $res["dateStartTime"];
+        $eventItem["end"] = $res["dateEndTime"];
+        $eventItem["duration"] = $res["duration"];
+        $eventItem["RSVPslotLim"] = $res["RSVPslotLim"];
+        array_push($userEvents, $eventItem);
     }
 
-$data = array();
-
-$query = "SELECT * FROM Event ORDER BY id";
-
-$statement = $connect->prepare($query);
-
-$statement->execute();
-
-$result = $statement->fetchAll();
-//Source: https://stackoverflow.com/questions/5322285/how-do-i-convert-datetime-to-iso-8601-in-php
-
-foreach($result as $row)
-{
-  $start = date($row["dateStartTime"]);
-  $end = date($row["dateEndTime"]);
-  $data[] = array(
-   'id'   => $row["id"],
-   'title'  => $row["title"],
-   'description' => $row["description"],
-   'start'  => $start,
-   'end'  =>   $end,
-   'duration' => $row["duration"],
-   'RSVPslotLim' => $row["RSVPslotLim"],
- );
-}
-
-echo json_encode($data);
-
+    echo json_encode($userEvents);
+    $mysqli->close();
 ?>
