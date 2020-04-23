@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
-#Change the permission of the directories to 775, and files to 644
+#Change the permission of the directories to 775, and files to 664
+#These permission settings have been confirmed by the client
 
 changePerm() {
 	for f in ./*
@@ -12,7 +13,7 @@ changePerm() {
 			changePerm
 			cd ..
 		else
-			chmod 644 $f
+			chmod 664 $f
 
 		fi
 	done
