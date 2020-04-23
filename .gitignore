@@ -5,3 +5,4 @@
 *.phpproj
 dbconfig.php
 files/*
+phpunit/.phpunit.result.cache
