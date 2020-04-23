@@ -13,8 +13,7 @@ function ConvertNumberToTwoDigitString(n) {
   return n > 9 ? "" + n : "0" + n;
 }
 
-//CURRENT BUG: Validation email addresses accepts "username@" and just "username" without the @oregonstate.edu email address
-//Function to validate where email is @oregonstate.edu
+//Function to validate that entered email is actually an email and domain is either @oregonstate.edu or @eecs.oregonstate.edu
 function validateEmail(email) {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if(re.test(email)){
@@ -385,7 +384,7 @@ $('#sendEmail').on('click',function(e){
 });
 
 
-//CURRENT BUG: Validationg email addresses accepts "username@" and just "username" without the @oregonstate.edu email address
+//Get email from form, validate it, and send using emails.php file
 $('#submitEmail').on('click',function(){     
   var id = $("#edit-delete").data('id');  //to get ID from event-click variable
   console.log(id);
