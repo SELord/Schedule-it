@@ -220,6 +220,13 @@
 //		userID = id of user / senderID
 // Output: if any are found, then a 1D associative array containing slot info with id, text, fileName, timeStamp, userID, firstName, lastName
 //--------------------------------------------------------------------------------------------------
+// Function: postOwner(conn, postID)
+// Description: Return post owner (senderID) of the post
+// Input: 
+//		conn = MySQL database connection object 
+//		postID = id of post on database
+// Output: if any are found, then a 1D associative array containing sender ID (post owner)
+//--------------------------------------------------------------------------------------------------
 // Function: userEventRSVPCount(conn, userID, eventID)
 // Description: How many reservations for an event a user has made 
 // Input: 
@@ -833,7 +840,8 @@ function eventAvailableSlots($conn, $id){
 	FROM Reservation
 	GROUP BY slotID
 	) AS C ON C.slotID = S.id
-	WHERE S.RSVPlim > C.count OR C.count IS NULL
+	LEFT JOIN Reservation ON S.id = Reservation.slotID
+	WHERE (S.RSVPlim > C.count OR C.count IS NULL) AND Reservation.slotID IS NULL
 	ORDER by S.startTime ASC;
 	";
 	$stmt = $conn->prepare($sql);
@@ -901,7 +909,7 @@ function slotDetails($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: id, text, fileName, timeStamp, userID, firstName, lastName
 function slotPosts($conn, $id){
-	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName FROM Slot S
+	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName, U.onidUID, P.slotID FROM Slot S
 			INNER JOIN Post P ON S.id = P.slotID 
 			INNER JOIN User U ON P.senderID = U.id 
 			WHERE S.id = ?
@@ -924,7 +932,6 @@ function slotPosts($conn, $id){
 //		slotID = id of slot on database 
 //		userID = id of user / senderID
 // Output: if any are found, then a 1D associative array containing slot info with id, text, fileName, timeStamp, userID, firstName, lastName
-
 function userSlotPost($conn, $slotID, $userID){
 	$stmt = $conn->prepare("SELECT * FROM `Post` WHERE `senderID` = ? AND `slotID` = ?");
 	$stmt->bind_param("ii",$userID, $slotID);
@@ -938,7 +945,47 @@ function userSlotPost($conn, $slotID, $userID){
 	}
 }
 
-
+//--------------------------------------------------------------------------------------------------
+// Function: postOwner(conn, postID)
+// Description: Return post owner (senderID) of the post
+// Input: 
+//		conn = MySQL database connection object 
+//		postID = id of post on database
+// Output: if any are found, then a 1D associative array containing sender ID (post owner)
+function postOwner($conn, $postID){
+	$stmt = $conn->prepare("SELECT senderID FROM `Post` WHERE `id` = ?");
+	$stmt->bind_param("i",$postID);
+	if ($stmt->execute()){
+		$result = $stmt->get_result();
+		$data = $result->fetch_all(MYSQLI_ASSOC);
+		return $data[0];
+	}
+	else{
+		return NULL;
+	}
+}
+//--------------------------------------------------------------------------------------------------
+// Function: getReservationReceiverID(conn, id)
+// Description: return the creator of the reservation (invitation receiver)
+// Input: 
+//		conn = MySQL database connection object 
+//		inviteID = id of invite on database
+//		slotID = id of slot on database 
+// Output: if any are found, then a 1D associative array containing receiverID (reservation owner)
+function getReservationReceiverID($conn, $inviteID, $slotID){
+	$stmt = $conn->prepare("SELECT I.receiverID FROM Reservation R
+			INNER JOIN Invite I ON R.inviteID = I.id
+			WHERE R.inviteID = ? AND R.slotID = ?");
+	$stmt->bind_param("ii", $inviteID, $slotID);
+	if ($stmt->execute()){
+		$result = $stmt->get_result();
+		$data = $result->fetch_all(MYSQLI_ASSOC);
+		return $data[0];
+	}
+	else{
+		return NULL;
+	}
+}
 //--------------------------------------------------------------------------------------------------
 // Function: userEventRSVPCount(conn, userID, eventID)
 // Description: How many reservations for an event a user has made 

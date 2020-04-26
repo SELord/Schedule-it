@@ -25,18 +25,16 @@ function postMessages() {
 		tableCells[1].textContent = posts[i].firstName + ' ' + posts[i].lastName;
 		tableCells[2].textContent = posts[i].text;
 		
-		// get files
-		if(posts[i].fileName != null){
+		// get files (files/{{onid}}_slot{{slotID}}_filename)
+		if(posts[i].fileName){
+			console.log("fileName: \'" + posts[i].fileName + "\'");
 			let fileLink = document.createElement('a');
-			fileLink.setAttribute('href','files/' + posts[i].fileName);
-
-			fileLink.append(posts[i].fileName);
-
+			fileLink.setAttribute('href','files/' + posts[i].onidUID + "_slot" + posts[i].slotID + "_" + posts[i].fileName);
+			fileLink.append(posts[i].onidUID + "_slot" + posts[i].slotID + "_" + posts[i].fileName);
 			tableCells[3].append(fileLink);
 		}
 	}
 }
-
 
 function eventInfo(){
 	document.getElementById("eventTitle").textContent = eventDetails.title;
