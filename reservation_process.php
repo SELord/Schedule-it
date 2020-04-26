@@ -34,15 +34,15 @@
 	$status;	// for later use
 
 	// function used for verifying the user and deleting post
-	function deletePost($conn, $userID, $postID, $slotID, &$status) {
+	function deletePost($conn, $user, $postID, $slotID, &$status) {
 		// verify user first (the user who created the post must be the one deleting it)
 		if ($userID != postOwner($conn, $postID)["senderID"]) {
 			$status = "User verification failed - post delete";
 		}
 		// delete the file first if it exists
-		$userSlotPost = userSlotPost($conn, $slotID, $userID);
+		$userSlotPost = userSlotPost($conn, $slotID, $user->id);
 		if (!isset($status) && $userSlotPost["fileName"]) {
-			if(!unlink("files/".$userSlotPost["fileName"])) {
+			if(!unlink("files/" . $user->onidUID . "_slot" . $userSlotPost["slotID"] . "_" . $userSlotPost["fileName"])) {
 				$status = "File Delete Failed (post undeleted)";
 			}
 		}
@@ -73,13 +73,16 @@
 			{
 				$status = "Only pdf file is permitted";
 			} else {
-				// save to "./files/" directory
-				$target_file = "files/".$fileName;
-				//If user previously uploaded a file, just overwrite it.
+				// save to "./files/" directory ("./files/{{onid}}_slot{{slotID}}_filename")
+				$target_file = "files/" . $user->onidUID . "_slot" . $_POST["slotID"] . "_" . $fileName;
+				//If user previously uploaded a file, delete it first.
+				$previousPost = userSlotPost($mysqli, $_POST["slotID"], $userID);
+				if ($previousPost["fileName"]) {
+					unlink("files/" . $user->onidUID . "_slot" . $_POST["slotID"] . "_" . $previousPost["fileName"]);
+				}
 				$moveSuccess = move_uploaded_file($_FILES["postFile"]["tmp_name"], $target_file);
 				// change permission of the file so it is accessible by the server
 				chmod($target_file, 0644);
-
 				if (!$moveSuccess) {
 					$status = "Error uploading file";
 				}
@@ -123,8 +126,8 @@
 					inviteStatusUpdate($mysqli, $_POST["inviteID"], "no response");
 				//delete the file if user had uploaded one.
 				//To reduce a query to the database, just try to delete the file no matter whether it exists.
-				$target_file = "files/FILE_".strval($_POST["slotID"])."_".strval($userID);
-				unlink($target_file);
+				//$target_file = "files/FILE_".strval($_POST["slotID"])."_".strval($userID);
+				//unlink($target_file);
 			} else 
 				$status = "Unable to delete reservation. Please try again later.";
 		}

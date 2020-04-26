@@ -908,7 +908,7 @@ function slotDetails($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: id, text, fileName, timeStamp, userID, firstName, lastName
 function slotPosts($conn, $id){
-	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName FROM Slot S
+	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName, U.onidUID, P.slotID FROM Slot S
 			INNER JOIN Post P ON S.id = P.slotID 
 			INNER JOIN User U ON P.senderID = U.id 
 			WHERE S.id = ?
