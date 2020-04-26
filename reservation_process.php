@@ -25,39 +25,43 @@
 	}
 
 	//Find userID based off of onid
-	//var_dump($_SESSION["onidID"]);
 	$data = lookupUser($mysqli, $_SESSION["onidID"]);
 	$user = json_decode($data);
 
 	// get userID from session 
 	$userID = $user->id;
 
-	
-	if (!isset($_POST["delete"])) {	//update or insert post
+	$status;	// for later use
+
+	// function used for verifying the user and deleting post
+	function deletePost($conn, $userID, $postID, $slotID, &$status) {
+		// verify user first (the user who created the post must be the one deleting it)
+		if ($userID != postOwner($conn, $postID)["senderID"]) {
+			$status = "User verification failed - post delete";
+		}
+		// delete the file first if it exists
+		$userSlotPost = userSlotPost($conn, $slotID, $userID);
+		if (!isset($status) && $userSlotPost["fileName"]) {
+			if(!unlink("files/".$userSlotPost["fileName"])) {
+				$status = "File Delete Failed (post undeleted)";
+			}
+		}
+		// then delete the post
+		if(!isset($status)) {
+			if (postDelete($conn, $postID)) {
+				$status = "Post Successfully Deleted";
+			}
+		} else {
+			$status = "Post Delete Failed";
+		}
+	}
+	//update or insert post
+	if (!isset($_POST["delete"])) {
 		$fileName = $_FILES["postFile"]["name"];
 
 		// delete the message (post) from the reservation board
 		if ($_POST["deletePost"]) {
-			// verify user first (the user who created the post must be the one deleting it)
-			if ($userID != postOwner($mysqli, $_POST["postID"])["senderID"]) {
-				$status = "User verification failed - post delete";
-			}
-
-			// delete the file first if it exists
-			$userSlotPost = userSlotPost($mysqli, $_POST["slotID"], $userID);
-			if (!isset($status) && $userSlotPost["fileName"]) {
-				if(!unlink("files/".$userSlotPost["fileName"])) {
-					$status = "File Delete Failed (post undeleted)";
-				}
-			}
-			// then delete the post
-			if(!isset($status)) {
-				if (postDelete($mysqli, $_POST["postID"])) {
-					$status = "Successfully Deleted";
-				}
-			} else {
-				$status = "Delete Failed";
-			}
+			deletePost($mysqli, $userID, $_POST["postID"], $_POST["slotID"], $status);
 		}
 		//Upload the file. $status is set if failed.
 		if (!isset($status) && $fileName) { 
@@ -93,9 +97,9 @@
 				$result = newPost($mysqli, $info);
 			}
 			if ($result) {
-				$status = "Successfully Updated";
+				$status = "Post Successfully Updated";
 			} else {
-				$status = "Unable to update. Please try again later.";
+				$status = "Unable to update post. Please try again later.";
 			}
 		}
 	//delete the reservation
@@ -106,25 +110,7 @@
 		}
 		// deleting the post
 		if (!isset($status) && $_POST["postID"]) {
-			// verify user first (the user who created the post must be the one deleting it)
-			if ($userID != postOwner($mysqli, $_POST["postID"])["senderID"]) {
-				$status = "User verification failed - post delete";
-			}
-			// delete the file first if it exists
-			$userSlotPost = userSlotPost($mysqli, $_POST["slotID"], $userID);
-			if (!isset($status) && $userSlotPost["fileName"]) {
-				if(!unlink("files/".$userSlotPost["fileName"])) {
-					$status = "File Delete Failed (post undeleted)";
-				}
-			}
-			// then delete the post
-			if(!isset($status)) {
-				if (postDelete($mysqli, $_POST["postID"])) {
-					$status = "Successfully Deleted";
-				}
-			} else {
-				$status = "Post Delete Failed";
-			}
+			deletePost($mysqli, $userID, $_POST["postID"], $_POST["slotID"], $status);
 		}
 		// then delete the reservation
 		if(!isset($status)) {
