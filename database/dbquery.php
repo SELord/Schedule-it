@@ -840,7 +840,8 @@ function eventAvailableSlots($conn, $id){
 	FROM Reservation
 	GROUP BY slotID
 	) AS C ON C.slotID = S.id
-	WHERE S.RSVPlim > C.count OR C.count IS NULL
+	LEFT JOIN Reservation ON S.id = Reservation.slotID
+	WHERE (S.RSVPlim > C.count OR C.count IS NULL) AND Reservation.slotID IS NULL
 	ORDER by S.startTime ASC;
 	";
 	$stmt = $conn->prepare($sql);
