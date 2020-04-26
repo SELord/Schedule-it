@@ -49,10 +49,10 @@
 		// then delete the post
 		if(!isset($status)) {
 			if (postDelete($conn, $postID)) {
-				$status = "Post Successfully Deleted";
+				return true;
 			} else {
-				$status = "Post Delete Failed";
-			} 
+				return false;
+			}
 		}
 	}
 	//update or insert post
@@ -61,7 +61,9 @@
 
 		// delete the message (post) from the reservation board
 		if ($_POST["deletePost"]) {
-			deletePost($mysqli, $user, $_POST["postID"], $_POST["slotID"], $status);
+			if(!deletePost($mysqli, $user, $_POST["postID"], $_POST["slotID"], $status)) {
+				$status = "Post Delete Failed";
+			}
 		}
 		//Upload the file. $status is set if failed.
 		if (!isset($status) && $fileName) { 
@@ -113,7 +115,9 @@
 		}
 		// deleting the post
 		if (!isset($status) && $_POST["postID"]) {
-			deletePost($mysqli, $user, $_POST["postID"], $_POST["slotID"], $status);
+			if(!deletePost($mysqli, $user, $_POST["postID"], $_POST["slotID"], $status)) {
+				$status = "Post Delete Failed";
+			}
 		}
 		// then delete the reservation
 		if(!isset($status)) {
