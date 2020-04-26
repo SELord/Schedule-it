@@ -36,7 +36,7 @@
 	// function used for verifying the user and deleting post
 	function deletePost($conn, $user, $postID, $slotID, &$status) {
 		// verify user first (the user who created the post must be the one deleting it)
-		if ($userID != postOwner($conn, $postID)["senderID"]) {
+		if ($user->id != postOwner($conn, $postID)["senderID"]) {
 			$status = "User verification failed - post delete";
 		}
 		// delete the file first if it exists
@@ -50,9 +50,9 @@
 		if(!isset($status)) {
 			if (postDelete($conn, $postID)) {
 				$status = "Post Successfully Deleted";
-			}
-		} else {
-			$status = "Post Delete Failed";
+			} else {
+				$status = "Post Delete Failed";
+			} 
 		}
 	}
 	//update or insert post
@@ -61,7 +61,7 @@
 
 		// delete the message (post) from the reservation board
 		if ($_POST["deletePost"]) {
-			deletePost($mysqli, $userID, $_POST["postID"], $_POST["slotID"], $status);
+			deletePost($mysqli, $user, $_POST["postID"], $_POST["slotID"], $status);
 		}
 		//Upload the file. $status is set if failed.
 		if (!isset($status) && $fileName) { 
@@ -113,7 +113,7 @@
 		}
 		// deleting the post
 		if (!isset($status) && $_POST["postID"]) {
-			deletePost($mysqli, $userID, $_POST["postID"], $_POST["slotID"], $status);
+			deletePost($mysqli, $user, $_POST["postID"], $_POST["slotID"], $status);
 		}
 		// then delete the reservation
 		if(!isset($status)) {
