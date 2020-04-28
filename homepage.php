@@ -220,8 +220,6 @@
     <div class="container-fluid" id="content">
     </div>
     
-    
-<!-- USER SEEING ALL EXISTING EVENTS BUG ABOVE THIS LINE -->
 <div id="dialog-form" style="display:none;" title="Create new event">
    <p class="validateTips">All form fields are required.</p>
 
