@@ -1,6 +1,3 @@
-<!-- DEPRECATED - CAN DELETE --->
-
-
 <?php
     include 'file_path.php';
 
@@ -53,7 +50,8 @@
     // Output: if any are found, then a 2D associative array containing slot info with
     //         the first dimension being row number of result, else NULL.
     //    2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
-    $reservationsMadeByUser = reservedSlotHist($mysqli, $userID);
+    // *V EVENT BUG
+    $reservationsMadeByUser = reservedSlotHist($mysqli, $user->id);
     
     $reservations = array();
     foreach ($reservationsMadeByUser as $idx => $res) {
@@ -160,7 +158,7 @@
         </div>
     </div>
     
-    <!-- Hamburgur menu -->
+    <!-- Hamburger menu -->
     <div class="container-fluid">
         <div class="row" >
             <div class="col-sm-1">

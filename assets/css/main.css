@@ -1,21 +1,45 @@
+/* COLOR CODING FROM OSU MAIN SITE
+Note to team: there are more colors, but they didn't seem to fit. */
 :root {
-    --primary: bisque;
-    --emphasis: coral;
-    --light: white;
+    --primary:#f8f9fa;
+    --secondary:#d73f09;
+    --warning:#ffc107;
+    --emphasis:#dc3545;
+    --dark:#343a40;
+    --font-family:arial;
 }
+
+/* BELOW CODE FROM OSU MAIN SITE
+SO WE CAN CREATE A UNIFORM AESTHETIC */
+.osu-top-hat{position:relative;background-color:#d73f09;height:80px;display:flex;}.osu-top-hat .logo{text-decoration:none;margin-right:2em;}.osu-top-hat .logo img{height:60px;margin:6px;width:188px;}.osu-top-hat .site-title h1{color:#d73f09;display:inline-block;padding-left:2rem;margin-bottom:0;vertical-align:middle;}.osu-top-hat .site-title:active h1,.osu-top-hat .site-title:focus h1,.osu-top-hat .site-title:hover h1{text-decoration:underline;}.osu-top-hat .icon-wrapper{position:absolute;right:20px;top:25px;}.osu-top-hat .icon-wrapper a{color:#fff;font-size:2rem;text-decoration:none;}.osu-top-hat .icon-wrapper a:active,.osu-top-hat .icon-wrapper a:focus,.osu-top-hat .icon-wrapper a:hover{color:#252525;}.osu-top-hat .icon-wrapper .mobile-menu{padding-right:1rem;}.osu-top-hat{padding:0;flex:1;position:relative;}
+.osu-top-hat .logo img{width:188px;}@media screen and (min-width:480px){.osu-top-hat .logo img{width:250px;margin:10px;}}@media screen and (max-width:480px){.osu-top-hat .icon-wrapper{top:15px!important;}}.osu-top-hat .logo img{margin:10px!important;}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.sr-only-focusable:active,.sr-only-focusable:focus{position:static;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal}
+
+.header-container > div > div:nth-child(2){background:#252525;overflow:hidden;}
+
+nav .main-menu{margin:1.7rem 0;}nav .main-menu a{color:#fff;text-decoration:none;font-size:19px;font-family:arial;}nav .main-menu a:active,nav .main-menu a:focus,nav .main-menu a:hover{text-decoration:underline;}nav ul{list-style-type:none;padding-left:0;}nav li:before{content:'' !important;margin-right:0 !important;}#block-homepage-main-menu{z-index:255;}
+
+.d-lg-block{display:block!important}
+
+/* END OFFICIAL OSU CODE */
 
 body {
     background-color:var(--primary);
 }
 
 div.container-fluid{
-    width: 95%;
+    width: 100%;
     height: auto;
-    margin-top: 1rem;
+}
+
+div.text_container{
+    width: 100%;
+    margin-left: -1.3%;
 }
 
 .btn {
-    background-color: coral;
+    background-color:var(--secondary);
     color: white;
 }
 
@@ -62,29 +86,6 @@ div.container-fluid{
 
 }
 
-.menu-wrapper .hamburger .bar {
-    position: relative;
-    width: 100%;
-    height: 4px;
-    background: white;
-    z-index: 995;
-}
-
-.menu-wrapper .hamburger .bar::before,
-.menu-wrapper .hamburger .bar::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    width: 100%;
-    height: 4px;
-    background: white;
-   
-}
-
-.menu-wrapper .hamburger .bar::after {
-    top: 10px;
-}
-
 .menu {
     position:absolute;
     top: 0;
@@ -102,16 +103,6 @@ div.container-fluid{
     align-content: center;
     border-radius: 0.2rem;
 }
-
-.menu ul li {
-    text-align: left;
-    cursor: pointer;
-    box-sizing: 15px;
-    border-bottom: 2px solid transparent;
-    z-index: 50;
-}
-
-
 
 .menu-wrapper .toggle:checked + .hamburger +.menu {
     opacity: 1;
@@ -132,10 +123,30 @@ div.container-fluid{
 	background: white;
 }
 #btn{
-	color:	#fff;
+	color:	white;
 	background: #337ab7;
 	padding: 5px;
 }
+
+.list-group-item{
+    background-color:var(--dark);
+    color: white;
+}
+
+@media (min-width: 979px) {
+    ul.nav li.dropdown:hover > ul.dropdown-menu {
+      display: block;
+    }
+  }
+
+.ui-dialog-titlebar-close {
+  background: url("http://code.jquery.com/ui/1.10.3/themes/smoothness/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+  border: medium none;
+}
+.ui-dialog-titlebar-close:hover {
+  background: url("http://code.jquery.com/ui/1.10.3/themes/smoothness/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+}
+  
 /*
 table {
     background-color: white;

@@ -33,7 +33,6 @@ function validateEmail(email) {
 }
 
 
-
 //For list-viewing capabilities
 function generateList() {
     let calendarE1 = document.getElementById('content');
@@ -73,6 +72,7 @@ function generateGrid() {
   console.log("onidID: " + onidID);
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
+        contentHeight: 600,
         plugins: [ 'interaction', 'dayGrid', 'timeGrid'],
         timeZone: 'UTC',
         header: {
@@ -178,7 +178,6 @@ function generateGrid() {
         //}
 
     });
-
     calendar.render();
 
 //TRIGGER EDIT SLOT CHANGES
@@ -312,7 +311,7 @@ $('#signupbtn').on('click',function(e){
   })
  });
 
-//BUTTON TO TRIGGER DELETE - THIS GET'S FORM DATA FOR EDIT-FORM 
+//BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
 $('#deletebtn').on('click',function(e) {
   var id = $("#edit-delete").data('id');
   var remove = calendar.getEventSourceById(id);
@@ -342,7 +341,7 @@ $('#deletebtn').on('click',function(e) {
     }
 });
 
-//BUTTON TO TRIGGER THE EDIT-MODE - THIS GET'S FORM DATA FOR EDIT-FORM 
+//BUTTON TO TRIGGER THE EDIT-MODE - THIS GETS FORM DATA FOR EDIT-FORM 
 /**** TO DO FOR NEXT GROUP : Be able to change location and # of slots dynamically ***/
 $('#editbtn').on('click',function(e) {
   console.log("inside edit btn");
