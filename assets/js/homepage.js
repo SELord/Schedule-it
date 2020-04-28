@@ -72,3 +72,5 @@ function showCalendar(event) {
 }
 
 document.addEventListener('DOMContentLoaded', generateGrid);
+
+$.fn.bootstrapBtn = $.fn.button.noConflict();
