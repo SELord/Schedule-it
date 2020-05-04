@@ -35,7 +35,7 @@ describe("Event", function(){
             expect(positive_result_3).toBe(email_real_and_osu_3);
         });
 
-        it("Should validate that the domain is @oregonstate.edu", function() {
+        it("Should validate that the domain is oregonstate.edu or eecs.oregonstate.edu", function() {
             // arrange
             let not_valid_domain = "fakename@gmail.com";
             let osu_domain = "fakename@oregonstate.edu";
@@ -69,14 +69,14 @@ describe("Event", function(){
             });    
         }
         for (let i = 0; i <= 9; i++) {
-            console.log('Iterator set to: ' + i);
+            //console.log('Iterator set to: ' + i);
             zero_to_nine_tester(i);
         }
         
         // test up to 23 to account for 24hr time: 00 - 23
         function ten_to_23_tester(number) {
             it("Should not add a leading zero to " + number, function() {
-                console.log('Value tested: ' + number);
+                //console.log('Value tested: ' + number);
                 let result = ConvertNumberToTwoDigitString(number);
                 let num_string = number.toString();
                 expect(result).toEqual(num_string);
@@ -84,8 +84,86 @@ describe("Event", function(){
 
         }
         for (let i = 10; i <= 23; i++) {
-            console.log('Iterator set to: ' + i);
+            //console.log('Iterator set to: ' + i);
             ten_to_23_tester(i);
         }
     });
+
+    describe("When Full Calendar list view is created", function() {
+        it("Should call FullCalendar.Calendar", function() {
+            // arrange
+
+            // act
+            //generateList();
+            
+            // assert
+            expect(true).toEqual(true);
+
+        });
+
+        it("Should list the events for the week", function() {
+            // arrange
+
+            // act
+
+            // assert
+
+        });
+
+        it("Should have the current date as the defaultDate", function() {
+            // arrange
+
+            // act
+
+            // assert
+
+        });
+
+        it("Should call dateClick from Full Calendar", function() {
+            // arrange
+
+            // act
+
+            // assert
+
+        });
+
+        it("Should call calendar.rendar", function() {
+            // arrange
+
+            // act
+
+            // assert
+
+        });
+
+
+    });
+
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
