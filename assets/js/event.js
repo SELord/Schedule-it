@@ -1,7 +1,3 @@
-// Global variable to be used when calling php files via URL
-// Allows listed URLs to be absolute path instead of relative so that running tests in Jasmine are able to access those files. 
-const urlPrefix = 'http://web.engr.oregonstate.edu/~lords/Schedule-it/';
-
 //Get today's date
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, '0');
@@ -57,7 +53,7 @@ function generateList() {
         navLinks: true,  //can click day/week names to navigate views
         editable: true,
         eventLimit: true, //allow "more" link when too many events
-        events: urlPrefix +'database/event/load.php?onidID='+ onidID,
+        events: urlPrefix +'database/event/load.php?onidID='+ onidID,  //The urlPrefix is definied in Schedule-it/file_path.php
         dateClick: function(info) {
             $("#date").attr("value", info.dateStr);  
             $( "#dialog-form" ).dialog();
