@@ -827,10 +827,10 @@ function eventSlots($conn, $id){
 // Output: if any are found, then a 2D associative array containing slot info with
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: id, startTime, endTime, location, eventID, RSVPlim, and RSVPs 
-function eventAvailableSlots($conn, $id){
+function eventAvailableSlots($conn, $eventID, $userID){
 	$sql = "SELECT S.id, S.startTime, S.endTime, S.location, S.RSVPlim, C.count AS RSVPs
 	FROM (
-	SELECT Slot.id, Slot.startTime, ADDTIME(Slot.startTime, Slot.duration) AS endTime, Slot.location, Slot.RSVPlim AS RSVPlim
+	SELECT Slot.id, Slot.eventID, Slot.startTime, ADDTIME(Slot.startTime, Slot.duration) AS endTime, Slot.location, Slot.RSVPlim AS RSVPlim
 	FROM Slot
 	INNER JOIN Event ON Slot.eventID = Event.id
 	WHERE Slot.eventID = ?
@@ -840,12 +840,13 @@ function eventAvailableSlots($conn, $id){
 	FROM Reservation
 	GROUP BY slotID
 	) AS C ON C.slotID = S.id
-	LEFT JOIN Reservation ON S.id = Reservation.slotID
-	WHERE (S.RSVPlim > C.count OR C.count IS NULL) AND Reservation.slotID IS NULL
+	INNER JOIN Invite I ON S.eventID = I.eventID AND I.receiverID = ?
+	LEFT JOIN Reservation ON S.id = Reservation.slotID AND I.ID = Reservation.inviteID
+	WHERE (S.RSVPlim > C.count OR C.count IS NULL) AND Reservation.inviteID IS NULL
 	ORDER by S.startTime ASC;
 	";
 	$stmt = $conn->prepare($sql);
-	$stmt->bind_param("i", $id);
+	$stmt->bind_param("ii", $eventID, $userID);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
 		return $result->fetch_all(MYSQLI_ASSOC);
