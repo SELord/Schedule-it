@@ -46,7 +46,7 @@
 	
 	if ($RSVPremaining > 0){
 		// query database for associated slots
-		$slots = eventAvailableSlots($mysqli, $inviteInfo['eventID']);
+		$slots = eventAvailableSlots($mysqli, $inviteInfo['eventID'], $userID);
 		
 		if (count($slots) > 0){
 			// build FullCalendar.io associative array 
