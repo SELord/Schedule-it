@@ -313,11 +313,9 @@
   <div class="form-group">  
     <form name="add_name" id="add_name">  
       <div class="table-responsive" id="add_name">  
-         <table class="table table-bordered" id="dynamic_field">  
-            <tr>  
-               <td><button type="button" name="add" id="add" class="btn btn-success">add email slot<br></button></td>  
-               <td><input type="email" name="name[]" placeholder="Enter your email" class="form-control name_list" /></td>  
-            </tr>  
+         <table class="table table-bordered" id="dynamic_field">
+         <button type="button" name="add" id="add" class="btn btn-success">add email slot<br></button>  
+
          </table>  
          <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" /> 
         <input type="button" name="submit" id="submitEmail" class="btn btn-info" value="Submit" />
