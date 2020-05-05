@@ -171,7 +171,7 @@
                   <a href="homepage.php" class="nav-link">Schedule-It Home</a>
                 </li>
                 <li class="nav-item">
-                  <a href="upcoming.php" class="nav-link">Upcoming</a>
+                  <a href="calendar.php" class="nav-link">Calendar</a>
                 </li>
                 <li class="nav-item">
                   <a href="eventmanagement.php" class="nav-link">Manage Events</a>
@@ -179,6 +179,8 @@
                 <li class="nav-item">
                   <a href="view_history.php" class="nav-link">Past Meetings</a>
                 </li>
+                <!-- Temporary spacing fix -->
+                　　　　　　　　　　　　　　　　　　　　　　　
                 <li class="nav-item">
                   <a href="logout.php" class="nav-link">Logout</a>
                 </li>
