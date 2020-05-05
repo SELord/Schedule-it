@@ -180,7 +180,7 @@
                   <a href="view_history.php" class="nav-link">Past Meetings</a>
                 </li>
                 <!-- Temporary spacing fix -->
-                　　　　　　　　　　　　　　　　　　　　
+                　　　　　　　　　　　　　　　　　　　　　　　
                 <li class="nav-item">
                   <a href="logout.php" class="nav-link">Logout</a>
                 </li>
