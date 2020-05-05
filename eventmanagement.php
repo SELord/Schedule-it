@@ -20,14 +20,39 @@
 		die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error . "\n");
 	}
 	
+	
 	// get userID from session 
     //Find userID based off of onid
      $data = lookupUser($mysqli, $_SESSION["onidID"]);
      $user = json_decode($data);
 	
 	// get past events, invites, and reservations from database 
+	$events = eventCreateHist($mysqli, $user->id);
+	$invites = inviteHist($mysqli, $user->id);
 	$reservations = reservedSlotHist($mysqli, $user->id);
-		
+	
+	// process events to build an array for fullcalendar.io
+	$pastEvents = array();
+	for($i = 0; $i < count($events); $i++){
+		$tmp = array();
+		$tmp['id'] = $events[$i]['id'];
+		$tmp['title'] = $events[$i]['title'];
+		$tmp['start'] = $events[$i]['dateStartTime'];
+		$tmp['end'] = substr($events[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $events[$i]['id']);
+		$pastEvents[$i] = $tmp;
+	}
+	
+	// process invites to build an array for fullcalendar.io
+	$pastInvites = array();
+	for($i = 0; $i < count($invites); $i++){
+		$tmp = array();
+		$tmp['id'] = $invites[$i]['inviteID'];
+		$tmp['title'] = $invites[$i]['title'] . " (" . $invites[$i]['status'] . ")";
+		$tmp['start'] = $invites[$i]['dateStartTime'];
+		$tmp['end'] = substr($invites[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $invites[$i]['eventID']);
+		$pastInvites[$i] = $tmp;
+	}
+	
 	// process reservations to build an array for fullcalendar.io
 	$pastReservations = array();
 	for($i = 0; $i < count($reservations); $i++){
@@ -43,6 +68,8 @@
 	
 	// send to javascript on client
 	echo "<script>\n";
+	echo "var pastEvents = " . json_encode($pastEvents) . ";\n";
+	echo "var pastInvites = " . json_encode($pastInvites) . ";\n";
 	echo "var pastReservations = " . json_encode($pastReservations) . ";\n";
 	echo "</script>";
 
