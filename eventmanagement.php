@@ -149,7 +149,6 @@
 	<div class="container-fluid">
 	    <div class="row">
 			<div class="col-sm-3"></div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showResHist(event)" id="resHistButton" disabled>Reservations</div>
 			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
 			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
 			<div class="col-sm-3"></div>
