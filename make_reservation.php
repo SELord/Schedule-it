@@ -46,7 +46,7 @@
 	
 	if ($RSVPremaining > 0){
 		// query database for associated slots
-		$slots = eventAvailableSlots($mysqli, $inviteInfo['eventID']);
+		$slots = eventAvailableSlots($mysqli, $inviteInfo['eventID'], $userID);
 		
 		if (count($slots) > 0){
 			// build FullCalendar.io associative array 
@@ -131,7 +131,7 @@
 </head>
 <body>
   <!-- HEADER CODE FROM OSU WEBSITE TO DEVELOP COHESIVE LOOK -->
-    <div class="header-container">
+  <div class="header-container">
         <header role="banner" class="osu-top-hat">
             <a href="https://oregonstate.edu" title="Schedule-It Home" class="logo">
               <img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg" alt="Oregon State University" />
@@ -142,7 +142,7 @@
                   <a href="homepage.php" class="nav-link">Schedule-It Home</a>
                 </li>
                 <li class="nav-item">
-                  <a href="upcoming.php" class="nav-link">Upcoming</a>
+                  <a href="calendar.php" class="nav-link">Calendar</a>
                 </li>
                 <li class="nav-item">
                   <a href="eventmanagement.php" class="nav-link">Manage Events</a>
@@ -150,6 +150,8 @@
                 <li class="nav-item">
                   <a href="view_history.php" class="nav-link">Past Meetings</a>
                 </li>
+                <!-- Temporary spacing fix -->
+                　　　　　　　　　　　　　　　　　　　　　　　
                 <li class="nav-item">
                   <a href="logout.php" class="nav-link">Logout</a>
                 </li>
