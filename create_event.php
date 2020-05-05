@@ -150,43 +150,35 @@
   <script src='./assets/js/fullcalendar/packages/moment/main.js'></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row border-bottom border-dark">
-            <div class="col-sm-3"><h2>Schedule-it</h2></div>
-            <div class="col-sm-6"></div>
-            <div class="col-sm-3"><img src="./assets/img/OSU_horizontal_2C_O_over_B.png" alt="OSU Logo" width=60% height=auto></div>
-        </div>
-    </div>
-    
-    <!-- Hamburger menu -->
-    <div class="container-fluid">
-        <div class="row" >
-            <div class="col-sm-1">
-                <div class="menu-wrapper border-dark">
-                    <input type="checkbox" class="toggle"/>
-        
-                    <div class="hamburger">
-                        <div class="bar">  
-                        </div>
-                    </div>
-        
-                    <div class="menu">
-                        <ul>
-                            <li><a href="home.php">Home</a></li>
-                            <li><a href="upcoming_events_placeholder.php">Upcoming Events</a></li>
-                            <li><a href="upcoming_meetings_placeholder.php">Upcoming Meetings</a></li>
-                            <li><a href="past_meetings_placeholder.php">Past Meetings</a></li> 
-                            <li><a href="logout_placeholder.php">Logout</a></li>  
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2"><h4>Home Page</h4></div>
-            <div class="col-sm-5"></div>
-            <div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showList(event)" id="listButton">List View</div>
-            <div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showCalendar(event)" id="calendarButton" disabled>Calendar View</div>
-        </div>
-    </div>
+  <!-- HEADER CODE FROM OSU WEBSITE TO DEVELOP COHESIVE LOOK -->
+  <div class="header-container">
+        <header role="banner" class="osu-top-hat">
+            <a href="https://oregonstate.edu" title="Schedule-It Home" class="logo">
+              <img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg" alt="Oregon State University" />
+            </a>
+            <nav role="navigation" id="block-homepage-main-menu" class="d-none d-lg-block">
+              <ul class="main-menu nav nav-pills">
+                <li class="nav-item">
+                  <a href="homepage.php" class="nav-link">Schedule-It Home</a>
+                </li>
+                <li class="nav-item">
+                  <a href="calendar.php" class="nav-link">Calendar</a>
+                </li>
+                <li class="nav-item">
+                  <a href="eventmanagement.php" class="nav-link">Manage Events</a>
+                </li>
+                <li class="nav-item">
+                  <a href="view_history.php" class="nav-link">Past Meetings</a>
+                </li>
+                <!-- Temporary spacing fix -->
+                　　　　　　　　　　　　　　　　　　　　　　　
+                <li class="nav-item">
+                  <a href="logout.php" class="nav-link">Logout</a>
+                </li>
+              </ul>
+            </nav>
+        </header>
+    </div><p>
 
     <!-- div for Calendar-->
     <div class="container-fluid" id="content">
@@ -286,8 +278,8 @@
       <div class="table-responsive" id="add_name">  
          <table class="table table-bordered" id="dynamic_field">  
             <tr>  
+               <td><button type="button" name="add" id="add" class="btn btn-success">add email</button></td>  
                <td><input type="email" name="name[]" placeholder="Enter your Name" class="form-control name_list" /></td>  
-               <td><button type="button" name="add" id="add" class="btn btn-success">+</button></td>  
             </tr>  
          </table>  
          <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" /> 

@@ -179,43 +179,35 @@
 
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="row border-bottom border-dark">
-			<div class="col-sm-3"><h2>Schedule-it</h2></div>
-			<div class="col-sm-6"></div>
-
-			<div class="col-sm-3"><img src="./assets/img/OSU_horizontal_2C_O_over_B.png" alt="OSU Logo" width=60% height=auto></div>
-
-		</div>
-	</div>
-
-	<!-- Hamburgur menu -->
-	<div class="container-fluid">
-		<div class="row" >
-			<div class="col-sm-1">
-				<div class="menu-wrapper border-dark">
-					<input type="checkbox" class="toggle"/>
-		
-					<div class="hamburger">
-						<div class="bar">
-						</div>
-					</div>
-		
-					<div class="menu">
-						<ul>
-							<li><a href="homepage.php">Home</a></li>
-							<!-- <li><a href="#">Upcoming Events</a></li>
-							<li><a href="#">Upcoming Meetings</a></li>-->
-							<li><a href="view_history.php">Past Meetings</a></li> 
-							<li><a href="logout.php">Logout</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-2"><h4>Reservation Update</h4></div>
-			<div class="col-sm-9"></div>
-		</div>
-	</div>
+  <!-- HEADER CODE FROM OSU WEBSITE TO DEVELOP COHESIVE LOOK -->
+  <div class="header-container">
+        <header role="banner" class="osu-top-hat">
+            <a href="https://oregonstate.edu" title="Schedule-It Home" class="logo">
+              <img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg" alt="Oregon State University" />
+            </a>
+            <nav role="navigation" id="block-homepage-main-menu" class="d-none d-lg-block">
+              <ul class="main-menu nav nav-pills">
+                <li class="nav-item">
+                  <a href="homepage.php" class="nav-link">Schedule-It Home</a>
+                </li>
+                <li class="nav-item">
+                  <a href="calendar.php" class="nav-link">Calendar</a>
+                </li>
+                <li class="nav-item">
+                  <a href="eventmanagement.php" class="nav-link">Manage Events</a>
+                </li>
+                <li class="nav-item">
+                  <a href="view_history.php" class="nav-link">Past Meetings</a>
+                </li>
+                <!-- Temporary spacing fix -->
+                　　　　　　　　　　　　　　　　　　　　　　　
+                <li class="nav-item">
+                  <a href="logout.php" class="nav-link">Logout</a>
+                </li>
+              </ul>
+            </nav>
+        </header>
+    </div><p>
 	
 	<!-- div for List-->
 	<div class="container-fluid" id="content">

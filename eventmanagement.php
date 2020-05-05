@@ -20,14 +20,27 @@
 		die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error . "\n");
 	}
 	
+	
 	// get userID from session 
     //Find userID based off of onid
      $data = lookupUser($mysqli, $_SESSION["onidID"]);
      $user = json_decode($data);
 	
 	// get past events, invites, and reservations from database 
+	$invites = inviteHist($mysqli, $user->id);
 	$reservations = reservedSlotHist($mysqli, $user->id);
-		
+	
+	// process invites to build an array for fullcalendar.io
+	$pastInvites = array();
+	for($i = 0; $i < count($invites); $i++){
+		$tmp = array();
+		$tmp['id'] = $invites[$i]['inviteID'];
+		$tmp['title'] = $invites[$i]['title'] . " (" . $invites[$i]['status'] . ")";
+		$tmp['start'] = $invites[$i]['dateStartTime'];
+		$tmp['end'] = substr($invites[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $invites[$i]['eventID']);
+		$pastInvites[$i] = $tmp;
+	}
+	
 	// process reservations to build an array for fullcalendar.io
 	$pastReservations = array();
 	for($i = 0; $i < count($reservations); $i++){
@@ -43,6 +56,7 @@
 	
 	// send to javascript on client
 	echo "<script>\n";
+	echo "var pastInvites = " . json_encode($pastInvites) . ";\n";
 	echo "var pastReservations = " . json_encode($pastReservations) . ";\n";
 	echo "</script>";
 
@@ -89,7 +103,7 @@
 </head>
 <body>
   <!-- HEADER CODE FROM OSU WEBSITE TO DEVELOP COHESIVE LOOK -->
-    <div class="header-container">
+  <div class="header-container">
         <header role="banner" class="osu-top-hat">
             <a href="https://oregonstate.edu" title="Schedule-It Home" class="logo">
               <img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg" alt="Oregon State University" />
@@ -100,7 +114,7 @@
                   <a href="homepage.php" class="nav-link">Schedule-It Home</a>
                 </li>
                 <li class="nav-item">
-                  <a href="upcoming.php" class="nav-link">Upcoming</a>
+                  <a href="calendar.php" class="nav-link">Calendar</a>
                 </li>
                 <li class="nav-item">
                   <a href="eventmanagement.php" class="nav-link">Manage Events</a>
@@ -108,6 +122,8 @@
                 <li class="nav-item">
                   <a href="view_history.php" class="nav-link">Past Meetings</a>
                 </li>
+                <!-- Temporary spacing fix -->
+                　　　　　　　　　　　　　　　　　　　　　　　
                 <li class="nav-item">
                   <a href="logout.php" class="nav-link">Logout</a>
                 </li>
@@ -120,6 +136,7 @@
 	<div class="container-fluid">
 	    <div class="row">
 			<div class="col-sm-3"></div>
+			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
 			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
 			<div class="col-sm-3"></div>
 		</div>

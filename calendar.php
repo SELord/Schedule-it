@@ -160,7 +160,7 @@
 </head>
 <body>
   <!-- HEADER CODE FROM OSU WEBSITE TO DEVELOP COHESIVE LOOK -->
-  <div class="header-container">
+    <div class="header-container">
         <header role="banner" class="osu-top-hat">
             <a href="https://oregonstate.edu" title="Schedule-It Home" class="logo">
               <img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg" alt="Oregon State University" />
@@ -171,7 +171,7 @@
                   <a href="homepage.php" class="nav-link">Schedule-It Home</a>
                 </li>
                 <li class="nav-item">
-                  <a href="upcoming.php" class="nav-link">Upcoming</a>
+                  <a href="calendar.php" class="nav-link">Calendar</a>
                 </li>
                 <li class="nav-item">
                   <a href="eventmanagement.php" class="nav-link">Manage Events</a>
@@ -179,6 +179,8 @@
                 <li class="nav-item">
                   <a href="view_history.php" class="nav-link">Past Meetings</a>
                 </li>
+                <!-- Temporary spacing fix -->
+                　　　　　　　　　　　　　　　　　　　　　　　
                 <li class="nav-item">
                   <a href="logout.php" class="nav-link">Logout</a>
                 </li>
@@ -192,34 +194,170 @@
         let reservations = <?php echo json_encode($reservations) ?>; 
     </script>
     
-   
-    <!-- div for Events made by user -->
-    
-    <div class="container-fluid">
-    <center><h1> UPCOMING: </h1>   <p>
-        <ul class="list-group" id="eventsUserCreated">
+    <!-- div for Events the user still need to make reservations for -->
+    <div class="text_container">
+        <ul id="upcomingEvents">
             <?php 
-                foreach ($eventsCreatedByUser as $idx => $event) {
-                    $eventID = $event["id"];
+                foreach ($eventsYetToReserve as $idx => $event) {
+                    $eventID = $event["eventID"];
+                    $inviteID = $event["inviteID"];
                     $eventTitle = $event["title"];
                     $eventStartDate = explode(" ", $event["dateStartTime"])[0];
                     $upcomingEvents = $eventStartDate;
-                    $currentDate = date('Y-m-d');
-                    if($eventStartDate >= $currentDate) {
-                      $li = "<li>$eventTitle, starting on $upcomingEvents</li>";
-                      echo $li;
-                    }
+                    $eventCreator = $event["firstName"]." ".$event["lastName"];
+                    $li = "<a href=\"make_reservation?invite=$inviteID\" class=\"list-group-item list-group-item-action\" id=inviteID>Please RSVP to $eventTitle, starting on $eventStartDate, created by $eventCreator</a>";
+                    echo $li;
                 }
             ?>
-        </ul></center>
+        </ul>
     </div>
+
+    <!-- div for Calendar-->
+    <div class="container-fluid">
+            <center><i>To create an event, while in <b>"Calendar View"</b>, click anywhere on any date in calendar month-view, week-view, or day-view and a <b>pop-up</b> will appear to create a new event/meeting. 
+          </i></p><button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
+            <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button><br>
+            </center>
+    </div>
+    <div class="container-fluid" id="content">
+    </div>
+    
+<div id="dialog-form" style="display:none;" title="Create new event">
+   <p class="validateTips">All form fields are required.</p>
+
+<form>
+  <fieldset>
+      <input type="hidden" id="date" name="date">
+      <label for="title">Meeting title: </label>
+      <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" required>
+
+      <label for="description">Description: </label>
+      <input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all">
+
+      <label for="location">Location:  </label>
+      <input type="text" name="location" id="location" class="text ui-widget-content ui-corner-all">  
+
+      <label for="dateStartTime">Start Time: </label>
+          <input type="time" name="dateStartTime" id="dateStartTime" class="text ui-widget-content ui-corner-all" required>
+
+      <label for="duration">Duration: <small><i>HH:mm format only</i></small></label>
+          <input type="text" name="duration" id="duration" class="text ui-widget-content ui-corner-all" required>
+
+      <label for="slots">How many time slots? </label>
+          <input type="number" name="slots" id="slots" class="text ui-widget-content ui-corner-all" min="1">
+
+      <label for="RSVPLim">Max attendees per slot: </label>
+          <input type="number" name="RSVPLim" id="RSVPLim" class="text ui-widget-content ui-corner-all" min="0">  
+
+      <label for="RSVPslotLim">Max Reservations per attendee: </label>
+          <input type="number" name="RSVPslotLim" id="RSVPslotLim" class="text ui-widget-content ui-corner-all" min="0">  
+
+      <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
+      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
+
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" id="signupbtn">
+    </fieldset>
+  </form>
+</div>
+
+
+<!-- FORM FOR EDIT AND DELETE BUTTONS -->
+<div id="edit-delete" style="display:none;" title="Edit or Delete">
+<form>
+  <fieldset>
+      <input type="hidden" id="date" name="date" value="">
+      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <button type="button" id="sendEmail">Send Emails</button>
+      <button type="button" id="editbtn">Edit</button>
+      <button type="button" id="deletebtn">Delete</button>
+    </fieldset>
+  </form>
+</div>
+
+<!-- FORM FOR EDIT EVENT -->
+<div id="edit-form" style="display:none;" title="Edit Current Event">
+   <p class="validateTips">All form fields are required.</p>
+      <button type="button" id="edit-slotbtn">Edit Slots</button>
+
+<form>
+  <fieldset>
+      <input type="hidden" id="dateedit" name="dateedit" value="">
+      <label for="titleedit">Event title: </label>
+      <input type="text" name="titleedit" id="titleedit" value="" class="text ui-widget-content ui-corner-all">
+
+      <label for="descriptionedit">Event Description: </label>
+      <input type="text" name="descriptionedit" id="descriptionedit" class="text ui-widget-content ui-corner-all">
+
+      <label for="dateStartTimeedit">Event Start Time: </label>
+          <input type="time" name="dateStartTimeedit" id="dateStartTimeedit" class="text ui-widget-content ui-corner-all">
+
+      <label for="durationedit">Event Duration: <small><i>HH:mm format only</i></small></label>
+          <input type="text" name="durationedit" id="durationedit" class="text ui-widget-content ui-corner-all">
+
+      <label for="RSVPslotLimedit">Max Reservations per attendee: </label>
+          <input type="number" name="RSVPslotLimedit" id="RSVPslotLimedit" class="text ui-widget-content ui-corner-all" min="0">  
+
+      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <button type="button" id="edit-submit">Confirm Changes</button>
+    </fieldset>
+  </form>
+</div>
+
+
+<!-- FORM TO SEND EMAILS AFTER EVENT CREATED -->
+<div id="send-email" style="display:none;" title="Send Emails">
+<label for="email_invites">Email invites to: </label>
+  <div class="form-group">  
+    <form name="add_name" id="add_name">  
+      <div class="table-responsive" id="add_name">  
+         <table class="table table-bordered" id="dynamic_field">
+          <button type="button" name="add" id="add" class="btn btn-success">add email slot</button>  
+          <p>
+         </table>  
+         <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" /> 
+        <input type="button" name="submit" id="submitEmail" class="btn btn-info" value="Submit" />
+      </div>  
+    </form>  
+  </div>  
+</div>  
+
+
+<!-- FORM FOR EDIT SLOT EVENT -->
+<div class="table-responsive"  style="display:none;" title="Edit Event Slots">  
+     <div id="live_data" title="Edit Event Slots"></div>                 
+</div>  
+ 
+<!-- SCRIPT FOR THE HIDDEN TITLE AND DESCRIPTION -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.text_container').addClass("hidden");
+
+    $('.text_container').click(function() {
+      var $this = $(this);
+
+      if ($this.hasClass("hidden")) {
+        $(this).removeClass("hidden").addClass("visible");
+
+      } else {
+        $(this).removeClass("visible").addClass("hidden");
+      }
+    });
+  });
+
+//-- SCRIPT FOR "HOVER OVER" FOR UPCOMING EVENTS, WAITING FOR RESPONSE 
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
 
 </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
 </body>
 </html>
