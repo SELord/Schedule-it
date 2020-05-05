@@ -278,8 +278,8 @@
       <div class="table-responsive" id="add_name">  
          <table class="table table-bordered" id="dynamic_field">  
             <tr>  
+               <td><button type="button" name="add" id="add" class="btn btn-success">add email</button></td>  
                <td><input type="email" name="name[]" placeholder="Enter your Name" class="form-control name_list" /></td>  
-               <td><button type="button" name="add" id="add" class="btn btn-success">+</button></td>  
             </tr>  
          </table>  
          <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" /> 
