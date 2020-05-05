@@ -179,7 +179,7 @@
                 <li class="nav-item">
                   <a href="view_history.php" class="nav-link">Past Meetings</a>
                 </li>
-                　　　　　　　　　　　　　　　
+                　　　　　　　　　　　　　　　　　
                 <li class="nav-item">
                   <a href="logout.php" class="nav-link">Logout</a>
                 </li>
