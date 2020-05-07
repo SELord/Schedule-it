@@ -53,7 +53,7 @@ function generateList() {
         navLinks: true,  //can click day/week names to navigate views
         editable: true,
         eventLimit: true, //allow "more" link when too many events
-        events: urlPrefix +'database/event/load.php?onidID='+ onidID,  //The urlPrefix is definied in Schedule-it/file_path.php
+        events: '../Schedule-it/database/event/load.php?onidID='+ onidID,
         dateClick: function(info) {
             $("#date").attr("value", info.dateStr);  
             $( "#dialog-form" ).dialog();
@@ -84,10 +84,10 @@ function generateGrid() {
         selectable: true,
         eventSources: [
         {
-            url: urlPrefix +'database/event/reservations.php?onidID='+ onidID,
+            url: '../Schedule-it/database/event/reservations.php?onidID='+ onidID,
         },
         {
-            url: urlPrefix +'database/event/load.php?onidID='+ onidID,
+            url: '../Schedule-it/database/event/load.php?onidID='+ onidID,
             color: 'coral'
         }
         ],
@@ -102,7 +102,7 @@ function generateGrid() {
             //console.log(start + ' ' + end);
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
-                    url:urlPrefix +"database/event/update.php",
+                    url:"../Schedule-it/database/event/update.php",
                     type:"POST",
                     data:{id:id, start:start, end:end},
                     success:function() {
@@ -125,7 +125,7 @@ function generateGrid() {
             console.log(start + ' ' + end);
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
-                    url:urlPrefix +"database/event/update.php",
+                    url:"../Schedule-it/database/event/update.php",
                     type:"POST",
                     data:{id:id, start:start, end:end},
                     success:function() {
@@ -174,7 +174,7 @@ function generateGrid() {
             modal: true,
         });
         $.ajax({
-            url:urlPrefix +"database/event/edit_slot.php",
+            url:"../Schedule-it/database/event/edit_slot.php",
             type:"POST",
             data: {id:id}, 
             success:function(data){  
@@ -187,7 +187,7 @@ function generateGrid() {
   
         function edit_data(id, text, parameter) {  
             $.ajax({  
-                url:urlPrefix +"database/event/update_slot.php",  
+                url:"../Schedule-it/database/event/update_slot.php",  
                 method:"POST",  
                 data:{
                     id:id,
@@ -230,7 +230,7 @@ function generateGrid() {
         var duration = $('#durationedit').val();
         var RSVPslotLim = $('#RSVPslotLimedit').val();
         $.ajax({
-            url:urlPrefix +"database/event/update_month.php",
+            url:"../Schedule-it/database/event/update_month.php",
             type:"POST",
             data: {
                 id:id, 
@@ -274,7 +274,7 @@ function generateGrid() {
         var location = $('#location').val();
         var RSVPLim = $('#RSVPLim').val();
         $.ajax({
-            url:urlPrefix +"database/event/insert.php",
+            url:"../Schedule-it/database/event/insert.php",
             type:"POST",
             data: {title:title, description:description, date:date, dateStartTime:dateStartTime, duration:duration, RSVPslotLim:RSVPslotLim, creatorID:creatorID, slots:slots, location:location, RSVPLim:RSVPLim},
             complete: function() {
@@ -300,7 +300,7 @@ function generateGrid() {
         e.preventDefault();
         if(confirm("Are you sure you want to remove " + event.title + "?")) {
             $.ajax({
-                url:urlPrefix +"database/event/delete.php",
+                url:"../Schedule-it/database/event/delete.php",
                 type:"POST",
                 data:{id:id},
                 success:function() {
@@ -385,7 +385,7 @@ function generateGrid() {
         };     
         console.log(jsonPayload);
         $.ajax({
-            url:urlPrefix +"database/event/emails.php",
+            url:"../Schedule-it/database/event/emails.php",
             type:"POST",
             data: jsonPayload,
             success:function(data) {
