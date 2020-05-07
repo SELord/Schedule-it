@@ -26,18 +26,13 @@ require '../../assets/php/emailer.php';  // email functions
     //get eventID, creatorID and list of emails from event.js
     $eventID = $_POST['id'];
     $creatorID = $_POST['creatorID'];
-    $emails = $_POST['emails']; //this is the array object that holds emails
+    $onidUID = $_POST['emails']; //this is the array object that holds ONIDs
 
 
     //put into array
-    for($i = 0; $i < count($emails); $i++) {  
+    for($i = 0; $i < count($onidUID); $i++) {  
 
-      //parse email to onidUID 
-      list($onidUID, $edu) = explode('@', $emails[$i]);
-      echo "\n$onidUID" . $onidUID;
-      echo "\n$edu" . $edu;
-
-      //create new user w/ null firstName and lastName values
+      //create new user with only ONID
       $data = lookupUser($connect, $onidUID);
       var_dump($data);
       $user = json_decode($data);
@@ -45,24 +40,22 @@ require '../../assets/php/emailer.php';  // email functions
       // check if user exists, if null, create new user
       if($data == null) {
         //create a new user if user does not exists
-        //NOTE: I had problems with newInvite function from dbquery.php, so copied and pasted it here
-        $stmt = $connect->prepare("INSERT INTO User (onidUID, email) VALUES (?, ?)");
-        $stmt->bind_param("ss", $onidUID, $emails[$i]);
-        $stmt->execute();
+        $info['onidUID'] = $onidUID[$i];
+        $info['firstName'] = "";
+        $info['lastName'] = "";
+        $info['email'] = "";
+        $userID = newUser($connect, $info);
 
-        //get userID of recently created user
-        $userID = mysqli_insert_id($connect);
       } else {
         //if user in database, then return recieverID
         $userID = $user->id;
       }
 
-      //Now create new invite - (id, email, status, receiverID, eventID)
-      //NOTE: I had problems with newInvite function from dbquery.php, so copied and pasted it here
-      $newInvite_stmt = $connect->prepare("INSERT INTO Invite (receiverID, eventID, email)
-          VALUES (?, ?, ?)");
-      $newInvite_stmt ->bind_param("iis", $userID, $eventID, $emails[$i]);
-      if($newInvite_stmt ->execute()){
+      //Now create new invite - (id, status, receiverID, eventID)
+      $info['receiverID'] = $userID;
+      $info['eventID'] = $eventID;
+      $inviteID = newInvite($connect, $info);
+      if($inviteID){
         echo "Invite created";
       } else{
         echo "Error - invite not created";

@@ -37,7 +37,6 @@ FOREIGN KEY (`creatorID`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE C
 -- Invite Table: Track which users have been invited to an event 
 CREATE TABLE `Invite`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
-`email`  VARCHAR(255) NOT NULL,
 `status` ENUM('accepted','declined','no response') DEFAULT 'no response',
 `receiverID` INT(11) NOT NULL,
 `eventID` INT(11) NOT NULL,

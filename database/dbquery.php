@@ -424,9 +424,9 @@ function newSlot($conn, $info){
 //			receiverID, eventID, email
 // Output: database id of new invite if successful, else false
 function newInvite($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO Invite (receiverID, eventID, email)
-			VALUES (?, ?, ?)");
-	$stmt->bind_param("iis", $info['receiverID'], $info['eventID'], $info['email']);
+	$stmt = $conn->prepare("INSERT INTO Invite (receiverID, eventID)
+			VALUES (?, ?)");
+	$stmt->bind_param("ii", $info['receiverID'], $info['eventID']);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
 		return $conn->insert_id;
