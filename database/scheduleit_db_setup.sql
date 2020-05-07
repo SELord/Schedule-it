@@ -11,12 +11,12 @@ DROP TABLE IF EXISTS `User`;
 -- User Table: Hold information about users who are in the system
 CREATE TABLE `User`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
-`onidUID` VARCHAR(255) NOT NULL,
+`onidID` VARCHAR(255) NOT NULL,
 `firstName` VARCHAR(255),
 `lastName`  VARCHAR(255),
 `email`  VARCHAR(255),
 PRIMARY KEY (`id`),
-UNIQUE KEY (`onidUID`)
+UNIQUE KEY (`onidID`)
 ) ENGINE=InnoDB;
 
 -- Event Table: Store information about an event a user has created.
@@ -83,8 +83,8 @@ FOREIGN KEY (`slotID`) REFERENCES `Slot` (`id`) ON DELETE CASCADE ON UPDATE CASC
 -- AdminList Table: List of ONID usernames who are approved for administrative privileges 
 CREATE TABLE `AdminList`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
-`onidUID` VARCHAR(255) NOT NULL,
+`onidID` VARCHAR(255) NOT NULL,
 PRIMARY KEY (`id`),
-UNIQUE KEY (`onidUID`),
-FOREIGN KEY (`onidUID`) REFERENCES `User` (`onidUID`) ON DELETE CASCADE ON UPDATE CASCADE
+UNIQUE KEY (`onidID`),
+FOREIGN KEY (`onidID`) REFERENCES `User` (`onidID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;

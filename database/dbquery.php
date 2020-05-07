@@ -2,20 +2,20 @@
 //--------------------------------------------------------------------------------------------------
 // FUNCTION DOCUMENTATION
 //--------------------------------------------------------------------------------------------------
-// Function: lookupUser(conn, onidUID)
+// Function: lookupUser(conn, onidID)
 // Description: look up a users info based on OSU user name 
 // Input: 
 //		conn = MySQL database connection object 
-//		onidUID = string containing an ONID user name (example: 'smithj')
+//		onidID = string containing an ONID user name (example: 'smithj')
 // Output:  if user is found, then a 1D associative array containing their info, else NULL 
-// 		array keys: id, onidUID, firstName, lastName, email
+// 		array keys: id, onidID, firstName, lastName, email
 //--------------------------------------------------------------------------------------------------
 // Function: newUser(conn, info[])
 // Description: create a new user in the database
 // Input: 
 //		conn = MySQL database connection object 
 //		info = associative array containing the data for creating a new user using following keys:
-//			onidUID (OSU user name), firstName, lastName, email
+//			onidID (OSU user name), firstName, lastName, email
 // Output: database id of new user if successful, else false 
 //--------------------------------------------------------------------------------------------------
 // Function: newEvent(conn, info[])
@@ -93,7 +93,7 @@
 //		id = id of event on database 
 // Output: if any are found, then a 2D associative array containing user info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: firstName, lastName, onidUID, email
+//		2nd dim array keys: firstName, lastName, onidID, email
 //--------------------------------------------------------------------------------------------------
 // Function: usersDeclined(conn, $id)
 // Description: all users who have declined an event invite in ascending order by last name 
@@ -102,7 +102,7 @@
 //		id = id of event on database 
 // Output: if any are found, then a 2D associative array containing user info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: firstName, lastName, onidUID, email
+//		2nd dim array keys: firstName, lastName, onidID, email
 //--------------------------------------------------------------------------------------------------
 // Function: usersNoResponse(conn, $id)
 // Description: all users who have not responded to an event invite in ascending order by last name 
@@ -111,7 +111,7 @@
 //		id = id of event on database 
 // Output: if any are found, then a 2D associative array containing user info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: firstName, lastName, onidUID, email
+//		2nd dim array keys: firstName, lastName, onidID, email
 //--------------------------------------------------------------------------------------------------
 // Function: invitesUpcoming(conn, id)
 // Description: future events that user hasn't responded to in ascending order by event date 
@@ -147,11 +147,11 @@
 //		id = id of event on database
 // Output: if found a string representing the ending time of the event in format HH:MM:00, else NULL
 //--------------------------------------------------------------------------------------------------
-// Function: adminCheck(conn, onidUID)
+// Function: adminCheck(conn, onidID)
 // Description: check if a user is approved for admin access 
 // Input: 
 //		conn = MySQL database connection object 
-//		onidUID = string containing an ONID user name (example: 'smithj')
+//		onidID = string containing an ONID user name (example: 'smithj')
 // Output: true if approved, else false 
 //--------------------------------------------------------------------------------------------------
 // Function: inviteDetails(conn, id)
@@ -337,16 +337,16 @@
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
-// Function: lookupUser(conn, onidUID)
+// Function: lookupUser(conn, onidID)
 // Description: look up a users info based on OSU user name 
 // Input: 
 //		conn = MySQL database connection object 
-//		onidUID = string containing an ONID user name (example: 'smithj')
+//		onidID = string containing an ONID user name (example: 'smithj')
 // Output:  if user is found, then a 1D associative array containing their info, else NULL 
-// 		array keys: id, onidUID, firstName, lastName, email
-function lookupUser($conn, $onidUID){
-	$stmt = $conn->prepare("SELECT * FROM User WHERE onidUID=?");
-	$stmt->bind_param("s", $onidUID);
+// 		array keys: id, onidID, firstName, lastName, email
+function lookupUser($conn, $onidID){
+	$stmt = $conn->prepare("SELECT * FROM User WHERE onidID=?");
+	$stmt->bind_param("s", $onidID);
 	$stmt->execute();
 	
 	$result = $stmt->get_result();
@@ -368,11 +368,11 @@ function lookupUser($conn, $onidUID){
 // Input: 
 //		conn = MySQL database connection object 
 //		info = associative array containing the data for creating a new user using following keys:
-//			onidUID (OSU user name), firstName, lastName, email
+//			onidID (OSU user name), firstName, lastName, email
 // Output: database id of new user if successful, else false 
 function newUser($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO User (onidUID, firstName, lastName, email) VALUES (?, ?, ?, ?)");
-	$stmt->bind_param("ssss", $info['onidUID'], $info['firstName'], $info['lastName'], $info['email']);
+	$stmt = $conn->prepare("INSERT INTO User (onidID, firstName, lastName, email) VALUES (?, ?, ?, ?)");
+	$stmt->bind_param("ssss", $info['onidID'], $info['firstName'], $info['lastName'], $info['email']);
 	$stmt->execute();
 }
 //--------------------------------------------------------------------------------------------------
@@ -579,9 +579,9 @@ function reservedSlotHist($conn, $id){
 //		id = id of event on database 
 // Output: if any are found, then a 2D associative array containing user info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: firstName, lastName, onidUID, email
+//		2nd dim array keys: firstName, lastName, onidID, email
 function usersAccepted($conn, $id){
-	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidUID, U.email FROM Reservation R
+	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM Reservation R
 			INNER JOIN Invite I ON R.inviteID = I.id 
 			INNER JOIN User U ON I.receiverID = U.id 
 			WHERE I.eventID = ?
@@ -603,9 +603,9 @@ function usersAccepted($conn, $id){
 //		id = id of event on database 
 // Output: if any are found, then a 2D associative array containing user info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: firstName, lastName, onidUID, email
+//		2nd dim array keys: firstName, lastName, onidID, email
 function usersDeclined($conn, $id){
-	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidUID, U.email FROM Invite I
+	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM Invite I
 			INNER JOIN User U ON I.receiverID = U.id 
 			WHERE I.status = 'declined' AND I.eventID = ?
 			ORDER BY U.lastName ASC");
@@ -626,9 +626,9 @@ function usersDeclined($conn, $id){
 //		id = id of event on database 
 // Output: if any are found, then a 2D associative array containing user info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: firstName, lastName, onidUID, email
+//		2nd dim array keys: firstName, lastName, onidID, email
 function usersNoResponse($conn, $id){
-	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidUID, U.email FROM Invite I
+	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM Invite I
 			INNER JOIN User U ON I.receiverID = U.id 
 			WHERE I.status = 'no response' AND I.eventID = ?
 			ORDER BY U.lastName ASC");
@@ -734,19 +734,19 @@ function eventEndTime($conn, $id){
 	}
 }
 //--------------------------------------------------------------------------------------------------
-// Function: adminCheck(conn, onidUID)
+// Function: adminCheck(conn, onidID)
 // Description: check if a user is approved for admin access 
 // Input: 
 //		conn = MySQL database connection object 
-//		onidUID = string containing an ONID user name (example: 'smithj')
+//		onidID = string containing an ONID user name (example: 'smithj')
 // Output: true if approved, else false 
-function adminCheck($conn, $onidUID){
-	$stmt = $conn->prepare("SELECT * FROM AdminList WHERE onidUID = ?;");
-	$stmt->bind_param("s", $onidUID);
+function adminCheck($conn, $onidID){
+	$stmt = $conn->prepare("SELECT * FROM AdminList WHERE onidID = ?;");
+	$stmt->bind_param("s", $onidID);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
 		$data = $result->fetch_all(MYSQLI_ASSOC);
-		if ($onidUID == $data[0]['onidUID']){
+		if ($onidID == $data[0]['onidID']){
 			return true;
 		}
 		else{
@@ -910,7 +910,7 @@ function slotDetails($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: id, text, fileName, timeStamp, userID, firstName, lastName
 function slotPosts($conn, $id){
-	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName, U.onidUID, P.slotID FROM Slot S
+	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName, U.onidID, P.slotID FROM Slot S
 			INNER JOIN Post P ON S.id = P.slotID 
 			INNER JOIN User U ON P.senderID = U.id 
 			WHERE S.id = ?

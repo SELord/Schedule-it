@@ -68,19 +68,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["ticket"]) {
          //var_dump($data);
         // check if user exists, if null, create new user
         if($data == null) {
-          // This should call newUser($conn, $info) but had problems inserting in database 
-          $stmt = $mysqli->prepare("INSERT INTO User (onidUID, firstName, lastName, email) VALUES (?, ?, ?, ?)");
-          $stmt->bind_param("ssss", $_SESSION["onidID"], $_SESSION["firstName"], $_SESSION["lastName"], $_SESSION["email"]);
-          $stmt->execute();
+          $userID = newUser($connect, $_SESSION);
         } else {
           $user = json_decode($data);
 
-          //If invite is sent, but firstName/LastName is NULL 
-          if($user->firstName == null || $user->lastName == null) {
+          //If invite is sent, but firstName/LastName/email is NULL 
+          if($user->firstName == null || $user->lastName == null || $user->email == null) {
             $newUser_stmt = $mysqli->prepare("UPDATE User 
-                SET firstName = ?, lastName = ?
-                WHERE onidUID = ?");
-            $newUser_stmt->bind_param("sss", $_SESSION['firstName'], $_SESSION['lastName'], $_SESSION['onidID']);
+                SET firstName = ?, lastName = ?, email = ?
+                WHERE onidID = ?");
+            $newUser_stmt->bind_param("sss", $_SESSION['firstName'], $_SESSION['lastName'], $_SESSION['email'], $_SESSION['onidID']);
             $newUser_stmt->execute();
           }
         }
