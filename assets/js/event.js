@@ -1,3 +1,6 @@
+// Global variable for use in defining the file path in various call in this file
+const urlPrefix = "http://web.engr.oregonstate.edu/~ohsa/Schedule-it/";
+
 //Get today's date
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, '0');
