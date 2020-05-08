@@ -31,7 +31,7 @@ require '../../assets/php/emailer.php';  // email functions
     //put into array
     for($i = 0; $i < count($emails); $i++) {  
 
-      //parse email to onidUID 
+      //parse email to onidID 
       list($onidID, $edu) = explode('@', $emails[$i]);
 
       //create new user w/ null firstName and lastName values
