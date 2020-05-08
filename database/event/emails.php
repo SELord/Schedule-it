@@ -26,22 +26,25 @@ require '../../assets/php/emailer.php';  // email functions
     //get eventID, creatorID and list of emails from event.js
     $eventID = $_POST['id'];
     $creatorID = $_POST['creatorID'];
-    $onidID = $_POST['emails']; //this is the array object that holds ONIDs
+    $emails = $_POST['emails']; //this is the array object that holds emails
 
     //put into array
-    for($i = 0; $i < count($onidID); $i++) {  
+    for($i = 0; $i < count($emails); $i++) {  
 
-      //create new user with only ONID
-      $data = lookupUser($connect, $onidID[$i]);
+      //parse email to onidUID 
+      list($onidID, $edu) = explode('@', $emails[$i]);
+
+      //create new user w/ null firstName and lastName values
+      $data = lookupUser($connect, $onidID);
       $user = json_decode($data);
 
       // check if user exists, if null, create new user
       if($data == null) {
         //create a new user if user does not exists
-        $userInfo['onidID'] = $onidID[$i];
+        $userInfo['onidID'] = $onidID;
         $userInfo['firstName'] = "";
         $userInfo['lastName'] = "";
-        $userInfo['email'] = "";
+        $userInfo['email'] = $emails[$i];
         $userID = newUser($connect, $userInfo);
 
       } else {

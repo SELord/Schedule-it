@@ -350,7 +350,7 @@ function generateGrid() {
     $('#add').click(function(){  
         i++;  
         //$('#dynamic_field').append('<tr id="row'+i+'"><td><input type="email" name="name[]" placeholder="Enter your email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
-        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter ONID" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
     });  
 
     $(document).on('click', '.btn_remove', function(){  
@@ -374,17 +374,14 @@ function generateGrid() {
             emails: []
         };
         var nameList = $("#dynamic_field .name_list");
-        //for(nameListindex = 0; nameListindex < nameList.length; nameListindex++) {
-        //    if(validateEmail(nameList[nameListindex].value) == false) {
-        //        alert("Error!! " + nameList[nameListindex].value + " is NOT a valid '@oregonstate.edu' email address");
-        //        return false;
-        //    } else {
-        //        jsonPayload.emails.push(nameList[nameListindex].value);
-        //    }
-		//};
-        for(var nameListindex = 0; nameListindex < nameList.length; nameListindex++) {
-            jsonPayload.emails.push((nameList[nameListindex].value).split("@", 1)[0]);
-        }
+        for(nameListindex = 0; nameListindex < nameList.length; nameListindex++) {
+            if(validateEmail(nameList[nameListindex].value) == false) {
+                alert("Error!! " + nameList[nameListindex].value + " is NOT a valid '@oregonstate.edu' email address");
+                return false;
+            } else {
+                jsonPayload.emails.push(nameList[nameListindex].value);
+            }
+		};
         console.log(jsonPayload);
         $.ajax({
             url:"../Schedule-it/database/event/emails.php",
