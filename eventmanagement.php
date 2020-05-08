@@ -23,13 +23,25 @@
 	
 	// get userID from session 
     //Find userID based off of onid
-     $data = lookupUser($mysqli, $_SESSION["onidID"]);
-     $user = json_decode($data);
+    $data = lookupUser($mysqli, $_SESSION["onidID"]);
+    $user = json_decode($data);
 	
 	// get past events, invites, and reservations from database 
+    $events = eventCreateHist($mysqli, $user->id);
 	$invites = inviteHist($mysqli, $user->id);
 	$reservations = reservedSlotHist($mysqli, $user->id);
 	
+    // process events to build an array for fullcalendar.io
+    $pastEvents = array();
+    for($i = 0; $i < count($events); $i++){
+        $tmp = array();
+        $tmp['id'] = $events[$i]['id'];
+        $tmp['title'] = $events[$i]['title'];
+        $tmp['start'] = $events[$i]['dateStartTime'];
+        $tmp['end'] = substr($events[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $events[$i]['id']);
+        $pastEvents[$i] = $tmp;
+    }
+
 	// process invites to build an array for fullcalendar.io
 	$pastInvites = array();
 	for($i = 0; $i < count($invites); $i++){
@@ -79,7 +91,7 @@
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/view_history.js"></script>
+  <script src="./assets/js/manage_events.js"></script>
   
 
 
