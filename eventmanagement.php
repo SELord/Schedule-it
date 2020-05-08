@@ -26,10 +26,8 @@
     $data = lookupUser($mysqli, $_SESSION["onidID"]);
     $user = json_decode($data);
 	
-	// get past events, invites, and reservations from database 
+	// get past events from database 
     $events = eventCreateHist($mysqli, $user->id);
-	$invites = inviteHist($mysqli, $user->id);
-	$reservations = reservedSlotHist($mysqli, $user->id);
 	
     // process events to build an array for fullcalendar.io
     $pastEvents = array();
@@ -39,37 +37,13 @@
         $tmp['title'] = $events[$i]['title'];
         $tmp['start'] = $events[$i]['dateStartTime'];
         $tmp['end'] = substr($events[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $events[$i]['id']);
+        $tmp['url'] = './view_event.php?slot=' . $events[$i]['id'];
         $pastEvents[$i] = $tmp;
     }
-
-	// process invites to build an array for fullcalendar.io
-	$pastInvites = array();
-	for($i = 0; $i < count($invites); $i++){
-		$tmp = array();
-		$tmp['id'] = $invites[$i]['inviteID'];
-		$tmp['title'] = $invites[$i]['title'] . " (" . $invites[$i]['status'] . ")";
-		$tmp['start'] = $invites[$i]['dateStartTime'];
-		$tmp['end'] = substr($invites[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $invites[$i]['eventID']);
-		$pastInvites[$i] = $tmp;
-	}
-	
-	// process reservations to build an array for fullcalendar.io
-	$pastReservations = array();
-	for($i = 0; $i < count($reservations); $i++){
-		$tmp = array();
-		$tmp['id'] = $reservations[$i]['slotID'];
-		$tmp['title'] = $reservations[$i]['title'] . ", Location: " . $reservations[$i]['location'];
-		$tmp['start'] = substr($reservations[$i]['dateStartTime'],0,10) . 'T' . $reservations[$i]['startTime'];
-		$tmp['end'] = substr($reservations[$i]['dateStartTime'],0,10) . 'T' . $reservations[$i]['endTime'];
-		$tmp['url'] = './view_reservation.php?slot=' . $reservations[$i]['slotID'];
-		$pastReservations[$i] = $tmp;
-	}
-	
 	
 	// send to javascript on client
 	echo "<script>\n";
-	echo "var pastInvites = " . json_encode($pastInvites) . ";\n";
-	echo "var pastReservations = " . json_encode($pastReservations) . ";\n";
+    echo "let pastEvents = " . json_encode($pastEvents) . ";\n";
 	echo "</script>";
 
 
@@ -144,15 +118,6 @@
         </header>
     </div><p>
 	
-	<!-- buttons to switch between past events created by user and slots reserved by user -->
-	<div class="container-fluid">
-	    <div class="row">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
-			<div class="col-sm-3"></div>
-		</div>
-	</div>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-2"></div>
