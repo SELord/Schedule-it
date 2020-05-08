@@ -34,6 +34,14 @@
 //			startTime (HH:MM), duration (HH:MM), location, RSVPlim, eventID
 // Output:  database id of new time slot if successful, else false
 //--------------------------------------------------------------------------------------------------
+// Function: lookupInvite(conn, receiverID, eventID)
+// Description: lookup invite from receiverID and eventID
+// Input: 
+//		conn = MySQL database connection object 
+//		recevierID = receiver ID from db
+//		eventID = event ID from db
+// Output: database id of invite if found, else false
+//--------------------------------------------------------------------------------------------------
 // Function: newInvite(conn, info[])
 // Description: create a new invite for an event in the database
 // Input: 
@@ -422,6 +430,32 @@ function newSlot($conn, $info){
 	}
 }
 //--------------------------------------------------------------------------------------------------
+// Function: lookupInvite(conn, receiverID, eventID)
+// Description: lookup invite from receiverID and eventID
+// Input: 
+//		conn = MySQL database connection object 
+//		recevierID = receiver ID from db
+//		eventID = event ID from db
+// Output: database id of invite if found, else false
+function lookupInvite($conn, $receiverID, $eventID){
+	$stmt = $conn->prepare("SELECT * FROM Invite
+			WHERE receiverID = ? AND eventID = ?");
+	$stmt->bind_param("ii", $receiverID, $eventID);
+	$stmt->execute();
+	
+	$result = $stmt->get_result();
+	
+	if ($result->num_rows == 1){
+		$data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+		// fetch_all returns multi dimension array, but only need 1st row here 
+		return json_encode($data[0]);
+	}
+	else{
+		return false;
+	}
+}
+
+//--------------------------------------------------------------------------------------------------
 // Function: newInvite(conn, info[])
 // Description: create a new invite for an event in the database
 // Input: 
@@ -429,10 +463,10 @@ function newSlot($conn, $info){
 //		info = associative array containing the data for creating a new invite using following keys:
 //			receiverID, eventID, email
 // Output: database id of new invite if successful, else false
-function newInvite($conn, $info){
+function newInvite($conn, $receiverID, $eventID){
 	$stmt = $conn->prepare("INSERT INTO Invite (receiverID, eventID)
 			VALUES (?, ?)");
-	$stmt->bind_param("ii", $info['receiverID'], $info['eventID']);
+	$stmt->bind_param("ii", $receiverID, $eventID);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
 		return $conn->insert_id;
@@ -1057,6 +1091,27 @@ function slotAttendees($conn, $id){
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
 		return $result->fetch_all(MYSQLI_ASSOC);
+	}
+	else{
+		return NULL;
+	}
+}
+//--------------------------------------------------------------------------------------------------
+// Function: getEventEmails(conn, id)
+// Description: emails of the users invited in the event
+// Input: 
+//		conn = MySQL database connection object 
+//		id = id of event in db 
+// Output: if any are found, then a 2D associative array containing attendees' emails
+function getEventEmails($conn, $id){
+	$stmt = $conn->prepare("SELECT I.id, U.email, E.title FROM Event E
+			INNER JOIN Invite I ON E.id = I.eventID
+			INNER JOIN User U ON I.receiverID = U.id
+			WHERE E.id = ?");
+	$stmt->bind_param("i", $id);
+	if ($stmt->execute()){
+		$result = $stmt->get_result();
+		return ($result->fetch_all(MYSQLI_ASSOC));
 	}
 	else{
 		return NULL;

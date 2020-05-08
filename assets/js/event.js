@@ -366,7 +366,6 @@ function generateGrid() {
     //Get email from form, validate it, and send using emails.php file
     $('#submitEmail').on('click',function(){     
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
-        console.log(id);
         var event = calendar.getEventById(id);
         var creatorID = $('#creatorID').val();    
         var jsonPayload = {
@@ -375,7 +374,6 @@ function generateGrid() {
             emails: []
         };
         var nameList = $("#dynamic_field .name_list");
-        console.log(nameList);
         //for(nameListindex = 0; nameListindex < nameList.length; nameListindex++) {
         //    if(validateEmail(nameList[nameListindex].value) == false) {
         //        alert("Error!! " + nameList[nameListindex].value + " is NOT a valid '@oregonstate.edu' email address");

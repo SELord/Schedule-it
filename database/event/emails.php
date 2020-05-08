@@ -20,7 +20,7 @@ require '../../assets/php/emailer.php';  // email functions
         echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
         exit; 
     } else {
-        echo "Connected to database - success";
+        echo "Connected to database - success\n";
     }
 
     //get eventID, creatorID and list of emails from event.js
@@ -28,39 +28,39 @@ require '../../assets/php/emailer.php';  // email functions
     $creatorID = $_POST['creatorID'];
     $onidID = $_POST['emails']; //this is the array object that holds ONIDs
 
-
     //put into array
     for($i = 0; $i < count($onidID); $i++) {  
 
       //create new user with only ONID
-      $data = lookupUser($connect, $onidID);
-      var_dump($data);
+      $data = lookupUser($connect, $onidID[$i]);
       $user = json_decode($data);
 
       // check if user exists, if null, create new user
       if($data == null) {
         //create a new user if user does not exists
-        $info['onidID'] = $onidID[$i];
-        $info['firstName'] = "";
-        $info['lastName'] = "";
-        $info['email'] = "";
-        $userID = newUser($connect, $info);
+        $userInfo['onidID'] = $onidID[$i];
+        $userInfo['firstName'] = "";
+        $userInfo['lastName'] = "";
+        $userInfo['email'] = "";
+        $userID = newUser($connect, $userInfo);
 
       } else {
         //if user in database, then return recieverID
         $userID = $user->id;
       }
 
-      //Now create new invite - (id, status, receiverID, eventID)
-      $info['receiverID'] = $userID;
-      $info['eventID'] = $eventID;
-      $inviteID = newInvite($connect, $info);
-      if($inviteID){
-        echo "Invite created";
-      } else{
-        echo "Error - invite not created";
-        exit;
+      //Now create new invite, if it does not already exist
+      if (!lookupInvite($connect, $userID, $eventID)){
+        if(newInvite($connect, $userID, $eventID)){
+          echo "Invite created for ";
+        } else{
+          echo "Error - invite not created for ";
+          exit;
+        }
+      } else {
+        echo "Invite already exists for ";
       }
+      echo "userID " . $userID . "\n";
     }
   
   // send out emails for new event invites
