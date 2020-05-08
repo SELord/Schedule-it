@@ -65,20 +65,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["ticket"]) {
       } else {
         //Find userID based off of onid
          $data = lookupUser($mysqli, $_SESSION["onidID"]);
-         //var_dump($data);
-        // check if user exists, if null, create new user
+
+         // check if user exists, if null, create new user
         if($data == null) {
-          $userID = newUser($connect, $_SESSION);
+          $userID = newUser($mysqli, $_SESSION);
         } else {
           $user = json_decode($data);
 
           //If invite is sent, but firstName/LastName/email is NULL 
           if($user->firstName == null || $user->lastName == null || $user->email == null) {
-            $newUser_stmt = $mysqli->prepare("UPDATE User 
-                SET firstName = ?, lastName = ?, email = ?
-                WHERE onidID = ?");
-            $newUser_stmt->bind_param("sss", $_SESSION['firstName'], $_SESSION['lastName'], $_SESSION['email'], $_SESSION['onidID']);
-            $newUser_stmt->execute();
+            userUpdate($mysqli, $user->id, $_SESSION);
           }
         }
         header("Location: " . $FILE_PATH . "homepage.php");

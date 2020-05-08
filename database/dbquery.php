@@ -373,7 +373,13 @@ function lookupUser($conn, $onidID){
 function newUser($conn, $info){
 	$stmt = $conn->prepare("INSERT INTO User (onidID, firstName, lastName, email) VALUES (?, ?, ?, ?)");
 	$stmt->bind_param("ssss", $info['onidID'], $info['firstName'], $info['lastName'], $info['email']);
-	$stmt->execute();
+	if ($stmt->execute()){
+		// execute() returns true on success, false on failure
+		return $conn->insert_id;
+	}
+	else{
+		return false;
+	}
 }
 //--------------------------------------------------------------------------------------------------
 // Function: newEvent(conn, info[])
