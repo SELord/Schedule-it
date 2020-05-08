@@ -26,7 +26,7 @@
 		session_start();
 		$_SESSION["loggedin"] = TRUE;
 		$_SESSION["userID"] = $user->id;
-		$_SESSION["onidID"] = $user->onidUID;
+		$_SESSION["onidID"] = $user->onidID;
 		$_SESSION["firstName"] = $user->firstName;
 		$_SESSION["lastName"] = $user->lastName;
 		$_SESSION["email"] = $user->email;

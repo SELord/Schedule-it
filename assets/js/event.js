@@ -349,7 +349,8 @@ function generateGrid() {
     var i=1;  
     $('#add').click(function(){  
         i++;  
-        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="email" name="name[]" placeholder="Enter your email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+        //$('#dynamic_field').append('<tr id="row'+i+'"><td><input type="email" name="name[]" placeholder="Enter your email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
     });  
 
     $(document).on('click', '.btn_remove', function(){  
@@ -365,7 +366,6 @@ function generateGrid() {
     //Get email from form, validate it, and send using emails.php file
     $('#submitEmail').on('click',function(){     
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
-        console.log(id);
         var event = calendar.getEventById(id);
         var creatorID = $('#creatorID').val();    
         var jsonPayload = {
@@ -382,7 +382,7 @@ function generateGrid() {
             } else {
                 jsonPayload.emails.push(nameList[nameListindex].value);
             }
-        };     
+        };
         console.log(jsonPayload);
         $.ajax({
             url:"../Schedule-it/database/event/emails.php",
