@@ -398,9 +398,9 @@ function newUser($conn, $info){
 //			title, description, dateStartTime (YYYY-MM-DD HH:MM), RSVPslotLim, creatorID
 // Output: database id of new event if successful, else false
 function newEvent($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO Event (title, description, dateStartTime, RSVPslotLim, creatorID)
+	$stmt = $conn->prepare("INSERT INTO Event (title, description, dateStart, dateEnd, creatorID)
 			VALUES (?, ?, ?, ?, ?)");
-	$stmt->bind_param("sssii", $info['title'], $info['description'], $info['dateStartTime'], $info['RSVPslotLim'], $info['creatorID']);
+	$stmt->bind_param("ssssi", $info['title'], $info['description'], $info['dateStart'], $info['dateEnd'], $info['creatorID']);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
 		return $conn->insert_id;
@@ -550,7 +550,7 @@ function newReservation($conn, $info){
 function eventCreateHist($conn, $id){
 	$stmt = $conn->prepare("SELECT * FROM Event 
 			WHERE creatorID=?
-			ORDER BY dateStartTime ASC");
+			ORDER BY dateStart ASC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -570,11 +570,11 @@ function eventCreateHist($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys:  eventID, inviteID, title, description, dateStartTime, firstName (of creator), lastName (of creator), status
 function inviteHist($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.description, E.dateStartTime, U.firstName, U.lastName, I.status FROM Event E 
+	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.description, E.dateStart, E.dateEnd, U.firstName, U.lastName, I.status FROM Event E 
 			INNER JOIN Invite I ON E.id = I.eventID 
 			INNER JOIN User U ON E.creatorID = U.id 
 			WHERE I.receiverID = ?
-			ORDER BY E.dateStartTime ASC");
+			ORDER BY E.dateStart ASC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -595,13 +595,13 @@ function inviteHist($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
 function reservedSlotHist($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStartTime, S.startTime, S.duration, S.location, ADDTIME(S.startTime, S.duration) AS endTime FROM Slot S 
+	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startTime, S.duration, S.location, ADDTIME(S.startTime, S.duration) AS endTime FROM Slot S 
 			INNER JOIN Reservation R ON S.id = R.slotID 
 			INNER JOIN Invite I ON R.inviteID = I.id
 			INNER JOIN User U ON I.receiverID = U.id 
 			INNER JOIN Event E ON I.eventID = E.id 
 			WHERE U.id = ?
-			ORDER BY E.dateStartTime ASC");
+			ORDER BY E.dateStart ASC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -691,11 +691,11 @@ function usersNoResponse($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: eventID, inviteID, title, dateStartTime, firstName, lastName
 function invitesUpcoming($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.dateStartTime, U.firstName, U.lastName FROM Invite I 
+	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.dateStart, E.dateEnd, U.firstName, U.lastName FROM Invite I 
 			INNER JOIN Event E ON I.eventID = E.id 
 			INNER JOIN User U ON E.creatorID = U.id 
-			WHERE I.status = 'no response' AND E.dateStartTime >= NOW() AND I.receiverID = ?
-			ORDER BY E.dateStartTime ASC");
+			WHERE I.status = 'no response' AND E.dateStart >= NOW() AND I.receiverID = ?
+			ORDER BY E.dateStart ASC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -1126,11 +1126,11 @@ function getEventEmails($conn, $id){
 //		info = associative array containing the updated data using following keys:
 //				title, description, dateStartTime (YYYY-MM-DD HH:MM), RSVPslotLim
 // Output: true if successful, false if update failed 
-function eventUpdate($conn, $id, $info){
+function eventUpdate($conn, $info){
 	$stmt = $conn->prepare("UPDATE Event 
-			SET title = ?, description = ?, dateStartTime = ?, RSVPslotLim = ?
+			SET title = ?, description = ?, dateStart = ?, dateEnd = ?
 			WHERE id = ?");
-	$stmt->bind_param("sssii", $info['title'], $info['description'], $info['dateStartTime'], $info['RSVPslotLim'], $id);
+	$stmt->bind_param("ssssi", $info['title'], $info['description'], $info['dateStart'], $info['dateEnd'],  $info['id']);
 	return $stmt->execute();
 }
 //--------------------------------------------------------------------------------------------------

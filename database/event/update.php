@@ -1,12 +1,13 @@
 <?php
 //UPDATE EVENT ON EVENT-RESIZE WEEKLY VIEW AND ON MONTH VIEW
 require_once '../dbconfig.php';
+require_once '../dbquery.php';
 
 if(isset($_POST["id"]))
 {
-  $start = $_POST['start'];
-  $end = $_POST['end'];
-  $id = $_POST['id'];
+  //$dateStart = $_POST['dateStart'];
+  //$dateEnd = $_POST['dateEnd'];
+  //$id = $_POST['id'];
 
   $connect = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $dbuser, $dbpass);
   if(!$connect) {
@@ -14,6 +15,7 @@ if(isset($_POST["id"]))
     }
     var_dump($connect);
 
+/*
   //Convert times to epoch time
   $epochStart = date("U", strtotime($start));
   $epochEnd = date("U", strtotime($end));
@@ -40,6 +42,9 @@ if(isset($_POST["id"]))
 //echo $query;
 $statement = $connect->prepare($query);
 $statement->execute();
+*/
+
+eventUpdate($connect, $_POST);
 
 //Calculate new duration based off of #of slots
 $numSlots = $connect->query("SELECT count(*) AS slots FROM Slot WHERE eventID='".$id."'");
