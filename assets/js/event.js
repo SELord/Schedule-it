@@ -374,6 +374,7 @@ function generateGrid() {
             emails: []
         };
         var nameList = $("#dynamic_field .name_list");
+        var nameListindex = 0;
         for(nameListindex = 0; nameListindex < nameList.length; nameListindex++) {
             if(validateEmail(nameList[nameListindex].value) == false) {
                 alert("Error!! " + nameList[nameListindex].value + " is NOT a valid '@oregonstate.edu' email address");
@@ -381,7 +382,7 @@ function generateGrid() {
             } else {
                 jsonPayload.emails.push(nameList[nameListindex].value);
             }
-		};
+        };
         console.log(jsonPayload);
         $.ajax({
             url:"../Schedule-it/database/event/emails.php",
