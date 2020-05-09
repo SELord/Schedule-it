@@ -28,44 +28,28 @@
 	// get userID from session 
 	$userID = $user->id;   
 
+	// extract eventID from request
+	$eventID = $_GET['event'];
 
-	// extract slotID from request
-	$slotID = $_GET['slot'];
-	$inviteID = $_GET['inviteID'];
-
-	// TODO: check that user who is logged in has a reservation for this slot and only display info if they do 
-
-	// get slot info from database
-	// Output: if slot is found, then a 1D associative array containing the info, else NULL 
-	// 		array keys: id, startTime, duration, location, RSVPlim, eventID, endTime
-
-	//BUG: Could not get "slotDetails" to work - redo function slotDetails_elaine
-	$slotInfo = slotDetails($mysqli, $slotID);
-	
 	// query database for event info
-	$eventInfo = eventDetails($mysqli, $slotInfo['eventID']);
+	$eventInfo = eventDetails($mysqli, $eventID);
 	$eventDate = substr($eventInfo['dateStartTime'], 0, 10);
 	$eventInfo['date'] = $eventDate;
 	
 
-	
-	// get reservation count from database
-	$RSVPcnt = slotRSVPCount($mysqli, $slotID);
-	$remainingRes = $slotInfo['RSVPlim'] - $RSVPcnt;
-	$slotInfo['remainingRes'] = $remainingRes;
-	
-	// get posts to slot from database 
-	$posts = slotPosts($mysqli, $slotID);
+	// get posts to slot from database
+    // Commented out due to thought needed on how to display this data at the event level
+	//$posts = slotPosts($mysqli, $slotID);
 	
 	// get list of attendees who have reserved the same slot 
-	$attendees = slotAttendees($mysqli, $slotID);
+	//$attendees = slotAttendees($mysqli, $slotID);
 
 	// send to javascript on client
 	echo "<script>\n";
-	echo "var eventDetails = " . json_encode($eventInfo) . ";\n";
-	echo "var slotDetails = " . json_encode($slotInfo) . ";\n";
-	echo "var posts = " . json_encode($posts) . ";\n";
-	echo "var attendees = " . json_encode($attendees) . ";\n";
+	echo "let eventDetails = " . json_encode($eventInfo) . ";\n";
+	//echo "var slotDetails = " . json_encode($slotInfo) . ";\n";
+	//echo "var posts = " . json_encode($posts) . ";\n";
+	//echo "var attendees = " . json_encode($attendees) . ";\n";
 	echo "</script>";
 
 	$mysqli->close();
@@ -85,7 +69,7 @@
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/view_reservation.js"></script>
+  <script src="./assets/js/manage_event.js"></script>
 
 
   <!--fullcalendar-->
@@ -152,24 +136,24 @@
 		<div class="row">
 			<div class="col-sm-4"><h5 class="text-left" id="startTime"></h5></div>
 			<div class="col-sm-4"><h5 class="text-center" id="endTime"></h5></div>
-			<div class="col-sm-4"><h5 class="text-right" id="location"></h5></div>
+			<!-- <div class="col-sm-4"><h5 class="text-right" id="location"></h5></div> -->
 		</div>
 		<div class="row">
 			<div class="col-sm-8"><p id="eventDesc"></p></div>
 			<div class="col-sm-4">
-				<a class="btn btn-block" href=<?php echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a>
+			<!--	<a class="btn btn-block" href=<?php // echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a> -->
 			</div>
 		</div>
-		<div class="row">
+	<!--	<div class="row">
 			<div class="col-sm-6"><h6 class="text-left" id="remainingRes"></h6></div>
 			<div class="col-sm-2"></div>
 			<div class="col-sm-4"><button type="button" class="btn btn-block" data-toggle="modal"
 			data-target="#attendeeListModal">Attendee List</button></div>
-		</div>
+		</div> -->
 	</div>
 	
 	<!-- Modal for Attendee List to display who is attending the event -->
-	<div id="attendeeListModal" class="modal fade" role="dialog">
+<!--	<div id="attendeeListModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -185,7 +169,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>  -->
 
 
 	<!-- Posts -->

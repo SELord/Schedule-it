@@ -1,4 +1,4 @@
-// java script for user's event history page
+// javascript for event management page
 function createdEventHist() {
 	let mostRecent = pastEvents[pastEvents.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
     let calendarE1 = document.getElementById('content');
@@ -29,11 +29,23 @@ function createdEventHist() {
 }
 
 
+function eventInfo(){
+    document.getElementById("eventTitle").textContent = eventDetails.title;
+    document.getElementById("eventDesc").textContent = eventDetails.description;
+    document.getElementById("eventDate").textContent = eventDetails.date;
+    document.getElementById("startTime").textContent = 'Start: ' + eventDetails.dateStartTime;
+    document.getElementById("endTime").textContent = 'End: ' + eventDetails.dateEndTime;
+    //document.getElementById("location").textContent = 'Location: ' + slotDetails.location;
+    //document.getElementById("remainingRes").textContent = 'Available Reservations: ' + slotDetails.remainingRes;
+}
+
+
 function showEventHist(event){
 	event.stopPropagation();
 	document.getElementById("viewTitle").innerHTML = 'All Events You Created';
 	document.getElementById("content").innerHTML = "";
 	createdEventHist();
 }
+
 
 document.addEventListener('DOMContentLoaded', showEventHist);

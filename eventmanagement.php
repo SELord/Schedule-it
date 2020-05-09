@@ -35,9 +35,12 @@
         $tmp = array();
         $tmp['id'] = $events[$i]['id'];
         $tmp['title'] = $events[$i]['title'];
+        $tmp['description'] = $events[$i]['description'];
         $tmp['start'] = $events[$i]['dateStartTime'];
-        $tmp['end'] = substr($events[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $events[$i]['id']);
-        $tmp['url'] = './view_event.php?slot=' . $events[$i]['id'];
+        $tmp['end'] = $events[$i]['dateEndTime'];
+        $tmp['duration'] = $events[$i]['duration'];
+        $tmp['max_rsvp'] = $events[$i]['RSVPslotLim'];
+        $tmp['url'] = './view_event.php?event=' . $events[$i]['id'];
         $pastEvents[$i] = $tmp;
     }
 	
@@ -65,7 +68,7 @@
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/manage_events.js"></script>
+  <script src="./assets/js/manage_events_main.js"></script>
   
 
 
