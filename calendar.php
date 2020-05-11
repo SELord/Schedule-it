@@ -1,6 +1,5 @@
 <?php
     include 'file_path.php';
-
     session_start();
     //check once again if the user is logged in
     //if not, redirect back to login page
@@ -53,7 +52,7 @@
         $eventItem["id"] = $slotID;
         $eventItem["eventID"] = $res["eventID"];
         $eventItem["title"] = $res["title"];
-        $date = explode(" ", $res["dateStartTime"])[0];
+        $date = $res["dateStart"];
         $eventItem["start"] = $date."T".$res["startTime"];
         $eventItem["end"] = $date."T".$res["endTime"];
         $eventItem["url"] = "view_reservation?slot=$slotID&inviteID=$inviteID";
@@ -202,7 +201,7 @@
                     $eventID = $event["eventID"];
                     $inviteID = $event["inviteID"];
                     $eventTitle = $event["title"];
-                    $eventStartDate = explode(" ", $event["dateStartTime"])[0];
+                    $eventStartDate = $event["dateStart"];
                     $upcomingEvents = $eventStartDate;
                     $eventCreator = $event["firstName"]." ".$event["lastName"];
                     $li = "<a href=\"make_reservation?invite=$inviteID\" class=\"list-group-item list-group-item-action\" id=inviteID>Please RSVP to $eventTitle, starting on $eventStartDate, created by $eventCreator</a>";
@@ -228,7 +227,7 @@
 <form>
   <fieldset>
       <input type="hidden" id="date" name="date">
-      <label for="title">Meeting title: </label>
+      <label for="title">Event title: </label>
       <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" required>
 
       <label for="description">Description: </label>
@@ -237,12 +236,12 @@
       <label for="location">Location:  </label>
       <input type="text" name="location" id="location" class="text ui-widget-content ui-corner-all">  
 
-      <label for="dateStartTime">Start Time: </label>
-          <input type="time" name="dateStartTime" id="dateStartTime" class="text ui-widget-content ui-corner-all" required>
+      <label for="dateStart">Start Date: </label>
+          <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
 
-      <label for="duration">Duration: <small><i>HH:mm format only</i></small></label>
-          <input type="text" name="duration" id="duration" class="text ui-widget-content ui-corner-all" required>
-
+      <label for="dateEnd">End Date: </label>
+          <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
+<!--
       <label for="slots">How many time slots? </label>
           <input type="number" name="slots" id="slots" class="text ui-widget-content ui-corner-all" min="1">
 
@@ -251,7 +250,7 @@
 
       <label for="RSVPslotLim">Max Reservations per attendee: </label>
           <input type="number" name="RSVPslotLim" id="RSVPslotLim" class="text ui-widget-content ui-corner-all" min="0">  
-
+-->
       <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
@@ -290,15 +289,18 @@
       <label for="descriptionedit">Event Description: </label>
       <input type="text" name="descriptionedit" id="descriptionedit" class="text ui-widget-content ui-corner-all">
 
-      <label for="dateStartTimeedit">Event Start Time: </label>
-          <input type="time" name="dateStartTimeedit" id="dateStartTimeedit" class="text ui-widget-content ui-corner-all">
+      <label for="dateStartEdit">Event Start Date: </label>
+          <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
 
+      <label for="dateEndEdit">Event End Date: </label>
+          <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
+<!--
       <label for="durationedit">Event Duration: <small><i>HH:mm format only</i></small></label>
           <input type="text" name="durationedit" id="durationedit" class="text ui-widget-content ui-corner-all">
 
       <label for="RSVPslotLimedit">Max Reservations per attendee: </label>
           <input type="number" name="RSVPslotLimedit" id="RSVPslotLimedit" class="text ui-widget-content ui-corner-all" min="0">  
-
+-->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <button type="button" id="edit-submit">Confirm Changes</button>

@@ -37,8 +37,9 @@
 		$tmp = array();
 		$tmp['id'] = $events[$i]['id'];
 		$tmp['title'] = $events[$i]['title'];
-		$tmp['start'] = $events[$i]['dateStartTime'];
-		$tmp['end'] = substr($events[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $events[$i]['id']);
+		$tmp['start'] = $events[$i]['dateStart'];
+		$tmp['end'] = $events[$i]['dateEnd'];
+		//$tmp['end'] = substr($events[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $events[$i]['id']);
 		$pastEvents[$i] = $tmp;
 	}
 	
@@ -59,8 +60,8 @@
 		$tmp = array();
 		$tmp['id'] = $reservations[$i]['slotID'];
 		$tmp['title'] = $reservations[$i]['title'] . ", Location: " . $reservations[$i]['location'];
-		$tmp['start'] = substr($reservations[$i]['dateStartTime'],0,10) . 'T' . $reservations[$i]['startTime'];
-		$tmp['end'] = substr($reservations[$i]['dateStartTime'],0,10) . 'T' . $reservations[$i]['endTime'];
+		$tmp['start'] = $reservations[$i]['dateStart'] . 'T' . $reservations[$i]['startTime'];
+		$tmp['end'] = $reservations[$i]['dateStart'] . 'T' . $reservations[$i]['endTime'];
 		$tmp['url'] = './view_reservation.php?slot=' . $reservations[$i]['slotID'];
 		$pastReservations[$i] = $tmp;
 	}

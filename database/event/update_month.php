@@ -3,9 +3,11 @@
 //UPDATE EVENT ON CALENDAR VIEW
 
 require_once '../dbconfig.php';
+require_once '../dbquery.php';
 
 if(!empty($_POST))
 {
+  /*
   //echo "update_month.php called";
   $id = $_POST['id'];
   $title = $_POST['title'];
@@ -15,12 +17,17 @@ if(!empty($_POST))
   $duration = $_POST['duration'];
   $RSVPslotLim = $_POST['RSVPslotLim'];
   //var_dump($_POST);
+*/
 
-  $connect = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $dbuser, $dbpass);
-  if(!$connect) {
-      die('Could not connect: ' . MySQL_error());
-    }
-  
+$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+if (!$mysqli) {
+    echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
+    exit; 
+} else {
+    echo "Connected to database - success";
+}
+
+/*  
     date_default_timezone_set('UTC');  // optional
     //echo "date: " . $date . "\n";
     //echo "dateStartTime: " . $start . "\n";
@@ -57,6 +64,8 @@ if(!empty($_POST))
   //Submit and execute to the database
   $statement = $connect->prepare($query);
   $statement->execute();
+*/
+eventUpdate($mysqli, $_POST);
 
 class Slots {
   public $id;
