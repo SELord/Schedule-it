@@ -11,4 +11,23 @@ function eventInfo(){
 }
 
 
+
+function showShareableEventLink(){
+    // fill bootstrap modal (popup box) with link for event reservation
+    let modalList = document.getElementById("eventLink");
+    //let len = attendees.length;
+           
+    // build list
+    //for(let i = 0; i < len; i++){
+    let link = document.createElement('li');
+    link.className = 'list-group-item';
+    link.textContent = attendees[i]['lastName'] + ', ' + attendees[i]['firstName'];
+    modalList.appendChild(item);
+    //}
+}
+/*
+$('#submitAnnouncement').on('click', function(){
+    let id = eventDetails.id;
+});
+*/
 document.addEventListener('DOMContentLoaded', eventInfo);
