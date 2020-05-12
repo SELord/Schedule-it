@@ -4,18 +4,19 @@
 //INSERT.PHP = CREATE NEW EVENT ON CALENDAR/WEEKLY/DAY VIEW (SETS TIME AUTOMATICALLY TO 12:00AM ON CALENDAR VIEW)
 
 if(!empty($_POST)) {
+/*
     $title = $_POST['title'];
     $description = $_POST['description'];
     $date = $_POST['date'];   //NEED TO ADD
-    $dateStartTime = $_POST['dateStartTime'];
-    $duration = $_POST['duration'];
+    $dateStart = $_POST['dateStart'];
+    $dateEnd = $_POST['dateEnd'];
     $slots = $_POST['slots'];
     $RSVPslotLim = $_POST['RSVPslotLim'];
     $creatorID = $_POST['creatorID'];
     $location = $_POST['location'];
     $RSVPLim = $_POST['RSVPLim'];
 
-/*
+
     echo $title . "\n";
     echo $description . "\n";
     echo $date . "\n";
@@ -28,7 +29,7 @@ if(!empty($_POST)) {
     echo $RSVPLim;
 */
 
-
+/*
     //Get duration of each slot to get interval of each slot
     //SOURCE: https://stackoverflow.com/questions/18457164/split-time-interval-in-15-min-slot-using-mysql
     //SOURCE: https://stackoverflow.com/questions/8169139/adding-minutes-to-date-time-in-php
@@ -62,10 +63,12 @@ if(!empty($_POST)) {
 
 
     $query = "INSERT INTO `Event` (`title` ,`description` , `dateStartTime` , `dateEndTime`, `duration` ,`RSVPslotLim`,`creatorID`) VALUES ('".$title."', '".$description."', '".$start_time."', '".$dateEndTime."', '".$duration."', '".$RSVPslotLim."', '".$creatorID."')";
+*/
     /*$params = array($title, $description, $date, $start_time, $dateEndTime, $duration, $RSVPslotLim, $creatorID);*/
     //echo $query;
     //connect to server and select database
     require_once '../dbconfig.php';
+    require_once '../dbquery.php';
     //echo $query;
 
 
@@ -79,7 +82,8 @@ if(!empty($_POST)) {
     } else {
         echo "Connected to database - success";
     }
-
+    $eventID = newEvent($mysqli, $_POST);
+/*
     if (mysqli_query($mysqli, $query)) {
        echo "New record created successfully";
     } else {
@@ -108,7 +112,7 @@ if(!empty($_POST)) {
             'duration' => $intervals,
             'location' => $location,
             'RSVPlim' => $RSVPLim,    //Should this be the same as $RSVPslotLim?
-            'eventID' => $meetingID,
+            'eventID' => $eventID,
             'startTime' => $intTime 
         );
     }
@@ -121,7 +125,7 @@ if(!empty($_POST)) {
          //Check db query OK/pass-through
          $q = mysqli_query($mysqli, $query1) or die (mysqli_error($mysqli));
     }
-
+*/
   $mysqli->close();
 }
 

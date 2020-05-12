@@ -11,12 +11,12 @@ DROP TABLE IF EXISTS `User`;
 -- User Table: Hold information about users who are in the system
 CREATE TABLE `User`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
-`onidUID` VARCHAR(255) NOT NULL,
+`onidID` VARCHAR(255) NOT NULL,
 `firstName` VARCHAR(255),
 `lastName`  VARCHAR(255),
 `email`  VARCHAR(255),
 PRIMARY KEY (`id`),
-UNIQUE KEY (`onidUID`)
+UNIQUE KEY (`onidID`)
 ) ENGINE=InnoDB;
 
 -- Event Table: Store information about an event a user has created.
@@ -25,9 +25,8 @@ CREATE TABLE `Event`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
 `title`  VARCHAR(255) NOT NULL,
 `description`  VARCHAR(1000),
-`dateStartTime` DATETIME NOT NULL,
-`dateEndTime` DATETIME NOT NULL,
-`duration` TIME NOT NULL,
+`dateStart` DATE NOT NULL,
+`dateEnd` DATE NOT NULL,
 `RSVPslotLim` INT(11) DEFAULT '1',
 `creatorID` INT(11) NOT NULL,
 PRIMARY KEY (`id`),
@@ -37,7 +36,6 @@ FOREIGN KEY (`creatorID`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE C
 -- Invite Table: Track which users have been invited to an event 
 CREATE TABLE `Invite`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
-`email`  VARCHAR(255) NOT NULL,
 `status` ENUM('accepted','declined','no response') DEFAULT 'no response',
 `receiverID` INT(11) NOT NULL,
 `eventID` INT(11) NOT NULL,
@@ -84,8 +82,8 @@ FOREIGN KEY (`slotID`) REFERENCES `Slot` (`id`) ON DELETE CASCADE ON UPDATE CASC
 -- AdminList Table: List of ONID usernames who are approved for administrative privileges 
 CREATE TABLE `AdminList`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
-`onidUID` VARCHAR(255) NOT NULL,
+`onidID` VARCHAR(255) NOT NULL,
 PRIMARY KEY (`id`),
-UNIQUE KEY (`onidUID`),
-FOREIGN KEY (`onidUID`) REFERENCES `User` (`onidUID`) ON DELETE CASCADE ON UPDATE CASCADE
+UNIQUE KEY (`onidID`),
+FOREIGN KEY (`onidID`) REFERENCES `User` (`onidID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;

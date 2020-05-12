@@ -29,7 +29,7 @@ function postMessages() {
 		if(posts[i].fileName){
 			console.log("fileName: \'" + posts[i].fileName + "\'");
 			let fileLink = document.createElement('a');
-			fileLink.setAttribute('href','files/' + posts[i].onidUID + "_slot" + posts[i].slotID + "_" + posts[i].fileName);
+			fileLink.setAttribute('href','files/' + posts[i].onidID + "_slot" + posts[i].slotID + "_" + posts[i].fileName);
 			fileLink.setAttribute('download', posts[i].fileName);
 			fileLink.append(posts[i].fileName);
 			tableCells[3].append(fileLink);

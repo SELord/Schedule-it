@@ -1,5 +1,5 @@
 <?php 
-    include '../../file_path.php';
+	include '../../file_path.php';
 //--------------------------------------------------------------------------------------------------
 // Function: newEventEmail(conn, eventID)
 // Description: send out an email notification for a new event to all users who are invited.
@@ -10,19 +10,8 @@
 // Output: none
 function newEventEmail($conn, $eventID){
 	global $FILE_PATH;
-	$stmt = $conn->prepare("SELECT I.id, I.email, E.title FROM Event E
-			INNER JOIN Invite I ON E.id = I.eventID
-			WHERE E.id = ?");
-	$stmt->bind_param("i", $eventID);
-	$result = NULL;
-	if ($stmt->execute()){
-		$result = $stmt->get_result();
-		$result = $result->fetch_all(MYSQLI_ASSOC);
-	}
-	else{
-		$result = NULL;
-	}
-	
+	$result = getEventEmails($conn, $eventID);
+
 	if (count($result) > 0){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = $result[$i]['title'];
@@ -45,18 +34,7 @@ function newEventEmail($conn, $eventID){
 // Output: none
 function updateEventEmail($conn, $eventID){
 	global $FILE_PATH;
-	$stmt = $conn->prepare("SELECT I.id, I.email, E.title FROM Event E
-			INNER JOIN Invite I ON E.id = I.eventID
-			WHERE E.id = ?");
-	$stmt->bind_param("i", $eventID);
-	$result = NULL;
-	if ($stmt->execute()){
-		$result = $stmt->get_result();
-		$result = $result->fetch_all(MYSQLI_ASSOC);
-	}
-	else{
-		$result = NULL;
-	}
+	$result = getEventEmails($conn, $eventID);
 	
 	if ($result != NULL){
 		for ($i = 0; $i < count($result); $i++){

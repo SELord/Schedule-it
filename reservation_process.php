@@ -42,7 +42,7 @@
 		// delete the file first if it exists
 		$userSlotPost = userSlotPost($conn, $slotID, $user->id);
 		if (!isset($status) && $userSlotPost["fileName"]) {
-			if(!unlink("files/" . $user->onidUID . "_slot" . $userSlotPost["slotID"] . "_" . $userSlotPost["fileName"])) {
+			if(!unlink("files/" . $user->onidID . "_slot" . $userSlotPost["slotID"] . "_" . $userSlotPost["fileName"])) {
 				$status = "File Delete Failed (post undeleted)";
 			}
 		}
@@ -76,11 +76,11 @@
 				$status = "Only pdf file is permitted";
 			} else {
 				// save to "./files/" directory ("./files/{{onid}}_slot{{slotID}}_filename")
-				$target_file = "files/" . $user->onidUID . "_slot" . $_POST["slotID"] . "_" . $fileName;
+				$target_file = "files/" . $user->onidID . "_slot" . $_POST["slotID"] . "_" . $fileName;
 				//If user previously uploaded a file, delete it first.
 				$previousPost = userSlotPost($mysqli, $_POST["slotID"], $userID);
 				if ($previousPost["fileName"]) {
-					unlink("files/" . $user->onidUID . "_slot" . $_POST["slotID"] . "_" . $previousPost["fileName"]);
+					unlink("files/" . $user->onidID . "_slot" . $_POST["slotID"] . "_" . $previousPost["fileName"]);
 				}
 				$moveSuccess = move_uploaded_file($_FILES["postFile"]["tmp_name"], $target_file);
 				// change permission of the file so it is accessible by the server

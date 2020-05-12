@@ -20,7 +20,7 @@ require '../../assets/php/emailer.php';  // email functions
         echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
         exit; 
     } else {
-        echo "Connected to database - success";
+        echo "Connected to database - success\n";
     }
 
     //get eventID, creatorID and list of emails from event.js
@@ -28,46 +28,42 @@ require '../../assets/php/emailer.php';  // email functions
     $creatorID = $_POST['creatorID'];
     $emails = $_POST['emails']; //this is the array object that holds emails
 
-
     //put into array
     for($i = 0; $i < count($emails); $i++) {  
 
-      //parse email to onidUID 
-      list($onidUID, $edu) = explode('@', $emails[$i]);
-      echo "\n$onidUID" . $onidUID;
-      echo "\n$edu" . $edu;
+      //parse email to onidID 
+      list($onidID, $edu) = explode('@', $emails[$i]);
 
       //create new user w/ null firstName and lastName values
-      $data = lookupUser($connect, $onidUID);
-      var_dump($data);
+      $data = lookupUser($connect, $onidID);
       $user = json_decode($data);
 
       // check if user exists, if null, create new user
       if($data == null) {
         //create a new user if user does not exists
-        //NOTE: I had problems with newInvite function from dbquery.php, so copied and pasted it here
-        $stmt = $connect->prepare("INSERT INTO User (onidUID, email) VALUES (?, ?)");
-        $stmt->bind_param("ss", $onidUID, $emails[$i]);
-        $stmt->execute();
+        $userInfo['onidID'] = $onidID;
+        $userInfo['firstName'] = "";
+        $userInfo['lastName'] = "";
+        $userInfo['email'] = $emails[$i];
+        $userID = newUser($connect, $userInfo);
 
-        //get userID of recently created user
-        $userID = mysqli_insert_id($connect);
       } else {
         //if user in database, then return recieverID
         $userID = $user->id;
       }
 
-      //Now create new invite - (id, email, status, receiverID, eventID)
-      //NOTE: I had problems with newInvite function from dbquery.php, so copied and pasted it here
-      $newInvite_stmt = $connect->prepare("INSERT INTO Invite (receiverID, eventID, email)
-          VALUES (?, ?, ?)");
-      $newInvite_stmt ->bind_param("iis", $userID, $eventID, $emails[$i]);
-      if($newInvite_stmt ->execute()){
-        echo "Invite created";
-      } else{
-        echo "Error - invite not created";
-        exit;
+      //Now create new invite, if it does not already exist
+      if (!lookupInvite($connect, $userID, $eventID)){
+        if(newInvite($connect, $userID, $eventID)){
+          echo "Invite created for ";
+        } else{
+          echo "Error - invite not created for ";
+          exit;
+        }
+      } else {
+        echo "Invite already exists for ";
       }
+      echo "userID " . $userID . "\n";
     }
   
   // send out emails for new event invites

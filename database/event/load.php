@@ -26,10 +26,11 @@
         $eventItem["id"] = $res["id"];
         $eventItem["title"] = $res["title"];
         $eventItem["description"] = $res["description"];
-        $eventItem["start"] = $res["dateStartTime"];
-        $eventItem["end"] = $res["dateEndTime"];
-        $eventItem["duration"] = $res["duration"];
-        $eventItem["RSVPslotLim"] = $res["RSVPslotLim"];
+        $eventItem["start"] = $res["dateStart"];
+        $eventItem["end"] = $res["dateEnd"];
+        $eventItem["allDay"] = true;
+        //$eventItem["duration"] = $res["duration"];
+        //$eventItem["RSVPslotLim"] = $res["RSVPslotLim"];
         array_push($userEvents, $eventItem);
     }
 
