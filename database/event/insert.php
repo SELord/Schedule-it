@@ -4,30 +4,6 @@
 //INSERT.PHP = CREATE NEW EVENT ON CALENDAR/WEEKLY/DAY VIEW (SETS TIME AUTOMATICALLY TO 12:00AM ON CALENDAR VIEW)
 
 if(!empty($_POST)) {
-/*
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    $date = $_POST['date'];   //NEED TO ADD
-    $dateStart = $_POST['dateStart'];
-    $dateEnd = $_POST['dateEnd'];
-    $slots = $_POST['slots'];
-    $RSVPslotLim = $_POST['RSVPslotLim'];
-    $creatorID = $_POST['creatorID'];
-    $location = $_POST['location'];
-    $RSVPLim = $_POST['RSVPLim'];
-
-
-    echo $title . "\n";
-    echo $description . "\n";
-    echo $date . "\n";
-    echo $dateStartTime . "\n";
-    echo $duration . "\n";
-    echo $slots . "\n";
-    echo $RSVPslotLim . "\n";
-    echo $creatorID . "\n";
-    echo $location . "\n";
-    echo $RSVPLim;
-*/
 
 /*
     //Get duration of each slot to get interval of each slot

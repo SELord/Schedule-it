@@ -7,24 +7,11 @@ require_once '../dbquery.php';
 
 if(!empty($_POST))
 {
-  /*
-  //echo "update_month.php called";
-  $id = $_POST['id'];
-  $title = $_POST['title'];
-  $description = $_POST['description'];
-  $date = $_POST['date'];
-  $start = $_POST['start'];
-  $duration = $_POST['duration'];
-  $RSVPslotLim = $_POST['RSVPslotLim'];
-  //var_dump($_POST);
-*/
 
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 if (!$mysqli) {
     echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
     exit; 
-} else {
-    echo "Connected to database - success";
 }
 
 /*  
