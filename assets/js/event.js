@@ -189,12 +189,13 @@ function generateGrid() {
                 if (data) {
                     const result = JSON.parse(data);
                     $('#slotEditTable').append('<tr id="slot' + result.id + '">'
-                        + '<td><input type="date" class="slotDateEdit" data-id="' + result.id + '" value="' + result.date + '"></td>'
-                        + '<td><input type="time" class="slotStartTimeEdit" data-id="' + result.id + '" value="' + result.startTime + '"></td>'
-                        + '<td><input type="time" class="slotEndTimeEdit" data-id="' + result.id + '" value="' + result.endTime + '"></td>'
-                        + '<td><input type="text" class="slotLocationEdit" data-id="' + result.id + '" value="' + result.location + '"></td>'
-                        + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + result.id + '" value="' + result.date + '" style="width: 4em"></td>'
-                        + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + result.id + '">X</button></td>'
+                        + '<td><input type="date" class="slotStartDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[0] + '"></td>'
+                        + '<td><input type="time" class="slotStartTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[1] + '"></td>'
+                        + '<td><input type="date" class="slotEndDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[0] + '"></td>'
+                        + '<td><input type="time" class="slotEndTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[1] + '"></td>'
+                        + '<td><input type="text" class="slotLocationEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.location + '"></td>'
+                        + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.RSVPlim + '" style="width: 4em"></td>'
+                        + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + result.id + '" id="slotAttr' + result.id + '">X</button></td>'
                         + '</tr>'
                     );
                 }
@@ -218,19 +219,26 @@ function generateGrid() {
         var button_id = $(this).data("id");
         $('#slot'+button_id+'').remove();
         if ($('#slotEditTable tr').length < 2) {
-            $('#slotEditTable').append('<td id="noSlotsRow" colspan="6">No slots in the event</td>');
+            $('#slotEditTable').append('<td id="noSlotsRow" colspan="7">No slots in the event</td>');
         }
     });
 
     // update the slot in database real-time for each entry field
-    $(document).on('blur', '.slotDateEdit', function(){
-        edit_data($(this).data("id"), "date", $(this).val());
+    $(document).on('blur', '.slotStartDateEdit', function(){
+        var dateTime = $(this).val() + " " + $('#slotAttr' + $(this).data("id") + '.slotStartTimeEdit').val()
+        edit_data($(this).data("id"), "startDateTime", dateTime);
     });
     $(document).on('blur', '.slotStartTimeEdit', function(){
-        edit_data($(this).data("id"), "startTime", $(this).val());
+        var dateTime = $('#slotAttr' + $(this).data("id") + '.slotStartDateEdit').val() + " " + $(this).val()
+        edit_data($(this).data("id"), "startDateTime", dateTime);
+    });
+    $(document).on('blur', '.slotEndDateEdit', function(){
+        var dateTime = $(this).val() + " " + $('#slotAttr' + $(this).data("id") + '.slotEndTimeEdit').val()
+        edit_data($(this).data("id"), "endDateTime", dateTime);
     });
     $(document).on('blur', '.slotEndTimeEdit', function(){
-        edit_data($(this).data("id"), "endTime", $(this).val());
+        var dateTime = $('#slotAttr' + $(this).data("id") + '.slotEndDateEdit').val() + " " + $(this).val()
+        edit_data($(this).data("id"), "endDateTime", dateTime);
     });
     $(document).on('blur', '.slotLocationEdit', function(){
         edit_data($(this).data("id"), "location", $(this).val());
@@ -245,12 +253,12 @@ function generateGrid() {
         const eventID = $("#edit-delete").data('id');  //to get ID from event-click variable
         $("#live_data").dialog({
             resizable: true,
-            width: 950,
+            width: 1100,
             //height: 300,  // gbdg-ebg 12/12/2011 Change height from 190 to 250
             modal: true,
             close: function() {
                 $('#slotEditTable').empty();
-                $('#slotEditTable').append('<tr id="slotTableHeader"><th>Date</th><th>Start Time</th><th>End Time</th><th>Location</th><th>RSVP Limit</th><th>Delete</th></tr>');
+                $('#slotEditTable').append('<tr id="slotTableHeader"><th>Start Date</th><th>Start Time</th><th>End Date</th><th>End Time</th><th>Location</th><th>RSVP Limit</th><th>Delete</th></tr>');
             }
         });
         // get the list of slots from db
@@ -265,17 +273,18 @@ function generateGrid() {
                     data.forEach(item => {
                         $('#slotEditTable').append(
                             '<tr id="slot' + item.id + '">'
-                            + '<td><input type="date" class="slotDateEdit" data-id="' + item.id + '" value="' + item.date + '"></td>'
-                            + '<td><input type="time" class="slotStartTimeEdit" data-id="' + item.id + '" value="' + item.startTime + '"></td>'
-                            + '<td><input type="time" class="slotEndTimeEdit" data-id="' + item.id + '" value="' + item.endTime + '"></td>'
-                            + '<td><input type="text" class="slotLocationEdit" data-id="' + item.id + '" value="' + item.location + '"></td>'
-                            + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + item.id + '" value="' + item.RSVPlim + '" style="width: 4em"></td>'
-                            + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + item.id + '">X</button></td>'
+                            + '<td><input type="date" class="slotStartDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
+                            + '<td><input type="time" class="slotStartTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[1] + '"></td>'
+                            + '<td><input type="date" class="slotEndDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
+                            + '<td><input type="time" class="slotEndTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[1] + '"></td>'
+                            + '<td><input type="text" class="slotLocationEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.location + '"></td>'
+                            + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.RSVPlim + '" style="width: 4em"></td>'
+                            + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + item.id + '" id="slotAttr' + item.id + '">X</button></td>'
                             + '</tr>'
                         );
                     });
                 } else {
-                    $('#slotEditTable').append('<td id="noSlotsRow" colspan="6">No slots in the event</td>');
+                    $('#slotEditTable').append('<td id="noSlotsRow" colspan="7">No slots in the event</td>');
                 }
             },  
             error: function(error) {

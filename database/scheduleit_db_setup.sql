@@ -48,9 +48,8 @@ FOREIGN KEY (`eventID`) REFERENCES `Event` (`id`) ON DELETE CASCADE ON UPDATE CA
 -- Slot Table: Track which time slots were created for which event
 CREATE TABLE `Slot`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
-`date` DATE NOT NULL,
-`startTime` TIME NOT NULL,
-`endTime` TIME NOT NULL,
+`startDateTime` DATETIME NOT NULL,
+`endDateTime` DATETIME NOT NULL,
 `location` VARCHAR(255),
 `RSVPlim` INT(11) DEFAULT '1',
 `eventID` INT(11) NOT NULL,
