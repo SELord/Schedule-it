@@ -317,7 +317,20 @@
 
 <!-- FORM FOR EDIT SLOT EVENT -->
 <div class="table-responsive"  style="display:none;" title="Edit Event Slots">  
-     <div id="live_data" title="Edit Event Slots"></div>                 
+  <div id="live_data" title="Edit Event Slots">
+    <div class="table-responsive" title="Edit Event Slots" id="editSlotDiv">
+      <button type="button" name="addSlot" id="addSlot" class="btn btn-success">Add Slot</button>  
+      <table class="table table-bordered" id="slotEditTable" style="width:100%">
+        <tr id="slotTableHeader">
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Location</th>
+          <th>RSVP Limit</th>
+          <th>Delete</th>
+        </tr>
+      </table>
+    </div> 
+  </div>                
 </div>  
  
 <!-- SCRIPT FOR THE HIDDEN TITLE AND DESCRIPTION -->

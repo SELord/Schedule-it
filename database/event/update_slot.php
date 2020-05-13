@@ -9,13 +9,14 @@
 		echo "Failed to connect to MySQL: (" . $connect->connect_errno . ") " . $connect->connect_error;
 	}
 
-	if ($_POST["key"]) {
-		$result = slotUpdate($connect, $_POST);
+	if ($_POST["key"] == "add") {
+		$result = newSlot($connect, $_POST["id"]);
+	} else if ($_POST["key"] == "delete") {
+		slotDelete($connect, $_POST["id"]);
 	} else {
-		$result = slotDelete($connect, $_POST["id"]);
+		slotUpdate($connect, $_POST);
 	}
 
-	if (!$result)
-		echo "Slot update failed";	
+		echo $result;
 	 
 ?>

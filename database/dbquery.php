@@ -417,10 +417,12 @@ function newEvent($conn, $info){
 //		info = associative array containing the data for creating a new time slot using following keys:
 //			startTime (HH:MM), endTime (HH:MM), location, RSVPlim, eventID
 // Output:  database id of new time slot if successful, else false
-function newSlot($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO Slot (startTime, endTime, location, RSVPlim, eventID)
-			VALUES (?, ?, ?, ?, ?)");
-	$stmt->bind_param("sssii", $info['startTime'], $info['endTime'], $info['location'], $info['RSVPlim'], $info['eventID']);
+function newSlot($conn, $id){
+	$time = "00:00:00";
+	$location = "";
+	$stmt = $conn->prepare("INSERT INTO Slot (startTime, endTime, location, eventID)
+			VALUES (?, ?, ?, ?)");
+	$stmt->bind_param("sssi", $time, $time, $location, $id);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
 		return $conn->insert_id;

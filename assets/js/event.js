@@ -174,69 +174,109 @@ function generateGrid() {
     });
     calendar.render();
 
+    // for editing slot data, used below
+    function edit_data(id, key, value) {  
+        $.ajax({  
+            url:"../Schedule-it/database/event/update_slot.php",  
+            method:"POST",  
+            data:{
+                id:id,
+                key:key, 
+                value:value
+            },  
+            success:function(data){  
+                // return integer means a slot was created
+                if (data) {
+                    const newID = data;
+                    $('#slotEditTable').append('<tr id="slot' + newID + '">'
+                        + '<td><input type="time" class="slotStartTimeEdit" data-id="' + newID + '"></td>'
+                        + '<td><input type="time" class="slotEndTimeEdit" data-id="' + newID + '"></td>'
+                        + '<td><input type="text" class="slotLocationEdit" data-id="' + newID + '"></td>'
+                        + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + newID + '" value="1" style="width: 4em"></td>'
+                        + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + newID + '">X</button></td>'
+                        + '</tr>'
+                    );
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }  
+        });  
+    }
+    
+    // add slot button
+    $('#addSlot').click(function(){
+        const eventID = $("#edit-delete").data('id');  //to get ID from event-click variable
+        edit_data(eventID, "add");
+        $('#noSlotsRow').remove()
+    });
+
+    // delete button for each slot
+    $(document).on('click', '.slotDeleteButton', function(){
+        edit_data($(this).data("id"), "delete");
+        var button_id = $(this).data("id");
+        $('#slot'+button_id+'').remove();
+        if ($('#slotEditTable').length < 2) {
+            $('#slotEditTable').append('<td id="noSlotsRow" colspan="5">No slots in the event</td>');
+        }
+    });
+
+    // update the slot in database real-time for each entry field
+    $(document).on('blur', '.slotStartTimeEdit', function(){
+        edit_data($(this).data("id"), "startTime", $(this).val());
+    });
+    $(document).on('blur', '.slotEndTimeEdit', function(){
+        edit_data($(this).data("id"), "endTime", $(this).val());
+    });
+    $(document).on('blur', '.slotLocationEdit', function(){
+        edit_data($(this).data("id"), "location", $(this).val());
+    });
+    $(document).on('blur', '.slotRVSPlimEdit', function(){
+        edit_data($(this).data("id"), "RSVPlim", $(this).val());
+    });
+
     //TRIGGER EDIT SLOT CHANGES
     $('#edit-slotbtn').on('click',function(e){
         e.preventDefault();
-        var id = $("#edit-delete").data('id');  //to get ID from event-click variable
+        const eventID = $("#edit-delete").data('id');  //to get ID from event-click variable
         $("#live_data").dialog({
             resizable: true,
             width: 750,
-            height: 300,  // gbdg-ebg 12/12/2011 Change height from 190 to 250
+            //height: 300,  // gbdg-ebg 12/12/2011 Change height from 190 to 250
             modal: true,
+            close: function() {
+                $('#slotEditTable').empty();
+                $('#slotEditTable').append('<tr id="slotTableHeader"><th>Start Time</th><th>End Time</th><th>Location</th><th>RSVP Limit</th><th>Delete</th></tr>');
+            }
         });
+        // get the list of slots from db
         $.ajax({
-            url:"../Schedule-it/database/event/edit_slot.php",
+            url:"../Schedule-it/database/event/get_slots.php",
             type:"POST",
-            data: {id:id}, 
-            success:function(data){  
-                $('#live_data').html(data);
-                //var editSlotDiv = '<div class="table-responsive" title="Edit Event Slots" id="editSlotDiv">';
-                //var slotEditTable = '<table class="table table-bordered" id="slotEditTable" style="width:100%">';
-                //$('#live_data').append(editSlotDiv);
-                //$('#editSlotDiv').append(slotEditTable);
+            data: {id:eventID}, 
+            success:function(data){
+                data = JSON.parse(data);
+                // display the slots on the table
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        $('#slotEditTable').append(
+                            '<tr id="slot' + item.id + '">'
+                            + '<td><input type="time" class="slotStartTimeEdit" data-id="' + item.id + '" value="' + item.startTime + '"></td>'
+                            + '<td><input type="time" class="slotEndTimeEdit" data-id="' + item.id + '" value="' + item.endTime + '"></td>'
+                            + '<td><input type="text" class="slotLocationEdit" data-id="' + item.id + '" value="' + item.location + '"></td>'
+                            + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + item.id + '" value="' + item.RSVPlim + '" style="width: 4em"></td>'
+                            + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + item.id + '">X</button></td>'
+                            + '</tr>'
+                        );
+                    });
+                } else {
+                    $('#slotEditTable').append('<td id="noSlotsRow" colspan="5">No slots in the event</td>');
+                }
             },  
             error: function(error) {
                 console.log(error);
             }
         });  
-  
-        function edit_data(id, key, value) {  
-            $.ajax({  
-                url:"../Schedule-it/database/event/update_slot.php",  
-                method:"POST",  
-                data:{
-                    id:id,
-                    key:key, 
-                    value:value
-                },  
-                success:function(data){  
-                    if (data)
-                        console.log(data);
-                },
-                error: function(error) {
-                    console.log(error);
-                }  
-            });  
-        }
-        // delete button for each slot
-        $(document).on('click', '.slotDeleteButton', function(){
-            edit_data($(this).data("id"));
-            $("#"+$(this).attr("id")).remove();
-        });
-
-        // update the database real-time for each entry field
-        $(document).on('blur', '.slotStartTimeEdit', function(){
-            edit_data($(this).data("id"), "startTime", $(this).val());
-        });
-        $(document).on('blur', '.slotEndTimeEdit', function(){
-            edit_data($(this).data("id"), "endTime", $(this).val());
-        });
-        $(document).on('blur', '.slotLocationEdit', function(){
-            edit_data($(this).data("id"), "location", $(this).val());
-        });
-        $(document).on('blur', '.slotRVSPlimEdit', function(){
-            edit_data($(this).data("id"), "RSVPlim", $(this).val());
-        });
     });
 
 
