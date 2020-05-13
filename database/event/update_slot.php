@@ -11,12 +11,12 @@
 
 	if ($_POST["key"] == "add") {
 		$result = newSlot($connect, $_POST["id"]);
+		//echo $result;
+		echo json_encode($result);
 	} else if ($_POST["key"] == "delete") {
 		slotDelete($connect, $_POST["id"]);
 	} else {
 		slotUpdate($connect, $_POST);
 	}
 
-		echo $result;
-	 
 ?>

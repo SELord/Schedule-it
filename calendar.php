@@ -322,6 +322,7 @@
       <button type="button" name="addSlot" id="addSlot" class="btn btn-success">Add Slot</button>  
       <table class="table table-bordered" id="slotEditTable" style="width:100%">
         <tr id="slotTableHeader">
+          <th>Date</th>
           <th>Start Time</th>
           <th>End Time</th>
           <th>Location</th>

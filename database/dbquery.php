@@ -416,18 +416,30 @@ function newEvent($conn, $info){
 //		conn = MySQL database connection object 
 //		info = associative array containing the data for creating a new time slot using following keys:
 //			startTime (HH:MM), endTime (HH:MM), location, RSVPlim, eventID
-// Output:  database id of new time slot if successful, else false
-function newSlot($conn, $id){
+// Output:  detail of the slot just created
+function newSlot($conn, $eventID){
 	$time = "00:00:00";
 	$location = "";
-	$stmt = $conn->prepare("INSERT INTO Slot (startTime, endTime, location, eventID)
-			VALUES (?, ?, ?, ?)");
-	$stmt->bind_param("sssi", $time, $time, $location, $id);
+	$stmt = $conn->prepare("SELECT dateStart FROM Event WHERE id = ?");
+	$stmt->bind_param("i", $eventID);
 	if ($stmt->execute()){
-		// execute() returns true on success, false on failure
-		return $conn->insert_id;
-	}
-	else{
+		$result = $stmt->get_result();
+		$data = $result->fetch_all(MYSQLI_ASSOC);
+		$date = $data[0]["dateStart"];
+		$stmt = $conn->prepare("INSERT INTO Slot (date, startTime, endTime, location, eventID)
+		VALUES (?, ?, ?, ?, ?)");
+		$stmt->bind_param("ssssi", $date, $time, $time, $location, $eventID);
+		if ($stmt->execute()) {
+			$created["id"] = $conn->insert_id;
+			$created["date"] = $date;
+			$created["startTime"] = $time;
+			$created["endTime"] = $time;
+			$created["location"] = $location;
+			return $created;
+		} else {
+			return false;
+		}
+	} else {
 		return false;
 	}
 }
@@ -1143,7 +1155,9 @@ function eventUpdate($conn, $info){
 //		id = id of slot on database 
 // Output: true if successful, false if update failed 
 function slotUpdate($conn, $info){
-	if ($info["key"] == "startTime") {
+	if ($info["key"] == "date") {
+		$stmt = $conn->prepare("UPDATE Slot SET date = ? WHERE id = ?");
+	} else if ($info["key"] == "startTime") {
 		$stmt = $conn->prepare("UPDATE Slot SET startTime = ? WHERE id = ?");
 	} else if ($info["key"] == "endTime") {
 		$stmt = $conn->prepare("UPDATE Slot SET endTime = ? WHERE id = ?");
