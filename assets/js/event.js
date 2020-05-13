@@ -189,9 +189,9 @@ function generateGrid() {
                 if (data) {
                     const result = JSON.parse(data);
                     $('#slotEditTable').append('<tr id="slot' + result.id + '">'
-                        + '<td><input type="date" class="slotStartDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[0] + '"></td>'
+                        + '<td><input type="date" class="slotStartDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
                         + '<td><input type="time" class="slotStartTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[1] + '"></td>'
-                        + '<td><input type="date" class="slotEndDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[0] + '"></td>'
+                        + '<td><input type="date" class="slotEndDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
                         + '<td><input type="time" class="slotEndTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[1] + '"></td>'
                         + '<td><input type="text" class="slotLocationEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.location + '"></td>'
                         + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.RSVPlim + '" style="width: 4em"></td>'
