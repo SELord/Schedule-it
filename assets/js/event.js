@@ -245,7 +245,7 @@ function generateGrid() {
         const eventID = $("#edit-delete").data('id');  //to get ID from event-click variable
         $("#live_data").dialog({
             resizable: true,
-            width: 900,
+            width: 950,
             //height: 300,  // gbdg-ebg 12/12/2011 Change height from 190 to 250
             modal: true,
             close: function() {
