@@ -77,7 +77,6 @@ function generateList() {
 
 //For calendaring-viewing capabilities
 function generateGrid() {
-    //console.log("onidID: " + onidID);
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         contentHeight: 600,
@@ -113,7 +112,6 @@ function generateGrid() {
             var dateEnd = info.event.dateEnd.toISOString();
             dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
             //alert(id + ' ' + title + ' ' + start + ' ' + end);
-            //console.log(start + ' ' + end);
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
                     url:"../Schedule-it/database/event/update.php",
@@ -133,10 +131,8 @@ function generateGrid() {
             var id = info.event.id;
             var event = calendar.getEventById(id);
             var title = info.event.title;
-            console.log(id + ' ' + title);
             var start = event.start.toISOString();
             var end = event.end.toISOString();
-            console.log(start + ' ' + end);
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
                     url:"../Schedule-it/database/event/update.php",
@@ -181,11 +177,10 @@ function generateGrid() {
     //TRIGGER EDIT SLOT CHANGES
     $('#edit-slotbtn').on('click',function(e){
         e.preventDefault();
-        //console.log("Inside slot edit form");
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
         $("#live_data").dialog({
             resizable: true,
-            width: 700,
+            width: 750,
             height: 300,  // gbdg-ebg 12/12/2011 Change height from 190 to 250
             modal: true,
         });
@@ -194,54 +189,67 @@ function generateGrid() {
             type:"POST",
             data: {id:id}, 
             success:function(data){  
-                $('#live_data').html(data);  
+                $('#live_data').html(data);
+                //var editSlotDiv = '<div class="table-responsive" title="Edit Event Slots" id="editSlotDiv">';
+                //var slotEditTable = '<table class="table table-bordered" id="slotEditTable" style="width:100%">';
+                //$('#live_data').append(editSlotDiv);
+                //$('#editSlotDiv').append(slotEditTable);
             },  
             error: function(error) {
                 console.log(error);
             }
         });  
   
-        function edit_data(id, text, parameter) {  
+        function edit_data(id, key, value) {  
             $.ajax({  
                 url:"../Schedule-it/database/event/update_slot.php",  
                 method:"POST",  
                 data:{
                     id:id,
-                    text:text, 
-                    parameter:parameter
+                    key:key, 
+                    value:value
                 },  
-                dataType:"text",  
                 success:function(data){  
-                    //alert(data);  
+                    if (data)
+                        console.log(data);
+                },
+                error: function(error) {
+                    console.log(error);
                 }  
             });  
-        }  
-        $(document).on('blur', '.location', function(){  
-            var id = $(this).data("id3");  
-            var location = $(this).text();  
-            edit_data(id, location, "location");  
-        });  
-        $(document).on('blur', '.RSVPlim', function(){  
-            var id = $(this).data("id4");  
-            var RSVPlim = $(this).text();  
-            edit_data(id, RSVPlim, "RSVPlim");  
-        });    
+        }
+        // delete button for each slot
+        $(document).on('click', '.slotDeleteButton', function(){
+            edit_data($(this).data("id"));
+            $("#"+$(this).attr("id")).remove();
+        });
+
+        // update the database real-time for each entry field
+        $(document).on('blur', '.slotStartTimeEdit', function(){
+            edit_data($(this).data("id"), "startTime", $(this).val());
+        });
+        $(document).on('blur', '.slotEndTimeEdit', function(){
+            edit_data($(this).data("id"), "endTime", $(this).val());
+        });
+        $(document).on('blur', '.slotLocationEdit', function(){
+            edit_data($(this).data("id"), "location", $(this).val());
+        });
+        $(document).on('blur', '.slotRVSPlimEdit', function(){
+            edit_data($(this).data("id"), "RSVPlim", $(this).val());
+        });
     });
 
 
     //TRIGGER EDIT CHANGES FROM EDIT-FORM ON "CONFIRM CHANGES" BUTTON
     $('#edit-submit').on('click',function(e){
-        console.log("Inside edit event changes submit button");
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
         //var event = calendar.getEventById(id);
-        console.log(id);
         e.preventDefault();
         var title = $('#titleedit').val();
         var description = $('#descriptionedit').val();
         //var getdate = event.start.toISOString();
         //turn date YYYY-MM-DD
         //var date = getdate.split("T")[0];
-        //console.log(date);
         var dateStart = $('#dateStartEdit').val();
         var dateEnd = $('#dateEndEdit').val();
         dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
@@ -277,12 +285,10 @@ function generateGrid() {
     //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
     $('#signupbtn').on('click',function(e){
         e.preventDefault();
-        //console.log("Inside sign-up");
         var title = $('#title').val();
         var description = $('#description').val();
         //get correct date format
         //var date = dateStr;
-        //console.log(date)
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
         dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
@@ -313,8 +319,6 @@ function generateGrid() {
         var id = $("#edit-delete").data('id');
         var remove = calendar.getEventSourceById(id);
         var event = calendar.getEventById(id);
-        //console.log(id);
-        //console.log("Delete button");
         e.preventDefault();
         if(confirm("Are you sure you want to remove " + event.title + "?")) {
             $.ajax({
@@ -322,12 +326,10 @@ function generateGrid() {
                 type:"POST",
                 data:{id:id},
                 success:function() {
-                    //console.log("Success");
                     calendar.refetchEvents();
                     $("#edit-delete").dialog('close');
                 },
                 complete: function() {
-                    //console.log("complete");
                     $("#edit-delete").dialog('close');
                     calendar.refetchEvents();
                 },
@@ -341,12 +343,12 @@ function generateGrid() {
     //BUTTON TO TRIGGER THE EDIT-MODE - THIS GETS FORM DATA FOR EDIT-FORM 
     /**** TO DO FOR NEXT GROUP : Be able to change location and # of slots dynamically ***/
     $('#editbtn').on('click',function(e) {
-        console.log("inside edit btn");
         e.preventDefault();
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
         var event = calendar.getEventById(id);
         var titleedit = event.title;
         var descriptionedit = event.extendedProps.description;
+        var locationedit = event.extendedProps.location;
         var dateStartEdit = event.start.toISOString().split('T')[0];
         var dateEndEdit = event.end.toISOString().split('T')[0];
         dateEndEdit = addDays(dateEndEdit, -1);      // -1 day for fullcalendar display (reverse)
@@ -358,6 +360,7 @@ function generateGrid() {
         $("#date").attr("value", event.dateStr);
         $("#titleedit").attr("value", titleedit);
         $("#descriptionedit").attr("value", descriptionedit); 
+        $("#locationedit").attr("value", locationedit); 
         $("#dateStartEdit").attr("value", dateStartEdit);
         $("#dateEndEdit").attr("value", dateEndEdit);
         //$("#durationedit").attr("value", durationedit);
@@ -367,9 +370,8 @@ function generateGrid() {
  
     //FOR DYNAMIC EMAIL FUNCTIONALITY
     var i=1;  
-    $('#add').click(function(){  
+    $('#addEmail').click(function(){  
         i++;  
-        //$('#dynamic_field').append('<tr id="row'+i+'"><td><input type="email" name="name[]" placeholder="Enter your email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
         $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
     });  
 
@@ -403,14 +405,12 @@ function generateGrid() {
                 jsonPayload.emails.push(nameList[nameListindex].value);
             }
         };
-        console.log(jsonPayload);
         $.ajax({
             url:"../Schedule-it/database/event/emails.php",
             type:"POST",
             data: jsonPayload,
             success:function(data) {
                 alert("Emails have been sent!");
-                console.log(data);
                 $("#send-email").dialog('close');
                 $("#edit-delete").dialog('close');
                 calendar.refetchEvents();

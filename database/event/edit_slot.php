@@ -1,51 +1,49 @@
-<?php  
+<?php
 
-  $id = $_POST['id'];
+	$id = $_POST['id'];
 
-  //edit_slot.php
-  require_once '../dbconfig.php';
+	//edit_slot.php
+	require_once '../dbconfig.php';
+	require_once '../dbquery.php';
 
-  $connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-  if ($connect->connect_errno) {
-      echo "Failed to connect to MySQL: (" . $connect->connect_errno . ") " . $connect->connect_error;
-  }
+	$connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+	if ($connect->connect_errno) {
+		echo "Failed to connect to MySQL: (" . $connect->connect_errno . ") " . $connect->connect_error;
+	}
 
- $output = '';  
- $sql = "SELECT * FROM Slot WHERE eventID='".$id."'";  
- $result = mysqli_query($connect, $sql);  
- $output .= '  
-      <div class="table-responsive" title="Edit Event Slots">  
-      <caption><i>Edit <b><span style="background-color: #FFFFCC">location</span></b> and <b><span style="background-color: #FFFFCC">RSVPlim</span></b></i></caption>
-           <table class="table table-bordered" style="width:100%">  
-                <tr>  
-                     <th>id</th>
-                     <th>startTime</th>  
-                     <th>duration</th>
-                     <th>location</th>  
-                     <th>RSVPlim</th>                     
-                </tr>';  
- if(mysqli_num_rows($result) > 0)  
- {  
-      while($row = mysqli_fetch_array($result))  
-      {  
-           $output .= '  
-                <tr>  
-                     <td>'.$row["id"].'</td>  
-                     <td>'.$row["startTime"].'</td>   
-                     <td>'.$row["duration"].'</td>
-                     <td class="location" bgcolor=#FFFFCC data-id3="'.$row["id"].'" contenteditable>'.$row["location"].'</td>    
-                     <td class="RSVPlim" bgcolor=#FFFFCC data-id4="'.$row["id"].'" contenteditable>'.$row["RSVPlim"].'</td>  
-                </tr>  
-           ';  
-      }  
- }  
- else  
- {  
-      $output .= '<tr>  
-                    <td colspan="4">Data not Found</td>  
-                  </tr>';  
- }  
- $output .= '</table>  
-      </div>';  
- echo $output;  
- ?>
+	$result = eventSlots($connect, $id);
+	$output = '
+		<div class="table-responsive" title="Edit Event Slots">
+			 <table class="table table-bordered" id="slotEditTable" style="width:100%">
+				<tr>
+					 <th>startTime</th>
+					 <th>endTime</th>
+					 <th>location</th>
+					 <th>RSVPlim</th>
+					 <th>Delete</th>
+				</tr>';
+	if(sizeof($result) > 0)
+	{
+		foreach($result as $row)
+		{
+			 $output .= '
+				<tr>	
+					<td id="slot'.$row["id"].'"><input type="time" class="slotStartTimeEdit" data-id="'.$row["id"].'" value="'.$row["startTime"].'"></td>
+					<td id="slot'.$row["id"].'"><input type="time" class="slotEndTimeEdit" data-id="'.$row["id"].'" value="'.$row["endTime"].'"></td>
+					<td id="slot'.$row["id"].'"><input type="text" class="slotLocationEdit" data-id="'.$row["id"].'" value="'.$row["location"].'"></td>
+					<td id="slot'.$row["id"].'"><input type="number" class="slotRVSPlimEdit" data-id="'.$row["id"].'" value="'.$row["RSVPlim"].'" style="width: 4em"></td>
+					<td id="slot'.$row["id"].'"><button type="button" class="btn btn-danger slotDeleteButton" data-id="'.$row["id"].'">X</button></td>
+				</tr>
+			 ';
+		}
+	}
+	else
+	{
+		$output .= '<tr>
+					<td colspan="5">Data not Found</td>
+					</tr>';
+	}
+	$output .= '</table>
+		</div>';
+	echo $output;
+?>
