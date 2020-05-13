@@ -41,7 +41,7 @@
 
     // Output: if any are found, then a 2D associative array containing slot info with
     //         the first dimension being row number of result, else NULL.
-    //    2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
+    //    2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, location, endTime
     $reservationsMadeByUser = reservedSlotHist($mysqli, $user->id);
     
     $reservations = array();
@@ -241,17 +241,8 @@
 
       <label for="dateEnd">End Date: </label>
           <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
-<!--
-      <label for="slots">How many time slots? </label>
-          <input type="number" name="slots" id="slots" class="text ui-widget-content ui-corner-all" min="1">
 
-      <label for="RSVPLim">Max attendees per slot: </label>
-          <input type="number" name="RSVPLim" id="RSVPLim" class="text ui-widget-content ui-corner-all" min="0">  
-
-      <label for="RSVPslotLim">Max Reservations per attendee: </label>
-          <input type="number" name="RSVPslotLim" id="RSVPslotLim" class="text ui-widget-content ui-corner-all" min="0">  
--->
-      <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
+          <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
@@ -286,21 +277,18 @@
       <label for="titleedit">Event title: </label>
       <input type="text" name="titleedit" id="titleedit" value="" class="text ui-widget-content ui-corner-all">
 
-      <label for="descriptionedit">Event Description: </label>
+      <label for="descriptionedit">Description: </label>
       <input type="text" name="descriptionedit" id="descriptionedit" class="text ui-widget-content ui-corner-all">
 
-      <label for="dateStartEdit">Event Start Date: </label>
+      <label for="locationedit">Location:  </label>
+      <input type="text" name="locationedit" id="locationedit" class="text ui-widget-content ui-corner-all">  
+
+      <label for="dateStartEdit">Start Date: </label>
           <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
 
-      <label for="dateEndEdit">Event End Date: </label>
+      <label for="dateEndEdit">End Date: </label>
           <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
-<!--
-      <label for="durationedit">Event Duration: <small><i>HH:mm format only</i></small></label>
-          <input type="text" name="durationedit" id="durationedit" class="text ui-widget-content ui-corner-all">
 
-      <label for="RSVPslotLimedit">Max Reservations per attendee: </label>
-          <input type="number" name="RSVPslotLimedit" id="RSVPslotLimedit" class="text ui-widget-content ui-corner-all" min="0">  
--->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <button type="button" id="edit-submit">Confirm Changes</button>
@@ -316,7 +304,7 @@
     <form name="add_name" id="add_name">  
       <div class="table-responsive" id="add_name">  
          <table class="table table-bordered" id="dynamic_field">
-          <button type="button" name="add" id="add" class="btn btn-success">Add Email Slot</button>  
+          <button type="button" name="addEmail" id="addEmail" class="btn btn-success">Add Email Slot</button>  
           <p>
          </table>  
          <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" /> 

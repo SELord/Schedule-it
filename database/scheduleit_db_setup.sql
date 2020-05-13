@@ -25,6 +25,7 @@ CREATE TABLE `Event`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
 `title`  VARCHAR(255) NOT NULL,
 `description`  VARCHAR(1000),
+`location` VARCHAR(255),
 `dateStart` DATE NOT NULL,
 `dateEnd` DATE NOT NULL,
 `RSVPslotLim` INT(11) DEFAULT '1',
@@ -48,7 +49,7 @@ FOREIGN KEY (`eventID`) REFERENCES `Event` (`id`) ON DELETE CASCADE ON UPDATE CA
 CREATE TABLE `Slot`(
 `id` INT(11) NOT NULL AUTO_INCREMENT,
 `startTime` TIME NOT NULL,
-`duration` TIME NOT NULL,
+`endTime` TIME NOT NULL,
 `location` VARCHAR(255),
 `RSVPlim` INT(11) DEFAULT '1',
 `eventID` INT(11) NOT NULL,
