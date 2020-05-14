@@ -38,7 +38,7 @@
 
 	// get the slot information
 	// Output: if slot is found, then a 1D associative array containing the info, else NULL 
-	// 		array keys: id, startTime, duration, location, RSVPlim, eventID, endTime
+	// 		array keys: id, startTime, location, RSVPlim, eventID, endTime
 	//
 	$slotInfo = slotDetails($mysqli, $slotID);
 

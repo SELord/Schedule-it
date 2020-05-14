@@ -36,7 +36,7 @@
 
     // Output: if any are found, then a 2D associative array containing slot info with
     //         the first dimension being row number of result, else NULL.
-    //    2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
+    //    2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, location, endTime
     $reservationsMadeByUser = reservedSlotHist($mysqli, $onidID);
     
     $reservations = array();
