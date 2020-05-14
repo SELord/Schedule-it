@@ -8,11 +8,13 @@ require_once '../dbquery.php';
 if(!empty($_POST))
 {
 
-$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-if (!$mysqli) {
-    echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
-    exit; 
-}
+  $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+  if (!$mysqli) {
+      echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
+      exit; 
+  }
+
+  eventUpdate($mysqli, $_POST);
 
 /*  
     date_default_timezone_set('UTC');  // optional
@@ -51,8 +53,7 @@ if (!$mysqli) {
   //Submit and execute to the database
   $statement = $connect->prepare($query);
   $statement->execute();
-*/
-eventUpdate($mysqli, $_POST);
+
 
 class Slots {
   public $id;
@@ -106,6 +107,7 @@ for($i = 0; $i < count($arraySlot); $i++) {
 //var_dump($query1);
 //echo var_dump($arraySlot);
 
+*/
 }
 
 ?>

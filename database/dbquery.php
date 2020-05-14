@@ -1143,9 +1143,9 @@ function getEventEmails($conn, $id){
 // Output: true if successful, false if update failed 
 function eventUpdate($conn, $info){
 	$stmt = $conn->prepare("UPDATE Event 
-			SET title = ?, description = ?, dateStart = ?, dateEnd = ?
+			SET title = ?, description = ?, location = ?, dateStart = ?, dateEnd = ?
 			WHERE id = ?");
-	$stmt->bind_param("ssssi", $info['title'], $info['description'], $info['dateStart'], $info['dateEnd'],  $info['id']);
+	$stmt->bind_param("ssssi", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'],  $info['id']);
 	return $stmt->execute();
 }
 //--------------------------------------------------------------------------------------------------
