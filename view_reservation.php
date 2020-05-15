@@ -37,7 +37,7 @@
 
 	// get slot info from database
 	// Output: if slot is found, then a 1D associative array containing the info, else NULL 
-	// 		array keys: id, startTime, duration, location, RSVPlim, eventID, endTime
+	// 		array keys: id, startTime, location, RSVPlim, eventID, endTime
 
 	//BUG: Could not get "slotDetails" to work - redo function slotDetails_elaine
 	$slotInfo = slotDetails($mysqli, $slotID);

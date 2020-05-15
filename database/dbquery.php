@@ -23,7 +23,7 @@
 // Input: 
 //		conn = MySQL database connection object 
 //		info = associative array containing the data for creating a new event using following keys:
-//			title, description, dateStartTime (YYYY-MM-DD HH:MM), RSVPslotLim, creatorID
+//			title, description, dateStart (YYYY-MM-DD), dateEnd (YYYY-MM-DD), RSVPslotLim, creatorID
 // Output: database id of new event if successful, else false
 //--------------------------------------------------------------------------------------------------
 // Function: newSlot(conn, info[])
@@ -31,7 +31,7 @@
 // Input: 
 //		conn = MySQL database connection object 
 //		info = associative array containing the data for creating a new time slot using following keys:
-//			startTime (HH:MM), duration (HH:MM), location, RSVPlim, eventID
+//			startDateTime (HH:MM), endDateTime (HH:MM), location, RSVPlim, eventID
 // Output:  database id of new time slot if successful, else false
 //--------------------------------------------------------------------------------------------------
 // Function: lookupInvite(conn, receiverID, eventID)
@@ -82,7 +82,7 @@
 //		id = id of user on database 
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys:  eventID, inviteID, title, description, dateStartTime, firstName (of creator), lastName (of creator), status
+//		2nd dim array keys:  eventID, inviteID, title, description, dateStart, dateEnd, firstName (of creator), lastName (of creator), status
 //--------------------------------------------------------------------------------------------------
 // Function: reservedSlotHist(conn, id)
 // Description: find all slots with associated events a user has reserved
@@ -92,7 +92,7 @@
 //		id = id of user on database 
 // Output: if any are found, then a 2D associative array containing slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
+//		2nd dim array keys: eventID, inviteID, slotID, title, dateStart, dateEnd, startDateTime, location, endDateTime
 //--------------------------------------------------------------------------------------------------
 // Function: usersAccepted(conn, $id)
 // Description: all users who have made a reservation for an event in ascending order by last name 
@@ -128,7 +128,7 @@
 //		id = id of user on database
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: eventID, inviteID, title, dateStartTime, firstName, lastName
+//		2nd dim array keys: eventID, inviteID, title, dateStart, dateEnd, firstName, lastName
 //--------------------------------------------------------------------------------------------------
 // Function: eventsUpcoming(conn, id)
 // Description: future events a user created in ascending order by event date 
@@ -137,7 +137,7 @@
 //		id = id of user on database
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, title, dateStartTime
+//		2nd dim array keys: id, title, dateStart, dateEnd
 //--------------------------------------------------------------------------------------------------
 // Function: reservationsUpcoming(conn, id)
 // Description: future slots a user has reserved in ascending order by event date and slot start time 
@@ -146,7 +146,7 @@
 //		id = id of user on database
 // Output: if any are found, then a 2D associative array containing event and slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
+//		2nd dim array keys: eventID, inviteID, slotID, title, dateStart, dateEnd, startDateTime, location, endDateTime
 //--------------------------------------------------------------------------------------------------
 // Function: eventEndTime(conn, $id)
 // Description: determine an event's ending time based on end of last associated slot 
@@ -176,25 +176,25 @@
 //		conn = MySQL database connection object 
 //		id = id of event on database
 // Output: if event is found, then a 1D associative array containing the info, else NULL 
-// 		array keys: id, title, description, dateStartTime, RSVPslotLim, creatorID
+// 		array keys: id, title, description, dateStart, dateEnd, RSVPslotLim, creatorID
 //--------------------------------------------------------------------------------------------------
 // Function: eventSlots(conn, id)
-// Description: all slots for a specific event in ascending order by startTime
+// Description: all slots for a specific event in ascending order by startDateTime
 // Input: 
 //		conn = MySQL database connection object 
 //		id = id of event on database
 // Output: if any are found, then a 2D associative array containing slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, startTime, duration, location, RSVPlim, eventID, endTime
+//		2nd dim array keys: id, startDateTime, location, RSVPlim, eventID, endDateTime
 //--------------------------------------------------------------------------------------------------
 // Function: eventAvailableSlots(conn, id)
-// Description: all available slots for a specific event in ascending order by startTime
+// Description: all available slots for a specific event in ascending order by startDateTime
 // Input: 
 //		conn = MySQL database connection object 
 //		id = id of event on database
 // Output: if any are found, then a 2D associative array containing slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, startTime, endTime, location, eventID, RSVPlim, and RSVPs 
+//		2nd dim array keys: id, startDateTime, endDateTime, location, eventID, RSVPlim, and RSVPs 
 //--------------------------------------------------------------------------------------------------
 // Function: eventFromInviteID(conn, inviteID)
 // Description: return the eventID given the invite ID
@@ -209,7 +209,7 @@
 //		conn = MySQL database connection object 
 //		id = id of slot on database 
 // Output: if slot is found, then a 1D associative array containing the info, else NULL 
-// 		array keys: id, startTime, duration, location, RSVPlim, eventID, endTime
+// 		array keys: id, startDateTime, location, RSVPlim, eventID, endDateTime
 //--------------------------------------------------------------------------------------------------
 // Function: slotPosts(conn, id)
 // Description: all posts associated with a slot in ascending order by post timeStamp
@@ -265,7 +265,7 @@
 //		conn = MySQL database connection object 
 //		id = id of event on database 
 //		info = associative array containing the updated data using following keys:
-//				title, description, dateStartTime (YYYY-MM-DD HH:MM), RSVPslotLim
+//				title, description, dateStart, dateEnd, RSVPslotLim
 // Output: true if successful, false if update failed 
 //--------------------------------------------------------------------------------------------------
 // Function: userUpdate(conn, id, info[])
@@ -395,12 +395,12 @@ function newUser($conn, $info){
 // Input: 
 //		conn = MySQL database connection object 
 //		info = associative array containing the data for creating a new event using following keys:
-//			title, description, dateStartTime (YYYY-MM-DD HH:MM), RSVPslotLim, creatorID
+//			title, description, dateStart, dateEnd, RSVPslotLim, creatorID
 // Output: database id of new event if successful, else false
 function newEvent($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO Event (title, description, dateStart, dateEnd, creatorID)
-			VALUES (?, ?, ?, ?, ?)");
-	$stmt->bind_param("ssssi", $info['title'], $info['description'], $info['dateStart'], $info['dateEnd'], $info['creatorID']);
+	$stmt = $conn->prepare("INSERT INTO Event (title, description, location, dateStart, dateEnd, creatorID)
+			VALUES (?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("sssssi", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'], $info['creatorID']);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
 		return $conn->insert_id;
@@ -415,17 +415,32 @@ function newEvent($conn, $info){
 // Input: 
 //		conn = MySQL database connection object 
 //		info = associative array containing the data for creating a new time slot using following keys:
-//			startTime (HH:MM), duration (HH:MM), location, RSVPlim, eventID
-// Output:  database id of new time slot if successful, else false
-function newSlot($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO Slot (startTime, duration, location, RSVPlim, eventID)
-			VALUES (?, ?, ?, ?, ?)");
-	$stmt->bind_param("sssii", $info['startTime'], $info['duration'], $info['location'], $info['RSVPlim'], $info['eventID']);
+//			startDateTime, endDateTime, location, RSVPlim, eventID
+// Output:  detail of the slot just created
+function newSlot($conn, $eventID){
+	$time = " 00:00:00";
+	$stmt = $conn->prepare("SELECT * FROM Event WHERE id = ?");
+	$stmt->bind_param("i", $eventID);
 	if ($stmt->execute()){
-		// execute() returns true on success, false on failure
-		return $conn->insert_id;
-	}
-	else{
+		$result = $stmt->get_result();
+		$data = $result->fetch_all(MYSQLI_ASSOC);
+		$date = $data[0]["dateStart"];
+		$location = $data[0]["location"];
+		$dateTime = $date . $time;
+		$stmt = $conn->prepare("INSERT INTO Slot (startDateTime, endDateTime, location, eventID)
+		VALUES (?, ?, ?, ?)");
+		$stmt->bind_param("sssi", $dateTime, $dateTime, $location, $eventID);
+		if ($stmt->execute()) {
+			$created["id"] = $conn->insert_id;
+			$created["startDateTime"] = $dateTime;
+			$created["endDateTime"] = $dateTime;
+			$created["location"] = $location;
+			$created["RSVPlim"] = 1;
+			return $created;
+		} else {
+			return false;
+		}
+	} else {
 		return false;
 	}
 }
@@ -568,9 +583,9 @@ function eventCreateHist($conn, $id){
 //		id = id of user on database 
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys:  eventID, inviteID, title, description, dateStartTime, firstName (of creator), lastName (of creator), status
+//		2nd dim array keys:  eventID, inviteID, title, description, dateStart, dateEnd firstName (of creator), lastName (of creator), status
 function inviteHist($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.description, E.dateStart, E.dateEnd, U.firstName, U.lastName, I.status FROM Event E 
+	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.description, E.location, E.dateStart, E.dateEnd, U.firstName, U.lastName, I.status FROM Event E 
 			INNER JOIN Invite I ON E.id = I.eventID 
 			INNER JOIN User U ON E.creatorID = U.id 
 			WHERE I.receiverID = ?
@@ -593,9 +608,9 @@ function inviteHist($conn, $id){
 //		id = id of user on database 
 // Output: if any are found, then a 2D associative array containing slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
+//		2nd dim array keys: eventID, inviteID, slotID, title, dateStart, dateEnd, startDateTime, location, endDateTime
 function reservedSlotHist($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startTime, S.duration, S.location, ADDTIME(S.startTime, S.duration) AS endTime FROM Slot S 
+	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startDateTime, S.endDateTime, S.location FROM Slot S 
 			INNER JOIN Reservation R ON S.id = R.slotID 
 			INNER JOIN Invite I ON R.inviteID = I.id
 			INNER JOIN User U ON I.receiverID = U.id 
@@ -689,7 +704,7 @@ function usersNoResponse($conn, $id){
 //		id = id of user on database
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: eventID, inviteID, title, dateStartTime, firstName, lastName
+//		2nd dim array keys: eventID, inviteID, title, dateStart, dateEnd, firstName, lastName
 function invitesUpcoming($conn, $id){
 	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.dateStart, E.dateEnd, U.firstName, U.lastName FROM Invite I 
 			INNER JOIN Event E ON I.eventID = E.id 
@@ -713,11 +728,11 @@ function invitesUpcoming($conn, $id){
 //		id = id of user on database
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, title, dateStartTime
+//		2nd dim array keys: id, title, dateStart, dateEnd
 function eventsUpcoming($conn, $id){
-	$stmt = $conn->prepare("SELECT id, title, dateStartTime FROM Event 
-			WHERE dateStartTime >= NOW() AND creatorID = ?
-			ORDER BY dateStartTime ASC");
+	$stmt = $conn->prepare("SELECT id, title, dateStart FROM Event 
+			WHERE dateStart >= NOW() AND creatorID = ?
+			ORDER BY dateStart ASC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -735,15 +750,15 @@ function eventsUpcoming($conn, $id){
 //		id = id of user on database
 // Output: if any are found, then a 2D associative array containing event and slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: eventID, inviteID, slotID, title, dateStartTime, startTime, duration, location, endTime
+//		2nd dim array keys: eventID, inviteID, slotID, title, dateStart, dateEnd, startDateTime, endDateTime, location
 function reservationsUpcoming($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStartTime, S.startTime, S.duration, S.location, ADDTIME(S.startTime, S.duration) AS endTime FROM Slot S 
+	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startDateTime, S.endDateTime, S.location FROM Slot S 
 			INNER JOIN Reservation R ON S.id = R.slotID 
 			INNER JOIN Invite I ON R.inviteID = I.id
 			INNER JOIN User U ON I.receiverID = U.id 
 			INNER JOIN Event E ON I.eventID = E.id 
-			WHERE E.dateStartTime >= NOW() AND U.id = ?
-			ORDER BY E.dateStartTime ASC, S.startTime ASC");
+			WHERE E.dateStart >= NOW() AND U.id = ?
+			ORDER BY E.dateStart ASC, S.startDateTime ASC");
 	$stmt->bind_param("i",$id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -761,13 +776,13 @@ function reservationsUpcoming($conn, $id){
 //		id = id of event on database
 // Output: if found a string representing the ending time of the event in format HH:MM:00, else NULL
 function eventEndTime($conn, $id){
-	$stmt = $conn->prepare("SELECT MAX(ADDTIME(startTime,duration)) AS endTime FROM Slot
+	$stmt = $conn->prepare("SELECT MAX(endDateTime) AS endDateTime FROM Slot
 			WHERE eventID = ?;");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
 		$data = $result->fetch_all(MYSQLI_ASSOC); 
-		return $data[0]['endTime'];
+		return $data[0]['endDateTime'];
 	}
 	else{
 		return NULL;
@@ -824,7 +839,7 @@ function inviteDetails($conn, $id){
 //		conn = MySQL database connection object 
 //		id = id of event on database
 // Output: if event is found, then a 1D associative array containing the info, else NULL 
-// 		array keys: id, title, description, dateStartTime, RSVPslotLim, creatorID
+// 		array keys: id, title, description, dateStart, dateEnd, RSVPslotLim, creatorID
 function eventDetails($conn, $id){
 	$stmt = $conn->prepare("SELECT * FROM Event WHERE id = ?");
 	$stmt->bind_param("i", $id);
@@ -839,16 +854,16 @@ function eventDetails($conn, $id){
 }
 //--------------------------------------------------------------------------------------------------
 // Function: eventSlots(conn, id)
-// Description: all slots for a specific event in ascending order by startTime
+// Description: all slots for a specific event in ascending order by startDateTime
 // Input: 
 //		conn = MySQL database connection object 
 //		id = id of event on database
 // Output: if any are found, then a 2D associative array containing slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, startTime, duration, location, RSVPlim, eventID, endTime
+//		2nd dim array keys: id, startDateTime, location, RSVPlim, eventID, endDateTime
 function eventSlots($conn, $id){
-	$stmt = $conn->prepare("SELECT *, ADDTIME(startTime, duration) AS endTime FROM Slot 
-			WHERE eventID = ? ORDER BY startTime ASC");
+	$stmt = $conn->prepare("SELECT * FROM Slot 
+			WHERE eventID = ? ORDER BY startDateTime ASC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -860,17 +875,17 @@ function eventSlots($conn, $id){
 }
 //--------------------------------------------------------------------------------------------------
 // Function: eventAvailableSlots(conn, id)
-// Description: all available slots for a specific event in ascending order by startTime
+// Description: all available slots for a specific event in ascending order by startDateTime
 // Input: 
 //		conn = MySQL database connection object 
 //		id = id of event on database
 // Output: if any are found, then a 2D associative array containing slot info with
 //         the first dimension being row number of result, else NULL.
-//		2nd dim array keys: id, startTime, endTime, location, eventID, RSVPlim, and RSVPs 
+//		2nd dim array keys: id, startDateTime, endDateTime, location, eventID, RSVPlim, and RSVPs 
 function eventAvailableSlots($conn, $eventID, $userID){
-	$sql = "SELECT S.id, S.startTime, S.endTime, S.location, S.RSVPlim, C.count AS RSVPs
+	$sql = "SELECT S.id, S.startDateTime, S.endDateTime, S.location, S.RSVPlim, C.count AS RSVPs
 	FROM (
-	SELECT Slot.id, Slot.eventID, Slot.startTime, ADDTIME(Slot.startTime, Slot.duration) AS endTime, Slot.location, Slot.RSVPlim AS RSVPlim
+	SELECT Slot.id, Slot.eventID, Slot.startDateTime, endDateTime, Slot.location, Slot.RSVPlim AS RSVPlim
 	FROM Slot
 	INNER JOIN Event ON Slot.eventID = Event.id
 	WHERE Slot.eventID = ?
@@ -883,7 +898,7 @@ function eventAvailableSlots($conn, $eventID, $userID){
 	INNER JOIN Invite I ON S.eventID = I.eventID AND I.receiverID = ?
 	LEFT JOIN Reservation ON S.id = Reservation.slotID AND I.ID = Reservation.inviteID
 	WHERE (S.RSVPlim > C.count OR C.count IS NULL) AND Reservation.inviteID IS NULL
-	ORDER by S.startTime ASC;
+	ORDER by S.startDateTime ASC;
 	";
 	$stmt = $conn->prepare($sql);
 	$stmt->bind_param("ii", $eventID, $userID);
@@ -901,7 +916,7 @@ function eventAvailableSlots($conn, $eventID, $userID){
 // Input: 
 //		conn = MySQL database connection object 
 //		inviteID = id of invite on database
-// Output: If any is found, then an 1d associative array is returned. The keys are id, title, description, dateStartTime, RSVPslotLim, and creatorID
+// Output: If any is found, then an 1d associative array is returned. The keys are id, title, description, dateStart, dateEnd, RSVPslotLim, and creatorID
 //         Otherwise, null is returned.
 function eventFromInviteID($conn, $inviteID) {
 	$sql = "SELECT * FROM Event 
@@ -926,9 +941,9 @@ function eventFromInviteID($conn, $inviteID) {
 //		conn = MySQL database connection object 
 //		id = id of slot on database 
 // Output: if slot is found, then a 1D associative array containing the info, else NULL 
-// 		array keys: id, startTime, duration, location, RSVPlim, eventID, endTime
+// 		array keys: id, startDateTime, endDateTime, location, RSVPlim, eventID, endDateTime
 function slotDetails($conn, $id){
-	$stmt = $conn->prepare("SELECT *, ADDTIME(startTime, duration) AS endTime FROM Slot WHERE id = ? ORDER BY endTime DESC");
+	$stmt = $conn->prepare("SELECT * FROM Slot WHERE id = ? ORDER BY endDateTime DESC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -1124,13 +1139,33 @@ function getEventEmails($conn, $id){
 //		conn = MySQL database connection object 
 //		id = id of event on database 
 //		info = associative array containing the updated data using following keys:
-//				title, description, dateStartTime (YYYY-MM-DD HH:MM), RSVPslotLim
+//				title, description, dateStart, dateEnd, RSVPslotLim
 // Output: true if successful, false if update failed 
 function eventUpdate($conn, $info){
 	$stmt = $conn->prepare("UPDATE Event 
 			SET title = ?, description = ?, dateStart = ?, dateEnd = ?
 			WHERE id = ?");
 	$stmt->bind_param("ssssi", $info['title'], $info['description'], $info['dateStart'], $info['dateEnd'],  $info['id']);
+	return $stmt->execute();
+}
+//--------------------------------------------------------------------------------------------------
+// Function: slotUpdate(conn, id, key, value)
+// Description: update a slot's details
+// Input: 
+//		conn = MySQL database connection object 
+//		id = id of slot on database 
+// Output: true if successful, false if update failed 
+function slotUpdate($conn, $info){
+	if ($info["key"] == "startDateTime") {
+		$stmt = $conn->prepare("UPDATE Slot SET startDateTime = ? WHERE id = ?");
+	} else if ($info["key"] == "endDateTime") {
+		$stmt = $conn->prepare("UPDATE Slot SET endDateTime = ? WHERE id = ?");
+	} else if ($info["key"] == "location") {
+		$stmt = $conn->prepare("UPDATE Slot SET location = ? WHERE id = ?");
+	} else if ($info["key"] == "RSVPlim") {
+		$stmt = $conn->prepare("UPDATE Slot SET RSVPlim = ? WHERE id = ?");
+	}
+	$stmt->bind_param("si", $info["value"], $info["id"]);
 	return $stmt->execute();
 }
 //--------------------------------------------------------------------------------------------------
