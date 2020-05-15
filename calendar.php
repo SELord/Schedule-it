@@ -92,6 +92,9 @@
   <!-- <script src="./assets/js/homepage.js"></script> -->
   <script src="./assets/js/event.js"></script> 
 
+  <!-- fontawesome for icon usage eg. navbar hamburger icon -->
+  <script src="https://kit.fontawesome.com/96abf9bb58.js" crossorigin="anonymous"></script>
+
   <!--fullcalendar-->
   <!--Use daygrid-views for homepage -->
   <!--Use Selectable for event creation page-->
@@ -158,35 +161,40 @@
   <script src='./assets/js/fullcalendar/packages/moment/main.js'></script>
 </head>
 <body>
-  <!-- HEADER CODE FROM OSU WEBSITE TO DEVELOP COHESIVE LOOK -->
-    <div class="header-container">
-        <header role="banner" class="osu-top-hat">
-            <a href="https://oregonstate.edu" title="Schedule-It Home" class="logo">
-              <img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg" alt="Oregon State University" />
-            </a>
-            <nav role="navigation" id="block-homepage-main-menu" class="d-none d-lg-block">
-              <ul class="main-menu nav nav-pills">
-                <li class="nav-item">
-                  <a href="homepage.php" class="nav-link">Schedule-It Home</a>
-                </li>
-                <li class="nav-item">
-                  <a href="calendar.php" class="nav-link">Calendar</a>
-                </li>
-                <li class="nav-item">
-                  <a href="eventmanagement.php" class="nav-link">Manage Events</a>
-                </li>
-                <li class="nav-item">
-                  <a href="view_history.php" class="nav-link">Past Meetings</a>
-                </li>
-                <!-- Temporary spacing fix -->
-                　　　　　　　　　　　　　　　　　　　　　　　
-                <li class="nav-item">
-                  <a href="logout.php" class="nav-link">Logout</a>
-                </li>
-              </ul>
-            </nav>
-        </header>
-    </div><p>
+  <!-- Mobile responsive navbar -->
+    <nav class="navbar navbar-expand-md schedule-it-top-hat">
+        <div class="container-fluid">
+            <a class="navbar-brand logo" href="https://oregonstate.edu"><img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="fas fa-bars fa-1x"></i></span>
+            </button>
+ 
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav schedule-it-main-menu mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="homepage.php">Schedule-It Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="calendar.php">Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="eventmanagement.php">Manage Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="view_history.php">Past Meetings</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav schedule-it-main-menu ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <p>
 
     <!-- Passing variables from php to javascript to populate events and reservations -->
     <script type="text/javascript"> 
