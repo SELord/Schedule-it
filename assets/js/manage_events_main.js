@@ -28,7 +28,7 @@ function createdEventHist() {
     calendar.render();
 }
 
-
+/*
 function eventInfo(){
     document.getElementById("eventTitle").textContent = eventDetails.title;
     document.getElementById("eventDesc").textContent = eventDetails.description;
@@ -38,7 +38,7 @@ function eventInfo(){
     //document.getElementById("location").textContent = 'Location: ' + slotDetails.location;
     //document.getElementById("remainingRes").textContent = 'Available Reservations: ' + slotDetails.remainingRes;
 }
-
+*/
 
 function showEventHist(event){
 	event.stopPropagation();

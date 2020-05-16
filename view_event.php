@@ -33,8 +33,7 @@
 
 	// query database for event info
 	$eventInfo = eventDetails($mysqli, $eventID);
-	$eventDate = substr($eventInfo['dateStartTime'], 0, 10);
-	$eventInfo['date'] = $eventDate;
+	$eventInfo['date'] = $eventInfo['dateStart'];
 	
 
 	// get posts to slot from database
@@ -152,16 +151,16 @@
 			<div class="col-sm-6"><h3 class="text-center" id="eventTitle"></h3></div>
 			<div class="col-sm-3"></div>
 		</div>
-		<div class="row">
+	<!--	<div class="row">
 			<div class="col-sm-3"></div>
 			<div class="col-sm-6"><h4 class="text-center" id="eventDate"></h4></div>
 			<div class="col-sm-3"></div>
-		</div>
+		</div> -->
 		<div class="row">
             <div class="col-sm-2"></div>
-			<div class="col-sm-4"><h5 class="text-left" id="startTime"></h5></div>
+			<div class="col-sm-4"><h5 class="text-left" id="dateStart"></h5></div>
             <div class="col-sm-1"></div>
-			<div class="col-sm-4"><h5 class="text-center" id="endTime"></h5></div>
+			<div class="col-sm-4"><h5 class="text-center" id="dateEnd"></h5></div>
             <div class="col-sm-1"></div>
 			<!-- <div class="col-sm-4"><h5 class="text-right" id="location"></h5></div> -->
 		</div>

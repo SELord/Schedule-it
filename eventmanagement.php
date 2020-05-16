@@ -36,9 +36,9 @@
         $tmp['id'] = $events[$i]['id'];
         $tmp['title'] = $events[$i]['title'];
         $tmp['description'] = $events[$i]['description'];
-        $tmp['start'] = $events[$i]['dateStartTime'];
-        $tmp['end'] = $events[$i]['dateEndTime'];
-        $tmp['duration'] = $events[$i]['duration'];
+        $tmp['start'] = $events[$i]['dateStart'];
+        $tmp['end'] = $events[$i]['dateEnd'];
+        $tmp['creator'] = $events[$i]['creatorID'];
         $tmp['max_rsvp'] = $events[$i]['RSVPslotLim'];
         $tmp['url'] = './view_event.php?event=' . $events[$i]['id'];
         $pastEvents[$i] = $tmp;

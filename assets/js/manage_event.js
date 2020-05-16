@@ -3,9 +3,9 @@
 function eventInfo(){
     document.getElementById("eventTitle").textContent = eventDetails.title;
     document.getElementById("eventDesc").textContent = eventDetails.description;
-    document.getElementById("eventDate").textContent = eventDetails.date;
-    document.getElementById("startTime").textContent = 'Start: ' + eventDetails.dateStartTime;
-    document.getElementById("endTime").textContent = 'End: ' + eventDetails.dateEndTime;
+    //document.getElementById("eventDate").textContent = eventDetails.date;
+    document.getElementById("dateStart").textContent = 'Start: ' + eventDetails.dateStart;
+    document.getElementById("dateEnd").textContent = 'End: ' + eventDetails.dateEnd;
     //document.getElementById("location").textContent = 'Location: ' + slotDetails.location;
     //document.getElementById("remainingRes").textContent = 'Available Reservations: ' + slotDetails.remainingRes;
 }
