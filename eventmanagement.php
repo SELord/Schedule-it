@@ -23,41 +23,30 @@
 	
 	// get userID from session 
     //Find userID based off of onid
-     $data = lookupUser($mysqli, $_SESSION["onidID"]);
-     $user = json_decode($data);
+    $data = lookupUser($mysqli, $_SESSION["onidID"]);
+    $user = json_decode($data);
 	
-	// get past events, invites, and reservations from database 
-	$invites = inviteHist($mysqli, $user->id);
-	$reservations = reservedSlotHist($mysqli, $user->id);
+	// get past events from database 
+    $events = eventCreateHist($mysqli, $user->id);
 	
-	// process invites to build an array for fullcalendar.io
-	$pastInvites = array();
-	for($i = 0; $i < count($invites); $i++){
-		$tmp = array();
-		$tmp['id'] = $invites[$i]['inviteID'];
-		$tmp['title'] = $invites[$i]['title'] . " (" . $invites[$i]['status'] . ")";
-		$tmp['start'] = $invites[$i]['dateStartTime'];
-		$tmp['end'] = substr($invites[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $invites[$i]['eventID']);
-		$pastInvites[$i] = $tmp;
-	}
-	
-	// process reservations to build an array for fullcalendar.io
-	$pastReservations = array();
-	for($i = 0; $i < count($reservations); $i++){
-		$tmp = array();
-		$tmp['id'] = $reservations[$i]['slotID'];
-		$tmp['title'] = $reservations[$i]['title'] . ", Location: " . $reservations[$i]['location'];
-		$tmp['start'] = substr($reservations[$i]['dateStartTime'],0,10) . 'T' . $reservations[$i]['startTime'];
-		$tmp['end'] = substr($reservations[$i]['dateStartTime'],0,10) . 'T' . $reservations[$i]['endTime'];
-		$tmp['url'] = './view_reservation.php?slot=' . $reservations[$i]['slotID'];
-		$pastReservations[$i] = $tmp;
-	}
-	
+    // process events to build an array for fullcalendar.io
+    $pastEvents = array();
+    for($i = 0; $i < count($events); $i++){
+        $tmp = array();
+        $tmp['id'] = $events[$i]['id'];
+        $tmp['title'] = $events[$i]['title'];
+        $tmp['description'] = $events[$i]['description'];
+        $tmp['start'] = $events[$i]['dateStart'];
+        $tmp['end'] = $events[$i]['dateEnd'];
+        $tmp['creator'] = $events[$i]['creatorID'];
+        $tmp['max_rsvp'] = $events[$i]['RSVPslotLim'];
+        $tmp['url'] = './view_event.php?event=' . $events[$i]['id'];
+        $pastEvents[$i] = $tmp;
+    }
 	
 	// send to javascript on client
 	echo "<script>\n";
-	echo "var pastInvites = " . json_encode($pastInvites) . ";\n";
-	echo "var pastReservations = " . json_encode($pastReservations) . ";\n";
+    echo "let pastEvents = " . json_encode($pastEvents) . ";\n";
 	echo "</script>";
 
 
@@ -79,7 +68,10 @@
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/view_history.js"></script>
+  <script src="./assets/js/manage_events_main.js"></script>
+
+  <!-- fontawesome for icon usage eg. navbar hamburger icon -->
+  <script src="https://kit.fontawesome.com/96abf9bb58.js" crossorigin="anonymous"></script>
   
 
 
@@ -102,45 +94,40 @@
 
 </head>
 <body>
-  <!-- HEADER CODE FROM OSU WEBSITE TO DEVELOP COHESIVE LOOK -->
-  <div class="header-container">
-        <header role="banner" class="osu-top-hat">
-            <a href="https://oregonstate.edu" title="Schedule-It Home" class="logo">
-              <img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg" alt="Oregon State University" />
-            </a>
-            <nav role="navigation" id="block-homepage-main-menu" class="d-none d-lg-block">
-              <ul class="main-menu nav nav-pills">
-                <li class="nav-item">
-                  <a href="homepage.php" class="nav-link">Schedule-It Home</a>
-                </li>
-                <li class="nav-item">
-                  <a href="calendar.php" class="nav-link">Calendar</a>
-                </li>
-                <li class="nav-item">
-                  <a href="eventmanagement.php" class="nav-link">Manage Events</a>
-                </li>
-                <li class="nav-item">
-                  <a href="view_history.php" class="nav-link">Past Meetings</a>
-                </li>
-                <!-- Temporary spacing fix -->
-                　　　　　　　　　　　　　　　　　　　　　　　
-                <li class="nav-item">
-                  <a href="logout.php" class="nav-link">Logout</a>
-                </li>
-              </ul>
-            </nav>
-        </header>
-    </div><p>
-	
-	<!-- buttons to switch between past events created by user and slots reserved by user -->
-	<div class="container-fluid">
-	    <div class="row">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
-			<div class="col-sm-3"></div>
-		</div>
-	</div>
+
+    <nav class="navbar navbar-expand-md schedule-it-top-hat">
+        <div class="container-fluid">
+            <a class="navbar-brand logo" href="https://oregonstate.edu"><img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="fas fa-bars fa-1x"></i></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav schedule-it-main-menu mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="homepage.php">Schedule-It Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="calendar.php">Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="eventmanagement.php">Manage Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="view_history.php">Past Meetings</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav schedule-it-main-menu ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+ 
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-2"></div>
