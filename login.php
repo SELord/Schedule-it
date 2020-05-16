@@ -23,7 +23,7 @@ require_once './database/dbquery.php';
 * you don't want to do either of these two things.
 *
 */
-if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["ticket"]) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["ticket"])) {
    if ($response = responseForTicket($_GET["ticket"])) {
 
       $responseArray = preg_split("/\n/", $response);

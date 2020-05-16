@@ -322,7 +322,7 @@ function generateGrid() {
                 dateEnd:dateEnd
             },
             success: function(response){
-                console.log(response);
+                //console.log(response);
                 calendar.refetchEvents();
                 alert("Edited Successfully");
                 $("#edit-form").dialog("close");
