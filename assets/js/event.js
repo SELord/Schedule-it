@@ -301,6 +301,7 @@ function generateGrid() {
         e.preventDefault();
         var title = $('#titleedit').val();
         var description = $('#descriptionedit').val();
+        var location = $('#locationedit').val();
         //var getdate = event.start.toISOString();
         //turn date YYYY-MM-DD
         //var date = getdate.split("T")[0];
@@ -313,14 +314,15 @@ function generateGrid() {
             url:"../Schedule-it/database/event/update_month.php",
             type:"POST",
             data: {
-                id:id, 
-                title:title, 
-                description:description, 
+                id:id,
+                title:title,
+                description:description,
+                location:location,
                 dateStart:dateStart,
                 dateEnd:dateEnd
             },
             success: function(response){
-                console.log(response);
+                //console.log(response);
                 calendar.refetchEvents();
                 alert("Edited Successfully");
                 $("#edit-form").dialog("close");
