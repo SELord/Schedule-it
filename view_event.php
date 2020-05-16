@@ -28,44 +28,27 @@
 	// get userID from session 
 	$userID = $user->id;   
 
+	// extract eventID from request
+	$eventID = $_GET['event'];
 
-	// extract slotID from request
-	$slotID = $_GET['slot'];
-	$inviteID = $_GET['inviteID'];
-
-	// TODO: check that user who is logged in has a reservation for this slot and only display info if they do 
-
-	// get slot info from database
-	// Output: if slot is found, then a 1D associative array containing the info, else NULL 
-	// 		array keys: id, startTime, location, RSVPlim, eventID, endTime
-
-	//BUG: Could not get "slotDetails" to work - redo function slotDetails_elaine
-	$slotInfo = slotDetails($mysqli, $slotID);
-	
 	// query database for event info
-	$eventInfo = eventDetails($mysqli, $slotInfo['eventID']);
-	$eventDate = substr($eventInfo['dateStartTime'], 0, 10);
-	$eventInfo['date'] = $eventDate;
+	$eventInfo = eventDetails($mysqli, $eventID);
+	$eventInfo['date'] = $eventInfo['dateStart'];
 	
 
-	
-	// get reservation count from database
-	$RSVPcnt = slotRSVPCount($mysqli, $slotID);
-	$remainingRes = $slotInfo['RSVPlim'] - $RSVPcnt;
-	$slotInfo['remainingRes'] = $remainingRes;
-	
-	// get posts to slot from database 
-	$posts = slotPosts($mysqli, $slotID);
+	// get posts to slot from database
+    // Commented out due to thought needed on how to display this data at the event level
+	//$posts = slotPosts($mysqli, $slotID);
 	
 	// get list of attendees who have reserved the same slot 
-	$attendees = slotAttendees($mysqli, $slotID);
+	//$attendees = slotAttendees($mysqli, $slotID);
 
 	// send to javascript on client
 	echo "<script>\n";
-	echo "var eventDetails = " . json_encode($eventInfo) . ";\n";
-	echo "var slotDetails = " . json_encode($slotInfo) . ";\n";
-	echo "var posts = " . json_encode($posts) . ";\n";
-	echo "var attendees = " . json_encode($attendees) . ";\n";
+	echo "let eventDetails = " . json_encode($eventInfo) . ";\n";
+	//echo "var slotDetails = " . json_encode($slotInfo) . ";\n";
+	//echo "var posts = " . json_encode($posts) . ";\n";
+	//echo "var attendees = " . json_encode($attendees) . ";\n";
 	echo "</script>";
 
 	$mysqli->close();
@@ -85,7 +68,7 @@
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/view_reservation.js"></script>
+  <script src="./assets/js/manage_event.js"></script>
 
   <!-- fontawesome for icon usage eg. navbar hamburger icon -->
   <script src="https://kit.fontawesome.com/96abf9bb58.js" crossorigin="anonymous"></script>
@@ -145,6 +128,22 @@
 
     <p>
 
+    <!-- Buttons to perform actions related to the event -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-block" data-toggle="modal" data-target="#eventLinkModal">Get Shareable Link</button>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-block" data-toggle="modal" data-target="#eventAnnouncementModal">Send Announcement</button>
+            </div>
+            <div class="col-sm-2"><button type="button" class="btn btn-block" onclick="editEvent(event)" id="editEventButton">Edit Event</div>
+            <div class="col-sm-3"></div>
+        </div>
+    </div>
+
+
 	<!-- Event Info -->
 	<div class="container-fluid">
 		<div class="row">
@@ -152,40 +151,45 @@
 			<div class="col-sm-6"><h3 class="text-center" id="eventTitle"></h3></div>
 			<div class="col-sm-3"></div>
 		</div>
-		<div class="row">
+	<!--	<div class="row">
 			<div class="col-sm-3"></div>
 			<div class="col-sm-6"><h4 class="text-center" id="eventDate"></h4></div>
 			<div class="col-sm-3"></div>
+		</div> -->
+		<div class="row">
+            <div class="col-sm-2"></div>
+			<div class="col-sm-4"><h5 class="text-left" id="dateStart"></h5></div>
+            <div class="col-sm-1"></div>
+			<div class="col-sm-4"><h5 class="text-center" id="dateEnd"></h5></div>
+            <div class="col-sm-1"></div>
+			<!-- <div class="col-sm-4"><h5 class="text-right" id="location"></h5></div> -->
 		</div>
 		<div class="row">
-			<div class="col-sm-4"><h5 class="text-left" id="startTime"></h5></div>
-			<div class="col-sm-4"><h5 class="text-center" id="endTime"></h5></div>
-			<div class="col-sm-4"><h5 class="text-right" id="location"></h5></div>
-		</div>
-		<div class="row">
-			<div class="col-sm-8"><p id="eventDesc"></p></div>
-			<div class="col-sm-4">
-				<a class="btn btn-block" href=<?php echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a>
+            <div class="col-sm-1"></div>
+			<div class="col-sm-10"><p id="eventDesc"></p></div>
+			<div class="col-sm-1">
+			<!--	<a class="btn btn-block" href=<?php // echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a> -->
 			</div>
 		</div>
-		<div class="row">
+	<!--	<div class="row">
 			<div class="col-sm-6"><h6 class="text-left" id="remainingRes"></h6></div>
 			<div class="col-sm-2"></div>
 			<div class="col-sm-4"><button type="button" class="btn btn-block" data-toggle="modal"
 			data-target="#attendeeListModal">Attendee List</button></div>
-		</div>
+		</div> -->
 	</div>
 	
-	<!-- Modal for Attendee List to display who is attending the event -->
-	<div id="attendeeListModal" class="modal fade" role="dialog">
+	<!-- Modal to display and copy event invite link -->
+    <!-- TODO: Having a shareable link would require re-thinking the invite db table since it currently only creates a new invite id when a user email gets added/sent -->
+	<div id="eventLinkModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Attendee List</h4>
+					<h4 class="modal-title">Event Invite Link</h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<ul id="attendeeList" class="list-group">
+					<ul id="eventLink" class="list-group">
 					</ul>
 				</div>
 				<div class="modal-footer">
@@ -196,8 +200,81 @@
 	</div>
 
 
+
+    <!-- Modal to receive input for announcement -->
+	<form method="POST" id="announceModalForm">
+        <div id="eventAnnouncementModal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title">Send Announcement</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <label data-error="wrong" data-success="right" for="announce-subject">Subject</label>
+                            <input type="text" id="announce-subject" class="form-control validate">
+                        </div>
+
+                        <div class="md-form">
+                            <label data-error="wrong" data-success="right" for="announce-message">Your message</label>
+                            <textarea type="text" id="announce-message" class="md-textarea form-control" rows="6"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="submitAnnouncement" class="btn btn-default">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+    <div class="container" id="slot-confirmations">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col" class="text-center">Slot 1 Date/Time</th>
+                    <th scope="col" class="text-center">Slot 2 Date/Time</th>
+                    <th scope="col" class="text-center">Slot 3 Date/Time</th>
+                </tr>
+                <tr>
+                    <th scope="col"># of Participants</th>
+                    <th scope="col" class="text-center">Slot 1 total</th>
+                    <th scope="col" class="text-center">Slot 2 total</th>
+                    <th scope="col" class="text-center">Slot 3 total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">lords</th>
+                    <td></td>
+                    <td class="text-center">&#x2705</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">ohsa</th>
+                    <td class="text-center">&#x2705</td>
+                    <td class="text-center">&#x2705</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">fisherv</th>
+                    <td></td>
+                    <td class="text-center">&#x2705</td>
+                    <td class="text-center">&#x2705</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
 	<!-- Posts -->
-	<div class="container-fluid" id="content">
+<!--
+    <div class="container-fluid" id="content">
 
         <table class="table-responsive table-bordered table-striped">
 
@@ -213,7 +290,7 @@
 			</tbody>
 		</table>
     </div>
-    
+-->    
 	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
