@@ -71,12 +71,5 @@ require '../../assets/php/emailer.php';  // email functions
 
   $connect->close();
 
-  /******************TO DO FOR NEXT GROUP****************
-  (1) CREATE AN EMAIL TO PHYSICALLY SEND RESERVATION TO INVITEE AND SEND A URL TO INVITEE
-  (2) USE THESE FUNCTIONS TO SEND EMAIL -- "newEventEmail", "updateEventEmail", and "updateSlotEmail"
-        - Find these functions in Schedule-it/assets/php/emailer.php 
-
-  **/
-
 
  ?> 
