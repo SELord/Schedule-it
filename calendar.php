@@ -330,6 +330,10 @@
          <table class="table table-bordered" id="dynamic_field">
           <button type="button" name="addEmail" id="addEmail" class="btn btn-success">Add Email Slot</button>  
           <p>
+          <tr id="row0">
+            <td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td>
+            <td><button type="button" name="remove" id="0" class="btn btn-danger btn_remove">X</button></td>
+          </tr>
          </table>  
          <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" /> 
         <input type="button" name="submit" id="submitEmail" class="btn btn-info" value="Submit" />

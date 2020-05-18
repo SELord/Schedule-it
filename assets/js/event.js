@@ -400,7 +400,11 @@ function generateGrid() {
 
     //BUTTON TO TRIGGER EMAIL FORM
     $('#sendEmail').on('click',function(e){
-        $("#send-email").dialog();
+        if ($('#dynamic_field tr').length < 1) {
+            i++;
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+        }
+        $("#send-email").dialog({ width: 400 });
     });
 
     //Get email from form, validate it, and send using emails.php file
