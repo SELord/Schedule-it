@@ -156,6 +156,22 @@ function generateGrid() {
         $( "#dialog-form" ).dialog();
     });
 
+    // for formulating a row in slot display modal, used in edit_data() and $('#edit-slotbtn')
+    function slotRow(item) {
+        return '<tr id="slot' + item.id + '">'
+        + '<td><input type="date" class="slotStartDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
+        + '<td><input type="time" class="slotStartTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[1] + '"></td>'
+        + '<td><input type="date" class="slotEndDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
+        + '<td><input type="time" class="slotEndTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[1] + '"></td>'
+        + '<td><input type="text" class="slotLocationEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.location + '"></td>'
+        + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.RSVPlim + '" style="width: 4em"></td>'
+        + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + item.id + '" id="slotAttr' + item.id + '">X</button></td>'
+        + '</tr>';
+    }
+
+    // for use in edit_data() and $('#edit-slotbtn')
+    const noSlots = '<td id="noSlotsRow" colspan="7">No slots in the event</td>';
+
     // for editing slot data, used below
     function edit_data(id, key, value) {  
         $.ajax({  
@@ -169,17 +185,9 @@ function generateGrid() {
             success:function(data){
                 // return integer means a slot was created
                 if (data) {
-                    const result = JSON.parse(data);
-                    $('#slotEditTable').append('<tr id="slot' + result.id + '">'
-                        + '<td><input type="date" class="slotStartDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                        + '<td><input type="time" class="slotStartTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[1] + '"></td>'
-                        + '<td><input type="date" class="slotEndDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                        + '<td><input type="time" class="slotEndTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[1] + '"></td>'
-                        + '<td><input type="text" class="slotLocationEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.location + '"></td>'
-                        + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.RSVPlim + '" style="width: 4em"></td>'
-                        + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + result.id + '" id="slotAttr' + result.id + '">X</button></td>'
-                        + '</tr>'
-                    );
+                    // display the row on the table
+                    const item = JSON.parse(data);
+                    $('#slotEditTable').append(slotRow(item));
                 }
             },
             error: function(error) {
@@ -197,11 +205,11 @@ function generateGrid() {
 
     // delete button for each slot
     $(document).on('click', '.slotDeleteButton', function(){
-        edit_data($(this).data("id"), "delete");
+        edit_data($(this).data("id"), "delete");        // edit the data in database
         var button_id = $(this).data("id");
-        $('#slot'+button_id+'').remove();
-        if ($('#slotEditTable tr').length < 2) {
-            $('#slotEditTable').append('<td id="noSlotsRow" colspan="7">No slots in the event</td>');
+        $('#slot'+button_id+'').remove();               // remove the row from the modal
+        if ($('#slotEditTable tr').length < 2) {        // add "no slots" comment if no slots
+            $('#slotEditTable').append(noSlots);
         }
     });
 
@@ -229,7 +237,7 @@ function generateGrid() {
         edit_data($(this).data("id"), "RSVPlim", $(this).val());
     });
 
-    //TRIGGER EDIT SLOT CHANGES
+    //TRIGGER EDIT SLOT CHANGES (click "edit slots" button)
     $('#edit-slotbtn').on('click',function(e){
         e.preventDefault();
         const eventID = $("#edit-delete").data('id');  //to get ID from event-click variable
@@ -239,6 +247,7 @@ function generateGrid() {
             //height: 300,  // gbdg-ebg 12/12/2011 Change height from 190 to 250
             modal: true,
             close: function() {
+                // repopulate the slot data modal every time it opens
                 $('#slotEditTable').empty();
                 $('#slotEditTable').append('<tr id="slotTableHeader"><th>Start Date</th><th>Start Time</th><th>End Date</th><th>End Time</th><th>Location</th><th>RSVP Limit</th><th>Delete</th></tr>');
             }
@@ -253,20 +262,10 @@ function generateGrid() {
                 // display the slots on the table
                 if (data.length > 0) {
                     data.forEach(item => {
-                        $('#slotEditTable').append(
-                            '<tr id="slot' + item.id + '">'
-                            + '<td><input type="date" class="slotStartDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                            + '<td><input type="time" class="slotStartTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[1] + '"></td>'
-                            + '<td><input type="date" class="slotEndDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                            + '<td><input type="time" class="slotEndTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[1] + '"></td>'
-                            + '<td><input type="text" class="slotLocationEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.location + '"></td>'
-                            + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.RSVPlim + '" style="width: 4em"></td>'
-                            + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + item.id + '" id="slotAttr' + item.id + '">X</button></td>'
-                            + '</tr>'
-                        );
+                        $('#slotEditTable').append(slotRow(item));
                     });
                 } else {
-                    $('#slotEditTable').append('<td id="noSlotsRow" colspan="7">No slots in the event</td>');
+                    $('#slotEditTable').append(noSlots);        // add "no slots" comment if no slots
                 }
             },  
             error: function(error) {
@@ -276,7 +275,7 @@ function generateGrid() {
     });
 
 
-    //TRIGGER EDIT CHANGES FROM EDIT-FORM ON "CONFIRM CHANGES" BUTTON
+    //TRIGGER EDIT CHANGES FROM EDIT-FORM ON "CONFIRM CHANGES" BUTTON (click "Confirm Changes" button on event)
     $('#edit-submit').on('click',function(e){
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
         //var event = calendar.getEventById(id);
@@ -366,8 +365,7 @@ function generateGrid() {
         }
     });
 
-    //BUTTON TO TRIGGER THE EDIT-MODE - THIS GETS FORM DATA FOR EDIT-FORM 
-    /**** TO DO FOR NEXT GROUP : Be able to change location and # of slots dynamically ***/
+    //BUTTON TO TRIGGER THE EDIT-MODE - THIS GETS FORM DATA FOR EDIT-FORM (click "Edit" button on event)
     $('#editbtn').on('click',function(e) {
         e.preventDefault();
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
