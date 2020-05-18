@@ -51,6 +51,9 @@
 	//echo "var attendees = " . json_encode($attendees) . ";\n";
 	echo "</script>";
 
+    // event invite link to use in modal below
+    $eventLink = $FILE_PATH . "make_reservation?event=" . $eventID;
+
 	$mysqli->close();
 ?>
 <!DOCTYPE html>
@@ -190,6 +193,7 @@
 				</div>
 				<div class="modal-body">
 					<ul id="eventLink" class="list-group">
+                        <li><?php echo $eventLink; ?></li>
 					</ul>
 				</div>
 				<div class="modal-footer">

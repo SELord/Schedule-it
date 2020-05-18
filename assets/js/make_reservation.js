@@ -1,7 +1,6 @@
 // javascript functions for make_reservation.php 
 var availableSlots = pageInfo['fullCal'];
 var eventInfo = pageInfo['eventInfo'];
-var eventDate = eventInfo['dateStartTime'].substr(0,10); // extract just the date of event 
 var RSVPremaining = eventInfo['RSVPremaining'];
 
 
@@ -24,7 +23,7 @@ function generateList() {
 		},
   
         defaultView: 'listDay',
-        defaultDate: eventDate,
+        defaultDate: eventInfo['dateStart'],
         navLinks: true,  //can click day/week names to navigate views
         editable: false,
         eventLimit: true, //allow "more" link when too many events
