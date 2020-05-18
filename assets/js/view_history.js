@@ -32,32 +32,15 @@ function createdEventHist() {
 		$( "#dialog-form" ).dialog();
 	});
 
-	// add days to a date
-	// reference: https://stackoverflow.com/questions/563406/add-days-to-javascript-date
-	function addDays(date, days) {
-		var result = new Date(date);
-		result.setDate(result.getDate() + days);
-		// reference: https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-		const offset = result.getTimezoneOffset()
-		result = new Date(result.getTime() + (offset*60*1000))
-		return result.toISOString().split('T')[0]
-	}
-	
     //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
     $('#signupbtn').on('click',function(e){
         e.preventDefault();
         var title = $('#title').val();
         var description = $('#description').val();
-        //get correct date format
-        //var date = dateStr;
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
-        dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
-        //var slots = $('#slots').val();
-        //var RSVPslotLim = $('#RSVPslotLim').val();
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
-        //var RSVPLim = $('#RSVPLim').val();
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",

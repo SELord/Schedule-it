@@ -31,17 +31,6 @@ function validateEmail(email) {
     }
 }
 
-// add days to a date
-// reference: https://stackoverflow.com/questions/563406/add-days-to-javascript-date
-function addDays(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    // reference: https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-    const offset = result.getTimezoneOffset()
-    result = new Date(result.getTime() + (offset*60*1000))
-    return result.toISOString().split('T')[0]
-  }
-
 //For list-viewing capabilities
 function generateList() {
     let calendarE1 = document.getElementById('content');
@@ -66,7 +55,6 @@ function generateList() {
         eventLimit: true, //allow "more" link when too many events
         events: '../Schedule-it/database/event/load.php?onidID='+ onidID,
         dateClick: function(info) {
-            //$("#date").attr("value", info.dateStr);  
             $("#dateStart").attr("value", dateStr);
             $("#dateEnd").attr("value", dateStr);
             $( "#dialog-form" ).dialog();
@@ -110,8 +98,6 @@ function generateGrid() {
             var title = info.event.title;
             var dateStart = info.event.dateStart.toISOString();
             var dateEnd = info.event.dateEnd.toISOString();
-            dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
-            //alert(id + ' ' + title + ' ' + start + ' ' + end);
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
                     url:"../Schedule-it/database/event/update.php",
@@ -125,7 +111,6 @@ function generateGrid() {
                     }
                 });
             }
-            //else {info.revert();}
         },
         eventResize: function(info) {
             var id = info.event.id;
@@ -159,16 +144,8 @@ function generateGrid() {
             if(dateStr.indexOf("T") > -1) {
                 dateStr = dateStr.split("T")[0];
             }
-            //$("#date").attr("value", dateStr);
             $("#dateStart").attr("value", dateStr);
             $("#dateEnd").attr("value", dateStr);
-            //SOURCE: https://stackoverflow.com/questions/20518516/how-can-i-get-time-from-iso-8601-time-format-in-javascript
-            var mydate = new Date(info.dateStr);
-            var time = ConvertNumberToTwoDigitString(mydate.getUTCHours()) + 
-                ":" + ConvertNumberToTwoDigitString(mydate.getUTCMinutes());
-            // Returns the given integer as a string and with 2 digits
-            // For example: 7 --> "07"
-            //$("#dateStartTime").attr("value", time);
             $( "#dialog-form" ).dialog();
         }
     });
@@ -307,14 +284,8 @@ function generateGrid() {
         var title = $('#titleedit').val();
         var description = $('#descriptionedit').val();
         var location = $('#locationedit').val();
-        //var getdate = event.start.toISOString();
-        //turn date YYYY-MM-DD
-        //var date = getdate.split("T")[0];
         var dateStart = $('#dateStartEdit').val();
         var dateEnd = $('#dateEndEdit').val();
-        dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
-        //var duration = $('#durationedit').val();
-        //var RSVPslotLim = $('#RSVPslotLimedit').val();
         $.ajax({
             url:"../Schedule-it/database/event/update_month.php",
             type:"POST",
@@ -348,16 +319,10 @@ function generateGrid() {
         e.preventDefault();
         var title = $('#title').val();
         var description = $('#description').val();
-        //get correct date format
-        //var date = dateStr;
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
-        dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
-        //var slots = $('#slots').val();
-        //var RSVPslotLim = $('#RSVPslotLim').val();
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
-        //var RSVPLim = $('#RSVPLim').val();
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
@@ -412,20 +377,12 @@ function generateGrid() {
         var locationedit = event.extendedProps.location;
         var dateStartEdit = event.start.toISOString().split('T')[0];
         var dateEndEdit = event.end.toISOString().split('T')[0];
-        dateEndEdit = addDays(dateEndEdit, -1);      // -1 day for fullcalendar display (reverse)
-        //var getTime = new Date(dateStartTimeedit);
-        //var time = ConvertNumberToTwoDigitString(getTime.getUTCHours()) + 
-        //    ":" + ConvertNumberToTwoDigitString(getTime.getUTCMinutes());
-        //var durationedit = event.extendedProps.duration;
-        //var RSVPslotLimedit = event.extendedProps.RSVPslotLim;
         $("#date").attr("value", event.dateStr);
         $("#titleedit").attr("value", titleedit);
         $("#descriptionedit").attr("value", descriptionedit); 
         $("#locationedit").attr("value", locationedit); 
         $("#dateStartEdit").attr("value", dateStartEdit);
         $("#dateEndEdit").attr("value", dateEndEdit);
-        //$("#durationedit").attr("value", durationedit);
-        //$("#RSVPslotLimedit").attr("value", RSVPslotLimedit);
         $("#edit-form").dialog();
     });
  

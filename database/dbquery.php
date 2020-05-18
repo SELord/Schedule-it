@@ -569,7 +569,14 @@ function eventCreateHist($conn, $id){
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
-		return $result->fetch_all(MYSQLI_ASSOC);
+		$data = $result->fetch_all(MYSQLI_ASSOC);
+		$returnData = array();
+		// for fullCalendar display of dateEnd
+		foreach ($data as $event) {
+			$event["dateEnd"] = date('Y-m-d', strtotime('+1 day', strtotime($event["dateEnd"])));
+			array_push($returnData, $event);
+		}
+		return $returnData;
 	}
 	else{
 		return NULL;
