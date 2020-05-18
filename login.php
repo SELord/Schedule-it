@@ -1,9 +1,16 @@
 <?php
-    include 'file_path.php';
- //phpinfo();
+include 'file_path.php';
+
+// Get returnPage variable
+if(isset($_GET['returnPage']) && $_GET['returnPage'] !== ''){
+    $thisService = $FILE_PATH . 'login.php?returnPage=' . $_GET['returnPage'];
+} else {
+    $thisService = $FILE_PATH . 'login.php';
+}
+
 // Set up some variables for CAS
 $casService = 'https://login.oregonstate.edu/idp/profile/cas';
-$thisService = $FILE_PATH . 'login.php';
+
 
 //TODO: Retrieve the upcoming events and meetings, and reserved meetings 
 //of the user to populate the calendar
@@ -77,10 +84,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["ticket"])) {
             userUpdate($mysqli, $user->id, $_SESSION);
           }
         }
-        header("Location: " . $FILE_PATH . "homepage.php");
+        // Redirect to the returnPage if the query string was used, else just go to the homepage
+        if(isset($_GET['returnPage']) && $_GET['returnPage'] !== ''){
+            header("Location: " . $FILE_PATH . $_GET['returnPage']);
+        }
+        else{
+            header("Location: " . $FILE_PATH . "homepage.php");
+        }
       }
    }
-} else {
+   else{
+       echo "Authentication Not Validated!";
+   }
+}
+else{
    header("Location: $casService/login?service=$thisService");
 }
  
@@ -105,81 +122,5 @@ function responseForTicket($ticket) {
       return false;
    }
 }
- 
-/*
-* Returns the UID from the passed in response, or it
-* returns false if there is no UID.
 
-function uid($response) {
-   // Turn the response into an array
-   $responseArray = preg_split("/\n/", $response);
-   // Get the line that has the cas:user tag
-   $casUserArray = preg_grep("/<\/cas:user>/", $responseArray);
-   $lastnameArray = preg_grep("/<\/cas:lastname>/", $responseArray);
-   $firstnameArray = preg_grep("/<\/cas:firstname>/", $responseArray);
-   $emailArray = preg_grep("/<\/cas:email>/", $responseArray);  
-   //var_dump($casUserArray);
-   //var_dump($lastnameArray);
-   //var_dump($firstnameArray);
-   //var_dump($emailArray);
-
-   if (is_array($casUserArray)) {
-         return $uid;
-      }
-   }
-   return false;
-}
- */
-/*
-<?xml version="1.0" encoding="UTF-8"?>
-<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
-  <cas:authenticationSuccess>
-    <cas:user>alasagae</cas:user>
-      <cas:attributes>
-        <cas:commonName>Alasagas, Elaine</cas:commonName>
-        <cas:firstname>Elaine</cas:firstname>
-        <cas:osuprimarymail>alasagae@oregonstate.edu</cas:osuprimarymail>
-        <cas:eduPersonAffiliation>student</cas:eduPersonAffiliation>
-        <cas:eduPersonAffiliation>member</cas:eduPersonAffiliation>
-        <cas:osupidm>3828675</cas:osupidm>
-        <cas:givenName>Elaine</cas:givenName>
-        <cas:osuuid>44979764121</cas:osuuid>
-        <cas:lastname>Alasagas</cas:lastname>
-        <cas:uid>alasagae</cas:uid>
-        <cas:eduPersonPrimaryAffiliation>student</cas:eduPersonPrimaryAffiliation>
-        <cas:UDC_IDENTIFIER>D8EAB9A5475297ED61DDDAD3422561E4</cas:UDC_IDENTIFIER>
-        <cas:surname>Alasagas</cas:surname>
-        <cas:eduPersonPrincipalName>alasagae@oregonstate.edu</cas:eduPersonPrincipalName>
-        <cas:fullname>Alasagas, Elaine</cas:fullname>
-        <cas:email>alasagae@oregonstate.edu</cas:email>
-      </cas:attributes>
-  </cas:authenticationSuccess>
-</cas:serviceResponse>
-*/
-?>
-<!--
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <title>Schedule-it</title>
-  
-  --Bootstrap core CSS
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  --Customized css--
-  <link rel="stylesheet" href="./assets/css/main.css" type="text/css">
-
-</head>
-<body>
-  <div id="frm" style="text-align: center; vertical-align: middle; margin-top: 200px">
-    <h1>Schedule-it</h1>
-    <p>
-       <a href="https://login.oregonstate.edu/idp/profile/cas/login?service=http://people.oregonstate.edu/~alasagae/schedule-it.php" role="button">
-      <button type="button" class="btn btn-warning btn-primary btn-lg ">Login</a></button>
-    </p>
-  </div>
-</body>
-</html> 
--->
+?> 

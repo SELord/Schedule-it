@@ -2,12 +2,17 @@
     include 'file_path.php';
 
 	// session 
-	session_start();   
+	session_start();
+
+    // Capture the current page with query string to be passed to the login.php page
+    $tempArr = explode("Schedule-it/", $_SERVER['REQUEST_URI']);
+    $returnPage = urlencode($tempArr[1]);
+
     //check once again if the user is logged in
     //if not, redirect back to login page
     if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {   
         session_destroy();   
-        header("Location: " . $FILE_PATH . "login.php");
+        header("Location: " . $FILE_PATH . "login.php?returnPage=" . $returnPage);
     }   
 	
 	// database connection 
@@ -27,16 +32,35 @@
      $user = json_decode($data);
      $userID = $user->id;
 	    
-	// extract inviteID from request
-	$inviteID = $_GET['invite'];
-	//var_dump($inviteID);
+	// extract inviteID from request if url had invite variable included
+    // conditional reference: https://teamtreehouse.com/community/passing-a-get-variable-through-a-link-with-php-2
+    if(isset($_GET['invite']) && $_GET['invite'] !== ''){
+	    $inviteID = $_GET['invite'];
+    }
+    // extract eventID from request for invites sent via link instead of email, IF url had event variable included
+    // additionally, enter the invite into the invite table for user and then set inviteID
+    elseif(isset($_GET['event']) && $_GET['event'] !== ''){
+        $eventID = $_GET['event'];
+
+        // Check if invite already exists for user and event
+        $checkForInvite = lookupInvite($mysqli, $userID, $eventID);
+
+        // If invited doesn't exist, create it and save inviteID
+        if($checkForInvite == false){
+            $inviteID = newInvite($mysqli, $userID, $eventID);
+        }
+        else{
+            $invite = json_decode($checkForInvite);
+            $inviteID = $invite->id;
+        }
+    }
 
 	// query db for invite info 
 	$inviteInfo = inviteDetails($mysqli, $inviteID);
 	
 	// query database for event info
 	$eventInfo = eventDetails($mysqli, $inviteInfo['eventID']);
-	$eventDate = substr($eventInfo['dateStartTime'], 0, 10);
+	$eventDate = $eventInfo['dateStart'];
 	
 	// enforce Event attendee RSVP limit
 	$RSVPcount = userEventRSVPCount($mysqli, $userID, $inviteInfo['eventID']);
