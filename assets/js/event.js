@@ -387,12 +387,19 @@ function generateGrid() {
     });
  
     //FOR DYNAMIC EMAIL FUNCTIONALITY
-    var i=1;  
+    var i=1;
+    // adding an email row HTML
+    function emailRow(i) {
+        return '<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>';
+    }
+
+    // add an email row
     $('#addEmail').click(function(){  
         i++;  
-        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+        $('#dynamic_field').append(emailRow(i));  
     });  
 
+    // remove an email row
     $(document).on('click', '.btn_remove', function(){  
         var button_id = $(this).attr("id");   
         $('#row'+button_id+'').remove();  
@@ -402,7 +409,7 @@ function generateGrid() {
     $('#sendEmail').on('click',function(e){
         if ($('#dynamic_field tr').length < 1) {
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+            $('#dynamic_field').append(emailRow(i));  
         }
         $("#send-email").dialog({ width: 400 });
     });
