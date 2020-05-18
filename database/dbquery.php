@@ -562,6 +562,7 @@ function newReservation($conn, $info){
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: *
+//		It returns the endDate +1 day for the fullCalendar display.
 function eventCreateHist($conn, $id){
 	$stmt = $conn->prepare("SELECT * FROM Event 
 			WHERE creatorID=?
