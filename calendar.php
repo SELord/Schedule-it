@@ -221,10 +221,26 @@
 
     <!-- div for Calendar-->
     <div class="container-fluid">
-            <center><i>To create an event, while in <b>"Calendar View"</b>, click anywhere on any date in calendar month-view, week-view, or day-view and a <b>pop-up</b> will appear to create a new event/meeting. 
-          </i></p><button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
-            <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button><br>
+            <center><p><i>
+            To create an event, while in <b>"Calendar View"</b>, click anywhere on any date in calendar month-view, week-view, or day-view and a <b>pop-up</b> will appear to create a new event/meeting. 
+            </i></p>
+<!--          <button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
+            <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button>
             </center>
+-->
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <center>
+              <button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
+              <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button>
+              </center>
+            </div>
+            <!-- div for create event button -->
+            <div class="col-sm-2" id="createEventDiv" style="display: flex; justify-content: flex-end">
+              <button type="button" class="btn btn-large" id="createEvent">Create Event</button>
+            </div>
+          </div>
     </div>
     <div class="container-fluid" id="content">
     </div>

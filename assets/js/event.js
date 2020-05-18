@@ -174,6 +174,11 @@ function generateGrid() {
     });
     calendar.render();
 
+    // Create Event button
+    $('#createEvent').click(function(){
+        $( "#dialog-form" ).dialog();
+    });
+
     // for editing slot data, used below
     function edit_data(id, key, value) {  
         $.ajax({  
