@@ -246,7 +246,7 @@
     </div>
     
 <div id="dialog-form" style="display:none;" title="Create new event">
-   <p class="validateTips">All form fields are required.</p>
+   <class="validateTips">All form fields are required.
 
 <form>
   <fieldset>
