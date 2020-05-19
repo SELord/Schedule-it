@@ -241,7 +241,7 @@
             <div class="col-sm-2" id="createEventDiv">
             </div>
           </div>
-          <button type="button" class="btn btn-large" id="createEvent">Create Event</button>
+          <br><button type="button" class="btn btn-large" id="createEvent">Create Event</button>
     </div>
     <div class="container-fluid" id="content">
     </div>
