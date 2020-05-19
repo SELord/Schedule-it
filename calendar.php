@@ -266,7 +266,7 @@
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" id="signupbtn">
+      <input type="button" value="Submit" id="signupbtn" onclick="submitForm()">
     </fieldset>
   </form>
 </div>
@@ -295,15 +295,15 @@
 
   <input type="text" name="titleedit" id="titleedit" value="" placeholder="Event title" class="text ui-widget-content ui-corner-all">
 
-<input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-<input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+  <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-<label for="dateStartEdit">Start Date: </label>
-    <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
+  <label for="dateStartEdit">Start Date: </label>
+      <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
 
-<label for="dateEndEdit">End Date: </label>
-    <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
+  <label for="dateEndEdit">End Date: </label>
+      <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
 
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
