@@ -38,6 +38,49 @@ function createdEventHist() {
     calendar.render();
 }
 
+    //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
+    $('#signupbtn').on('click',function(e){
+        e.preventDefault();
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var dateStart = $('#dateStart').val();
+        var dateEnd = $('#dateEnd').val();
+        var creatorID = $('#creatorID').val();    
+        var location = $('#location').val();
+        $.ajax({
+            url:"../Schedule-it/database/event/insert.php",
+            type:"POST",
+            data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
+            complete: function() {
+                $( "#dialog-form" ).dialog( "close" );
+            },
+            success: function(){
+                calendar.refetchEvents();
+                alert("Added Successfully");
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+    // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
+    // Don't try to use this for the dates or after submitting, no matter where
+    // you click on the calendar it will just say mm/dd/yyyy until you refresh
+    title = $('#title').val('');
+    description = $('#description').val('');
+    location = $('#location').val('');
+    });
+
+    // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
+    // Also does not work with dates
+    $(document).on('click', '.ui-dialog-titlebar-close', function(){
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var location = $('#location').val();
+        title = $('#title').val('');
+        description = $('#description').val('');
+        location = $('#location').val('');
+    });
+
 function reservationHist() {
     let mostRecent;
     if (pastEvents.length > 0) {

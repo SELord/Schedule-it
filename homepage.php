@@ -99,7 +99,6 @@
 	<!-- javascript files -->
 	<script src="./assets/js/main.js"></script>
 	<script src="./assets/js/view_history.js"></script>
-	<script src="./assets/js/event.js"></script> 
 
 
 	<!-- fontawesome for icon usage eg. navbar hamburger icon -->
