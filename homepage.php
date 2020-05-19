@@ -243,17 +243,11 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
       <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
       <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+      
+      <!-- Don't see why we need two date boxes since we're dealing with office hours,
+      so now we just have one -->
+      <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all"></td>
 
-      <table>
-          <tr>
-            <td>Start Date</td>
-            <td>End Date</td>
-          </tr>
-          <tr>
-            <td><input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all"></td>
-            <td><input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all"></td>
-          </tr>
-      </table>
       <!-- TODO: Start Time and End Time need to be added back into database.
       Please note "Duration" has been replaced with "End Time." -->
       <table>
