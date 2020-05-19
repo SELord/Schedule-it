@@ -267,8 +267,10 @@
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="button" value="Submit" id="signupbtn" onclick="submitForm()">
-
-      <script>
+    </fieldset>
+  </form>
+</div>
+<script>
       function submitForm() {
    // Get the first form with the name
    // Usually the form name is not repeated
@@ -280,10 +282,6 @@
    return false; // Prevent page refresh
 }
 </script>
-    </fieldset>
-  </form>
-</div>
-
 
 <!-- FORM FOR EDIT AND DELETE BUTTONS -->
 <div id="edit-delete" style="display:none;" title="Edit or Delete">
