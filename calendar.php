@@ -253,10 +253,10 @@
   <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
   <label for="dateStart">Start Date: </label>
-  <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all"></td>
+  <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required></td>
 
   <label for="dateEnd">End Date: </label>
-  <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all"></td>
+  <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required></td>
          
   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
@@ -295,10 +295,10 @@
     <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
     <label for="dateStart">Start Date: </label>
-    <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all"></td>
+    <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required></td>
 
     <label for="dateEnd">End Date: </label>
-    <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all"></td>
+    <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required></td>
 
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
