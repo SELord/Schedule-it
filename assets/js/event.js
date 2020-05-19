@@ -356,12 +356,12 @@ function generateGrid() {
         if (e.className && e.className.indexOf('ui-dialog-titlebar-close') != -1) {
             //if the element has a class name, and that is 'someclass' then...
             e.preventDefault();
-        var title = $('#title').val('');
-        var description = $('#description').val('');
-        var dateStart = $('#dateStart').val('');
-        var dateEnd = $('#dateEnd').val('');
-        var creatorID = $('#creatorID').val('');    
-        var location = $('#location').val('');
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var dateStart = $('#dateStart').val();
+        var dateEnd = $('#dateEnd').val();
+        var creatorID = $('#creatorID').val();    
+        var location = $('#location').val();
         }
     }
 
