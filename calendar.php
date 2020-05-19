@@ -248,7 +248,7 @@
 <div id="dialog-form" style="display:none;" title="Create new event">
    <p class="validateTips">All form fields are required.</p>
 
-<form>
+<form id = "calcreate">
   <fieldset>
   <input type="hidden" id="date" name="date">
       <input type="text" name="title" id="title" placeholder="Event title" class="text ui-widget-content ui-corner-all" required>
@@ -267,9 +267,6 @@
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="submit" id="signupbtn">
-      <? php
-      $_POST = array();
-      ?>
     </fieldset>
   </form>
 </div>
@@ -312,9 +309,6 @@
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <button type="button" id="edit-slotbtn">Edit Slots</button>
       <button type="button" id="edit-submit">Confirm Changes</button>
-      <? php
-      $_POST = array();
-      ?>
     </fieldset>
   </form>
 </div>

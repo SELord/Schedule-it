@@ -339,6 +339,9 @@ function generateGrid() {
         })
     });
 
+    // CLEAR FORMS AFTER SUBMIT
+    document.getElementById("calcreate").reset();
+
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
     $('#deletebtn').on('click',function(e) {
         var id = $("#edit-delete").data('id');
