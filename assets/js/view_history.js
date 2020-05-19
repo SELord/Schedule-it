@@ -35,38 +35,6 @@ function createdEventHist() {
 		$( "#dialog-form" ).dialog();
 	});
 
-    //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
-    $('#signupbtn').on('click',function(e){
-        e.preventDefault();
-        var title = $('#title').val();
-        var description = $('#description').val();
-        var dateStart = $('#dateStart').val();
-        var dateEnd = $('#dateEnd').val();
-        var creatorID = $('#creatorID').val();    
-        var location = $('#location').val();
-        $.ajax({
-            url:"../Schedule-it/database/event/insert.php",
-            type:"POST",
-            data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
-            complete: function() {
-                $( "#dialog-form" ).dialog( "close" );
-            },
-            success: function(){
-                calendar.refetchEvents();
-                alert("Added Successfully");
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        })
-    // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
-    title = $('#title').val('');
-    description = $('#description').val('');
-    location = $('#location').val('');
-    dateStart = $('#dateStart').val('');
-    dateEnd = $('#dateEnd').val('');
-    });
-
     calendar.render();
 }
 
