@@ -248,7 +248,7 @@
 <div id="dialog-form" style="display:none;" title="Create new event">
    <p class="validateTips">All form fields are required.</p>
 
-<form name ="calcreate">
+<form id ="calcreate">
   <fieldset>
   <input type="hidden" id="date" name="date">
       <input type="text" name="title" id="title" placeholder="Event title" class="text ui-widget-content ui-corner-all" required>
@@ -267,21 +267,14 @@
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="button" value="Submit" id="signupbtn" onclick="submitForm()">
+      <script>
+function myFunction() {
+    document.getElementById("calcreate").reset();
+}
+</script>
     </fieldset>
   </form>
 </div>
-<script>
-      function submitForm() {
-   // Get the first form with the name
-   // Usually the form name is not repeated
-   // but duplicate names are possible in HTML
-   // Therefore to work around the issue, enforce the correct index
-   var frm = document.getElementsByName('calcreate')[0];
-   frm.submit(); // Submit the form
-   frm.reset();  // Reset all form data
-   return false; // Prevent page refresh
-}
-</script>
 
 <!-- FORM FOR EDIT AND DELETE BUTTONS -->
 <div id="edit-delete" style="display:none;" title="Edit or Delete">
