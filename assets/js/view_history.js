@@ -1,6 +1,9 @@
 // java script for user's event history page
 function createdEventHist() {
-	let mostRecent = pastEvents[pastEvents.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+    let mostRecent;
+    if (pastEvents.length > 0) {
+        mostRecent = pastEvents[pastEvents.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
@@ -63,7 +66,10 @@ function createdEventHist() {
 
 
 function reservationHist() {
-	let mostRecent = pastReservations[pastReservations.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+    let mostRecent;
+    if (pastEvents.length > 0) {
+        mostRecent = pastReservations[pastReservations.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
@@ -92,7 +98,10 @@ function reservationHist() {
 }
 
 function inviteHist() {
-	let mostRecent = pastInvites[pastInvites.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+    let mostRecent;
+    if (pastEvents.length > 0) {
+        mostRecent = pastInvites[pastInvites.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
