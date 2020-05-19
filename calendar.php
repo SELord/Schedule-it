@@ -253,10 +253,8 @@
   <input type="hidden" id="date" name="date">
       <input type="text" name="title" id="title" placeholder="Event title" class="text ui-widget-content ui-corner-all" required>
 
-      <label for="description">Description: </label>
       <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-      <label for="location">Location:  </label>
       <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
       <label for="dateStart">Start Date: </label>
