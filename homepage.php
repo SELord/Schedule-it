@@ -252,7 +252,10 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
       <label for="dateEnd">End Date: </label>
           <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
           <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
-      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />     
+      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
+
+          <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
+      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="submit" id="signupbtn">
