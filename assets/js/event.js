@@ -340,8 +340,6 @@ function generateGrid() {
     // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
     title = $('#title').val('');
     description = $('#description').val('');
-    dateStart = $('#dateStart').val('');
-    dateEnd = $('#dateEnd').val('');
     location = $('#location').val('');
     });
 
