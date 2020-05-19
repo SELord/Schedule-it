@@ -345,17 +345,9 @@ function generateGrid() {
 
     // CODE SPECIALLY TO CLEAR FORM IN CREATE EVENT AFTER SUBMITTING
 
-    $('#button.ui-dialog-titlebar-close').click(function() {
-        var title = $('#title').val();
-        var description = $('#description').val();
-        var dateStart = $('#dateStart').val();
-        var dateEnd = $('#dateEnd').val();
-        var creatorID = $('#creatorID').val();    
-        var location = $('#location').val();
-        title = $('#title').val('');
-        description = $('#description').val('');
-        location = $('#location').val('');
-      });
+    $('.ui-dialog-titlebar-close').click(function(){
+        $('#calcreate')[0].reset();
+    });
 
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
     $('#deletebtn').on('click',function(e) {
