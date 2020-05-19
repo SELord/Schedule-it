@@ -201,6 +201,8 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
 <form>
   <fieldset>
+  <input type="hidden" id="dateedit" name="dateedit" value="">
+
       <input type="text" name="titleedit" id="titleedit" value="" placeholder="Event title" class="text ui-widget-content ui-corner-all">
 
       <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
