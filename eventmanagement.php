@@ -201,22 +201,17 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
 <form>
   <fieldset>
-      <input type="hidden" id="date" name="date">
-      <label for="title">Event title: </label>
-      <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" required>
+    <input type="text" name="title" id="title" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all" required>
 
-      <label for="description">Description: </label>
-      <input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all">
+    <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-      <label for="location">Location:  </label>
-      <input type="text" name="location" id="location" class="text ui-widget-content ui-corner-all">  
+    <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-      <label for="dateStart">Start Date: </label>
-          <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
+    <label for="dateStart">Start Date: </label>
+    <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required></td>
 
-      <label for="dateEnd">End Date: </label>
-          <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
-
+    <label for="dateEnd">End Date: </label>
+    <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required></td>
           <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 

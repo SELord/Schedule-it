@@ -250,22 +250,17 @@
 
 <form>
   <fieldset>
-      <input type="hidden" id="date" name="date">
-      <label for="title">Event title: </label>
-      <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" required>
+  <input type="text" name="title" id="title" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all" required>
 
-      <label for="description">Description: </label>
-      <input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-      <label for="location">Location:  </label>
-      <input type="text" name="location" id="location" class="text ui-widget-content ui-corner-all">  
+  <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-      <label for="dateStart">Start Date: </label>
-          <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
+  <label for="dateStart">Start Date: </label>
+  <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required></td>
 
-      <label for="dateEnd">End Date: </label>
-          <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
-
+  <label for="dateEnd">End Date: </label>
+  <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required></td>
           <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
@@ -297,21 +292,17 @@
 
 <form>
   <fieldset>
-      <input type="hidden" id="dateedit" name="dateedit" value="">
-      <label for="titleedit">Event title: </label>
-      <input type="text" name="titleedit" id="titleedit" value="" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="title" id="title" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all" required>
 
-      <label for="descriptionedit">Description: </label>
-      <input type="text" name="descriptionedit" id="descriptionedit" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-      <label for="locationedit">Location:  </label>
-      <input type="text" name="locationedit" id="locationedit" class="text ui-widget-content ui-corner-all">  
+  <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-      <label for="dateStartEdit">Start Date: </label>
-          <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
+  <label for="dateStart">Start Date: </label>
+  <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required></td>
 
-      <label for="dateEndEdit">End Date: </label>
-          <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
+  <label for="dateEnd">End Date: </label>
+  <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required></td>
 
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
