@@ -211,14 +211,6 @@ div.text_container{
     list-style-type: none;
     font-size: 75%;
 }
-
-#dateStartTime:before {
-    content:'Start'
-}
-
-#dateEndTime:before {
-    content:'End'
-}
   
 /*
 table {
