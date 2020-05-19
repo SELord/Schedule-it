@@ -197,7 +197,6 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
 <!-- form to create a new event -->
 <div id="dialog-form" style="display:none;" title="Create new event">
-<class="validateTips">All form fields are required.
 <form>
   <fieldset>
   <input type="hidden" id="dateedit" name="dateedit" value="">

@@ -246,7 +246,6 @@
     </div>
     
 <div id="dialog-form" style="display:none;" title="Create new event">
-   <class="validateTips">All form fields are required.
 
 <form>
   <fieldset>
@@ -296,7 +295,6 @@ Please note "Duration" has been replaced with "End Time." -->
 
 <!-- FORM FOR EDIT EVENT -->
 <div id="edit-form" style="display:none;" title="Edit Current Event">
-   <p class="validateTips">All form fields are required.</p>
       <button type="button" id="edit-slotbtn">Edit Slots</button>
 
 <form>
