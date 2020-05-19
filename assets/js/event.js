@@ -345,7 +345,7 @@ function generateGrid() {
 
     // CODE SPECIALLY TO CLEAR FORM IN CREATE EVENT AFTER SUBMITTING
 
-    $('.ui-dialog-titlebar-close').click(function() {
+    $('#button.ui-dialog-titlebar-close').click(function() {
         var title = $('#title').val();
         var description = $('#description').val();
         var dateStart = $('#dateStart').val();
