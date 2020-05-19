@@ -224,9 +224,9 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 		<div class="row">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8"><h5 class="text-center" id="viewTitle"></h5></div>
-    </div>
-    			<!-- div for create event button -->
-			<div id="createEventDiv"></div>
+			<!-- div for create event button -->
+			<div class="col-sm-2" id="createEventDiv" style="display: flex; justify-content: flex-end"></div>
+		</div>
 	</div>
 	<!-- div for calendar-->
     <div class="container-fluid" id="content">
