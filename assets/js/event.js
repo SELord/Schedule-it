@@ -345,12 +345,7 @@ function generateGrid() {
 
     // CODE SPECIALLY TO CLEAR FORM IN CREATE EVENT AFTER SUBMITTING
 
-     // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
-     title = $('#title').val('');
-     description = $('#description').val('');
-     location = $('#location').val('');
-     dateStart = $('#dateStart').val('');
-     dateEnd = $('#dateEnd').val('');
+    
 
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
     $('#deletebtn').on('click',function(e) {
