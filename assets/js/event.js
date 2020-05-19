@@ -375,7 +375,7 @@ function generateGrid() {
         var locationedit = event.extendedProps.location;
         var dateStartEdit = event.start.toISOString().split('T')[0];
         var dateEndEdit = new Date;                 // jump through hoops to display date - 1
-        dateEndEdit.setDate(event.end.getDate());
+        dateEndEdit.setDate(event.end.getDate() - 1);
         dateEndEdit = dateEndEdit.toISOString().split('T')[0];
         $("#date").attr("value", event.dateStr);
         $("#titleedit").attr("value", titleedit);
