@@ -345,8 +345,16 @@ function generateGrid() {
 
     // CODE SPECIALLY TO CLEAR FORM IN CREATE EVENT AFTER SUBMITTING
 
-    $('.ui-dialog-titlebar-close').click(function(){
-        $('#calcreate').get(0).reset();
+    $(document).on('click', '.ui-dialog-titlebar-close', function(){
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var dateStart = $('#dateStart').val();
+        var dateEnd = $('#dateEnd').val();
+        var creatorID = $('#creatorID').val();    
+        var location = $('#location').val();
+        title = $('#title').val('');
+        description = $('#description').val('');
+        location = $('#location').val('');
     });
 
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
