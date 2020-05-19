@@ -201,21 +201,26 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
 <form>
   <fieldset>
-      <input type="hidden" id="date" name="date">
-      <label for="title">Event title: </label>
-      <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" required>
+  <input type="hidden" id="dateedit" name="dateedit" value="">
+      <input type="text" name="titleedit" id="titleedit" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
 
-      <label for="description">Description: </label>
-      <input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-      <label for="location">Location:  </label>
-      <input type="text" name="location" id="location" class="text ui-widget-content ui-corner-all">  
+      <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-      <label for="dateStart">Start Date: </label>
-          <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
+      <label for="dateStartEdit">Start Date: </label>
+          <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
 
-      <label for="dateEnd">End Date: </label>
-          <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
+      <label for="dateEndEdit">End Date: </label>
+          <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
+      
+      <!-- TODO: Start Time and End Time need to be added back into database.
+      Please note "Duration" has been replaced with "End Time." -->
+      <label for="dateStartTime">Start Time: </label>
+          <input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
+
+      <label for="dateEndTime">End Time: </label>
+          <input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
 
           <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
@@ -227,8 +232,9 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 </div>
 
 	<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 </body>
 </html>
