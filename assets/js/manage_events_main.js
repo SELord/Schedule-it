@@ -35,8 +35,8 @@ function createdEventHist() {
 		$( "#dialog-form" ).dialog();
 	});
 
-     //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
-     $('#signupbtn').on('click',function(e){
+    //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
+    $('#signupbtn').on('click',function(e){
         e.preventDefault();
         var title = $('#title').val();
         var description = $('#description').val();
@@ -44,6 +44,7 @@ function createdEventHist() {
         var dateEnd = $('#dateEnd').val();
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
+        //var RSVPLim = $('#RSVPLim').val();
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
@@ -59,28 +60,10 @@ function createdEventHist() {
                 console.log(error);
             }
         })
-    // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
-    title = $('#title').val('');
-    description = $('#description').val('');
-	location = $('#location').val('');
-	dateStart = $('#dateStart').val('');
-	dateEnd = $('#dateEnd').val('');
     });
 
     calendar.render();
 }
-
-    // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
-    $(document).on('click', '.ui-dialog-titlebar-close', function(){
-        var title = $('#title').val();
-        var description = $('#description').val();
-        var location = $('#location').val();
-        title = $('#title').val('');
-        description = $('#description').val('');
-		location = $('#location').val('');
-		dateStart = $('#dateStart').val('');
-		dateEnd = $('#dateEnd').val('');
-    });
 
 /*
 function eventInfo(){

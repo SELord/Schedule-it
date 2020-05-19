@@ -77,8 +77,6 @@
 
   <!-- fontawesome for icon usage eg. navbar hamburger icon -->
   <script src="https://kit.fontawesome.com/96abf9bb58.js" crossorigin="anonymous"></script>
-  
-
 
   <!--fullcalendar-->
   <!--Use daygrid-views for homepage -->

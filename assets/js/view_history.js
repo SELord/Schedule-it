@@ -63,9 +63,7 @@ function createdEventHist() {
     // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
     title = $('#title').val('');
     description = $('#description').val('');
-	location = $('#location').val('');
-	dateStart = $('#dateStart').val('');
-	dateEnd = $('#dateEnd').val('');
+    location = $('#location').val('');
     });
 
     calendar.render();
