@@ -238,7 +238,7 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
 <form>
   <fieldset>
-  <input type="text" name="titleedit" id="titleedit" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="titleedit" id="titleedit" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
 
       <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
@@ -260,6 +260,7 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
           <td><input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
         </tr>
       </table>
+
       <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 

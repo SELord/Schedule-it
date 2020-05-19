@@ -249,26 +249,28 @@
 
 <form>
   <fieldset>
-      <input type="hidden" id="date" name="date">
       <input type="text" name="titleedit" id="titleedit" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
 
-<input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-<input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+      <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-<label for="dateStartEdit">Start Date: </label>
-    <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
+      <!-- Don't see why we need two date boxes since we're dealing with office hours,
+      so now we just have one -->
+      <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all"></td>
 
-<label for="dateEndEdit">End Date: </label>
-    <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
-
-<!-- TODO: Start Time and End Time need to be added back into database.
-Please note "Duration" has been replaced with "End Time." -->
-<label for="dateStartTime">Start Time: </label>
-    <input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
-
-<label for="dateEndTime">End Time: </label>
-    <input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
+      <!-- TODO: Start Time and End Time need to be added back into database.
+      Please note "Duration" has been replaced with "End Time." -->
+      <table>
+        <tr>
+          <td>Start Time</td>
+          <td>End Time</td>
+        </tr>
+        <tr>
+          <td><input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
+          <td><input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
+        </tr>
+      </table>
           <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
@@ -299,25 +301,28 @@ Please note "Duration" has been replaced with "End Time." -->
 
 <form>
   <fieldset>
-  <input type="text" name="titleedit" id="titleedit" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="titleedit" id="titleedit" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
 
-<input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-<input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+      <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-<label for="dateStartEdit">Start Date: </label>
-    <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
+      <!-- Don't see why we need two date boxes since we're dealing with office hours,
+      so now we just have one -->
+      <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all"></td>
 
-<label for="dateEndEdit">End Date: </label>
-    <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
-
-<!-- TODO: Start Time and End Time need to be added back into database.
-Please note "Duration" has been replaced with "End Time." -->
-<label for="dateStartTime">Start Time: </label>
-    <input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
-
-<label for="dateEndTime">End Time: </label>
-    <input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
+      <!-- TODO: Start Time and End Time need to be added back into database.
+      Please note "Duration" has been replaced with "End Time." -->
+      <table>
+        <tr>
+          <td>Start Time</td>
+          <td>End Time</td>
+        </tr>
+        <tr>
+          <td><input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
+          <td><input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
+        </tr>
+      </table>
 
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
