@@ -62,11 +62,24 @@ function createdEventHist() {
     // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
     title = $('#title').val('');
     description = $('#description').val('');
-    location = $('#location').val('');
+	location = $('#location').val('');
+	dateStart = $('#dateStart').val('');
+	dateEnd = $('#dateEnd').val('');
     });
 
     calendar.render();
 }
+
+    // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
+    // Also does not work with dates
+    $(document).on('click', '.ui-dialog-titlebar-close', function(){
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var location = $('#location').val();
+        title = $('#title').val('');
+        description = $('#description').val('');
+        location = $('#location').val('');
+    });
 
 function reservationHist() {
     let mostRecent;
