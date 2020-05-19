@@ -312,7 +312,17 @@
 
       <label for="dateEndEdit">End Date: </label>
           <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
-
+      
+       <label for="duration">Duration: <small><i>HH:mm format only</i></small></label>
+          <input type="text" id="duration" name="duration" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
+          <script>
+          $(function(){
+              $('#time').combodate({
+                  firstItem: 'name', //show 'hour' and 'minute' string at first item of dropdown
+                  minuteStep: 1
+              });  
+          });
+          </script>
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <button type="button" id="edit-submit">Confirm Changes</button>
@@ -388,10 +398,12 @@ $(document).ready(function(){
 </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-
+    <!-- Adding for hh:mm dropdown -->
+    <script src="js/jquery.js"></script> 
+    <script src="js/moment.min.js"></script> 
+    <script src="js/combodate.js"></script> 
 </body>
 </html>
 
