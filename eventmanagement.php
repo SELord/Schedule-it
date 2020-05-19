@@ -199,11 +199,11 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 <div id="dialog-form" style="display:none;" title="Create new event">
 <form>
   <fieldset>
-    <input type="text" name="titleedit" id="titleedit" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
+    <input type="text" name="title" id="title" placeholder="Event Title" value="" class="text ui-widget-content ui-corner-all">
 
-    <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
+    <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-    <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+    <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
     <label for="dateStart">Start Date: </label>
     <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all"></td>
