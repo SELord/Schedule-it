@@ -30,7 +30,7 @@ function createdEventHist() {
 	});
 
 	// create event button
-	document.getElementById('createEventDiv').innerHTML = '<p><center><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br /></center>';
+	document.getElementById('createEventDiv').innerHTML = '<right><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br />';
 	$('#createEvent').click(function(){
 		$( "#dialog-form" ).dialog();
 	});
