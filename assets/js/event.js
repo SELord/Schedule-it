@@ -336,6 +336,7 @@ function generateGrid() {
             error: function(error) {
                 console.log(error);
             }
+            $("#dialog-form")[0].reset();
         })
     });
 
