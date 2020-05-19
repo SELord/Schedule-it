@@ -356,23 +356,6 @@ function generateGrid() {
         location = $('#location').val('');
     });
 
-    $("body > *").not("body > button").click(function(e) {
-        console.log(e.target.id);
-       if(e.target.id=='dialog-form'){
-               return false;
-        }
-        $('div#dialog-form').hide();
-
-   });
-
-   $("body > *").not("body > button").click(function(e) {
-        console.log(e.target.id);
-        if(e.target.id=='ui-id-1'){
-                return false;
-            }
-            $('div#ui-id-1').hide();
-    });
-
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
     $('#deletebtn').on('click',function(e) {
         var id = $("#edit-delete").data('id');
