@@ -31,17 +31,6 @@ function validateEmail(email) {
     }
 }
 
-// add days to a date
-// reference: https://stackoverflow.com/questions/563406/add-days-to-javascript-date
-function addDays(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    // reference: https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-    const offset = result.getTimezoneOffset()
-    result = new Date(result.getTime() + (offset*60*1000))
-    return result.toISOString().split('T')[0]
-  }
-
 //For list-viewing capabilities
 function generateList() {
     let calendarE1 = document.getElementById('content');
@@ -66,7 +55,6 @@ function generateList() {
         eventLimit: true, //allow "more" link when too many events
         events: '../Schedule-it/database/event/load.php?onidID='+ onidID,
         dateClick: function(info) {
-            //$("#date").attr("value", info.dateStr);  
             $("#dateStart").attr("value", dateStr);
             $("#dateEnd").attr("value", dateStr);
             $( "#dialog-form" ).dialog();
@@ -110,8 +98,6 @@ function generateGrid() {
             var title = info.event.title;
             var dateStart = info.event.dateStart.toISOString();
             var dateEnd = info.event.dateEnd.toISOString();
-            dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
-            //alert(id + ' ' + title + ' ' + start + ' ' + end);
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
                     url:"../Schedule-it/database/event/update.php",
@@ -125,7 +111,6 @@ function generateGrid() {
                     }
                 });
             }
-            //else {info.revert();}
         },
         eventResize: function(info) {
             var id = info.event.id;
@@ -159,20 +144,33 @@ function generateGrid() {
             if(dateStr.indexOf("T") > -1) {
                 dateStr = dateStr.split("T")[0];
             }
-            //$("#date").attr("value", dateStr);
             $("#dateStart").attr("value", dateStr);
             $("#dateEnd").attr("value", dateStr);
-            //SOURCE: https://stackoverflow.com/questions/20518516/how-can-i-get-time-from-iso-8601-time-format-in-javascript
-            var mydate = new Date(info.dateStr);
-            var time = ConvertNumberToTwoDigitString(mydate.getUTCHours()) + 
-                ":" + ConvertNumberToTwoDigitString(mydate.getUTCMinutes());
-            // Returns the given integer as a string and with 2 digits
-            // For example: 7 --> "07"
-            //$("#dateStartTime").attr("value", time);
             $( "#dialog-form" ).dialog();
         }
     });
     calendar.render();
+
+    // Create Event button
+    $('#createEvent').click(function(){
+        $( "#dialog-form" ).dialog();
+    });
+
+    // for formulating a row in slot display modal, used in edit_data() and $('#edit-slotbtn')
+    function slotRow(item) {
+        return '<tr id="slot' + item.id + '">'
+        + '<td><input type="date" class="slotStartDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
+        + '<td><input type="time" class="slotStartTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[1] + '"></td>'
+        + '<td><input type="date" class="slotEndDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
+        + '<td><input type="time" class="slotEndTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[1] + '"></td>'
+        + '<td><input type="text" class="slotLocationEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.location + '"></td>'
+        + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.RSVPlim + '" style="width: 4em"></td>'
+        + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + item.id + '" id="slotAttr' + item.id + '">X</button></td>'
+        + '</tr>';
+    }
+
+    // for use in edit_data() and $('#edit-slotbtn')
+    const noSlots = '<td id="noSlotsRow" colspan="7">No slots in the event</td>';
 
     // for editing slot data, used below
     function edit_data(id, key, value) {  
@@ -187,17 +185,9 @@ function generateGrid() {
             success:function(data){
                 // return integer means a slot was created
                 if (data) {
-                    const result = JSON.parse(data);
-                    $('#slotEditTable').append('<tr id="slot' + result.id + '">'
-                        + '<td><input type="date" class="slotStartDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                        + '<td><input type="time" class="slotStartTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.startDateTime.split(' ')[1] + '"></td>'
-                        + '<td><input type="date" class="slotEndDateEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                        + '<td><input type="time" class="slotEndTimeEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.endDateTime.split(' ')[1] + '"></td>'
-                        + '<td><input type="text" class="slotLocationEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.location + '"></td>'
-                        + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + result.id + '" id="slotAttr' + result.id + '" value="' + result.RSVPlim + '" style="width: 4em"></td>'
-                        + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + result.id + '" id="slotAttr' + result.id + '">X</button></td>'
-                        + '</tr>'
-                    );
+                    // display the row on the table
+                    const item = JSON.parse(data);
+                    $('#slotEditTable').append(slotRow(item));
                 }
             },
             error: function(error) {
@@ -215,11 +205,11 @@ function generateGrid() {
 
     // delete button for each slot
     $(document).on('click', '.slotDeleteButton', function(){
-        edit_data($(this).data("id"), "delete");
+        edit_data($(this).data("id"), "delete");        // edit the data in database
         var button_id = $(this).data("id");
-        $('#slot'+button_id+'').remove();
-        if ($('#slotEditTable tr').length < 2) {
-            $('#slotEditTable').append('<td id="noSlotsRow" colspan="7">No slots in the event</td>');
+        $('#slot'+button_id+'').remove();               // remove the row from the modal
+        if ($('#slotEditTable tr').length < 2) {        // add "no slots" comment if no slots
+            $('#slotEditTable').append(noSlots);
         }
     });
 
@@ -247,7 +237,7 @@ function generateGrid() {
         edit_data($(this).data("id"), "RSVPlim", $(this).val());
     });
 
-    //TRIGGER EDIT SLOT CHANGES
+    //TRIGGER EDIT SLOT CHANGES (click "edit slots" button)
     $('#edit-slotbtn').on('click',function(e){
         e.preventDefault();
         const eventID = $("#edit-delete").data('id');  //to get ID from event-click variable
@@ -257,6 +247,7 @@ function generateGrid() {
             //height: 300,  // gbdg-ebg 12/12/2011 Change height from 190 to 250
             modal: true,
             close: function() {
+                // repopulate the slot data modal every time it opens
                 $('#slotEditTable').empty();
                 $('#slotEditTable').append('<tr id="slotTableHeader"><th>Start Date</th><th>Start Time</th><th>End Date</th><th>End Time</th><th>Location</th><th>RSVP Limit</th><th>Delete</th></tr>');
             }
@@ -271,20 +262,10 @@ function generateGrid() {
                 // display the slots on the table
                 if (data.length > 0) {
                     data.forEach(item => {
-                        $('#slotEditTable').append(
-                            '<tr id="slot' + item.id + '">'
-                            + '<td><input type="date" class="slotStartDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                            + '<td><input type="time" class="slotStartTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.startDateTime.split(' ')[1] + '"></td>'
-                            + '<td><input type="date" class="slotEndDateEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[0] + '" style="width: 9em"></td>'
-                            + '<td><input type="time" class="slotEndTimeEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.endDateTime.split(' ')[1] + '"></td>'
-                            + '<td><input type="text" class="slotLocationEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.location + '"></td>'
-                            + '<td><input type="number" class="slotRVSPlimEdit" data-id="' + item.id + '" id="slotAttr' + item.id + '" value="' + item.RSVPlim + '" style="width: 4em"></td>'
-                            + '<td><button type="button" class="btn btn-danger slotDeleteButton" data-id="' + item.id + '" id="slotAttr' + item.id + '">X</button></td>'
-                            + '</tr>'
-                        );
+                        $('#slotEditTable').append(slotRow(item));
                     });
                 } else {
-                    $('#slotEditTable').append('<td id="noSlotsRow" colspan="7">No slots in the event</td>');
+                    $('#slotEditTable').append(noSlots);        // add "no slots" comment if no slots
                 }
             },  
             error: function(error) {
@@ -294,7 +275,7 @@ function generateGrid() {
     });
 
 
-    //TRIGGER EDIT CHANGES FROM EDIT-FORM ON "CONFIRM CHANGES" BUTTON
+    //TRIGGER EDIT CHANGES FROM EDIT-FORM ON "CONFIRM CHANGES" BUTTON (click "Confirm Changes" button on event)
     $('#edit-submit').on('click',function(e){
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
         //var event = calendar.getEventById(id);
@@ -302,14 +283,8 @@ function generateGrid() {
         var title = $('#titleedit').val();
         var description = $('#descriptionedit').val();
         var location = $('#locationedit').val();
-        //var getdate = event.start.toISOString();
-        //turn date YYYY-MM-DD
-        //var date = getdate.split("T")[0];
         var dateStart = $('#dateStartEdit').val();
         var dateEnd = $('#dateEndEdit').val();
-        dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
-        //var duration = $('#durationedit').val();
-        //var RSVPslotLim = $('#RSVPslotLimedit').val();
         $.ajax({
             url:"../Schedule-it/database/event/update_month.php",
             type:"POST",
@@ -343,16 +318,10 @@ function generateGrid() {
         e.preventDefault();
         var title = $('#title').val();
         var description = $('#description').val();
-        //get correct date format
-        //var date = dateStr;
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
-        dateEnd = addDays(dateEnd, 1);      // +1 day for fullcalendar display
-        //var slots = $('#slots').val();
-        //var RSVPslotLim = $('#RSVPslotLim').val();
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
-        //var RSVPLim = $('#RSVPLim').val();
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
@@ -396,8 +365,7 @@ function generateGrid() {
         }
     });
 
-    //BUTTON TO TRIGGER THE EDIT-MODE - THIS GETS FORM DATA FOR EDIT-FORM 
-    /**** TO DO FOR NEXT GROUP : Be able to change location and # of slots dynamically ***/
+    //BUTTON TO TRIGGER THE EDIT-MODE - THIS GETS FORM DATA FOR EDIT-FORM (click "Edit" button on event)
     $('#editbtn').on('click',function(e) {
         e.preventDefault();
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
@@ -406,31 +374,32 @@ function generateGrid() {
         var descriptionedit = event.extendedProps.description;
         var locationedit = event.extendedProps.location;
         var dateStartEdit = event.start.toISOString().split('T')[0];
-        var dateEndEdit = event.end.toISOString().split('T')[0];
-        dateEndEdit = addDays(dateEndEdit, -1);      // -1 day for fullcalendar display (reverse)
-        //var getTime = new Date(dateStartTimeedit);
-        //var time = ConvertNumberToTwoDigitString(getTime.getUTCHours()) + 
-        //    ":" + ConvertNumberToTwoDigitString(getTime.getUTCMinutes());
-        //var durationedit = event.extendedProps.duration;
-        //var RSVPslotLimedit = event.extendedProps.RSVPslotLim;
+        var dateEndEdit = new Date;                 // jump through hoops to display date - 1
+        dateEndEdit.setDate(event.end.getDate());
+        dateEndEdit = dateEndEdit.toISOString().split('T')[0];
         $("#date").attr("value", event.dateStr);
         $("#titleedit").attr("value", titleedit);
         $("#descriptionedit").attr("value", descriptionedit); 
         $("#locationedit").attr("value", locationedit); 
         $("#dateStartEdit").attr("value", dateStartEdit);
         $("#dateEndEdit").attr("value", dateEndEdit);
-        //$("#durationedit").attr("value", durationedit);
-        //$("#RSVPslotLimedit").attr("value", RSVPslotLimedit);
         $("#edit-form").dialog();
     });
  
     //FOR DYNAMIC EMAIL FUNCTIONALITY
-    var i=1;  
+    var i=1;
+    // adding an email row HTML
+    function emailRow(i) {
+        return '<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>';
+    }
+
+    // add an email row
     $('#addEmail').click(function(){  
         i++;  
-        $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+        $('#dynamic_field').append(emailRow(i));  
     });  
 
+    // remove an email row
     $(document).on('click', '.btn_remove', function(){  
         var button_id = $(this).attr("id");   
         $('#row'+button_id+'').remove();  
@@ -438,7 +407,11 @@ function generateGrid() {
 
     //BUTTON TO TRIGGER EMAIL FORM
     $('#sendEmail').on('click',function(e){
-        $("#send-email").dialog();
+        if ($('#dynamic_field tr').length < 1) {
+            i++;
+            $('#dynamic_field').append(emailRow(i));  
+        }
+        $("#send-email").dialog({ width: 400 });
     });
 
     //Get email from form, validate it, and send using emails.php file

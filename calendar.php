@@ -221,10 +221,26 @@
 
     <!-- div for Calendar-->
     <div class="container-fluid">
-            <center><i>To create an event, while in <b>"Calendar View"</b>, click anywhere on any date in calendar month-view, week-view, or day-view and a <b>pop-up</b> will appear to create a new event/meeting. 
-          </i></p><button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
-            <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button><br>
+            <center><p><i>
+            To create an event, while in <b>"Calendar View"</b>, click anywhere on any date in calendar month-view, week-view, or day-view and a <b>pop-up</b> will appear to create a new event/meeting. 
+            </i></p>
+<!--          <button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
+            <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button>
             </center>
+-->
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <center>
+              <button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
+              <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button>
+              </center>
+            </div>
+            <!-- div for create event button -->
+            <div class="col-sm-2" id="createEventDiv" style="display: flex; justify-content: flex-end">
+              <button type="button" class="btn btn-large" id="createEvent">Create Event</button>
+            </div>
+          </div>
     </div>
     <div class="container-fluid" id="content">
     </div>
@@ -314,6 +330,10 @@
          <table class="table table-bordered" id="dynamic_field">
           <button type="button" name="addEmail" id="addEmail" class="btn btn-success">Add Email Slot</button>  
           <p>
+          <tr id="row0">
+            <td><input type="text" name="name[]" placeholder="Enter Email" class="form-control name_list" /></td>
+            <td><button type="button" name="remove" id="0" class="btn btn-danger btn_remove">X</button></td>
+          </tr>
          </table>  
          <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" /> 
         <input type="button" name="submit" id="submitEmail" class="btn btn-info" value="Submit" />

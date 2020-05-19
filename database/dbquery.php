@@ -562,6 +562,7 @@ function newReservation($conn, $info){
 // Output: if any are found, then a 2D associative array containing event info with
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: *
+//		It returns the endDate +1 day for the fullCalendar display.
 function eventCreateHist($conn, $id){
 	$stmt = $conn->prepare("SELECT * FROM Event 
 			WHERE creatorID=?
@@ -569,7 +570,14 @@ function eventCreateHist($conn, $id){
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
-		return $result->fetch_all(MYSQLI_ASSOC);
+		$data = $result->fetch_all(MYSQLI_ASSOC);
+		$returnData = array();
+		// for fullCalendar display of dateEnd
+		foreach ($data as $event) {
+			$event["dateEnd"] = date('Y-m-d', strtotime('+1 day', strtotime($event["dateEnd"])));
+			array_push($returnData, $event);
+		}
+		return $returnData;
 	}
 	else{
 		return NULL;

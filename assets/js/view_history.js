@@ -24,7 +24,40 @@ function createdEventHist() {
         editable: false,
         eventLimit: true, //allow "more" link when too many events
         events: pastEvents,
+	});
+
+	// create event button
+	document.getElementById('createEventDiv').innerHTML = '<right><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br />';
+	$('#createEvent').click(function(){
+		$( "#dialog-form" ).dialog();
+	});
+
+    //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
+    $('#signupbtn').on('click',function(e){
+        e.preventDefault();
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var dateStart = $('#dateStart').val();
+        var dateEnd = $('#dateEnd').val();
+        var creatorID = $('#creatorID').val();    
+        var location = $('#location').val();
+        $.ajax({
+            url:"../Schedule-it/database/event/insert.php",
+            type:"POST",
+            data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
+            complete: function() {
+                $( "#dialog-form" ).dialog( "close" );
+            },
+            success: function(){
+                calendar.refetchEvents();
+                alert("Added Successfully");
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
     });
+
     calendar.render();
 }
 
@@ -94,6 +127,7 @@ function showResHist(event){
 	document.getElementById("inviteHistButton").disabled = false;
 	document.getElementById("viewTitle").innerHTML = 'All Your Reservations';
 	document.getElementById("content").innerHTML = "";
+	document.getElementById("createEventDiv").innerHTML = "";
 	reservationHist();
 	
 }
@@ -105,6 +139,7 @@ function showInviteHist(event){
 	document.getElementById("resHistButton").disabled = false;
 	document.getElementById("viewTitle").innerHTML = 'All Events You Are Invited To';
 	document.getElementById("content").innerHTML = "";
+	document.getElementById("createEventDiv").innerHTML = "";
 	inviteHist();
 	
 }
@@ -116,6 +151,7 @@ function showEventHist(event){
 	document.getElementById("inviteHistButton").disabled = false;
 	document.getElementById("viewTitle").innerHTML = 'All Events You Created';
 	document.getElementById("content").innerHTML = "";
+	document.getElementById("createEventDiv").innerHTML = "";
 	createdEventHist();
 }
 
