@@ -253,10 +253,10 @@
   <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
   <label for="dateStart">Start Date: </label>
-  <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all"></td>
+  <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all"></td>
 
   <label for="dateEnd">End Date: </label>
-  <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all"></td>
+  <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all"></td>
          
   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
