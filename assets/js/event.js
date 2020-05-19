@@ -337,6 +337,7 @@ function generateGrid() {
                 console.log(error);
             }
         })
+    title = $('#title').val('');
     });
 
     // CLEAR FORMS AFTER SUBMIT
