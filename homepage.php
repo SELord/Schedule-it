@@ -244,12 +244,16 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
       <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-      <label for="dateStartEdit">Start Date: </label>
-          <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
-
-      <label for="dateEndEdit">End Date: </label>
-          <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
-
+      <table>
+          <tr>
+            <td>Start Date</td>
+            <td>End Date</td>
+          </tr>
+          <tr>
+            <td><input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all"></td>
+            <td><input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all"></td>
+          </tr>
+      </table>
       <!-- TODO: Start Time and End Time need to be added back into database.
       Please note "Duration" has been replaced with "End Time." -->
       <table>
