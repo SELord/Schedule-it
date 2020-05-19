@@ -251,7 +251,6 @@
 <form>
   <fieldset>
   <input type="hidden" id="date" name="date">
-      <label for="title">Event title: </label>
       <input type="text" name="title" id="title" placeholder="Event title" class="text ui-widget-content ui-corner-all" required>
 
       <label for="description">Description: </label>
