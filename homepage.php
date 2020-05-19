@@ -252,12 +252,16 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
       <!-- TODO: Start Time and End Time need to be added back into database.
       Please note "Duration" has been replaced with "End Time." -->
-      <label for="dateStartTime">Start Time: </label>
-          <input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
-
-      <label for="dateEndTime">End Time: </label>
-          <input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required>
-
+      <table>
+        <tr>
+          <td>Start Time</td>
+          <td>End Time</td>
+        </tr>
+        <tr>
+          <td><input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
+          <td><input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
+        </tr>
+      </table>
       <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
