@@ -4,5 +4,6 @@
 *.pdf
 *.phpproj
 dbconfig.php
+file_path.php
 files/*
 phpunit/.phpunit.result.cache
