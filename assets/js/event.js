@@ -343,8 +343,34 @@ function generateGrid() {
     location = $('#location').val('');
     });
 
-    // CLEAR FORMS AFTER SUBMIT
+    // CODE SPECIALLY TO CLEAR FORM IN CREATE EVENT AFTER SUBMITTING
 
+    document.body.onclick = function(e) {   //when the document body is clicked
+        if (window.event) {
+            e = event.srcElement;           //assign the element clicked to e (IE 6-8)
+        }
+        else {
+            e = e.target;                   //assign the element clicked to e
+        }
+    
+        if (e.className && e.className.indexOf('ui-dialog-titlebar-close') != -1) {
+            //if the element has a class name, and that is 'someclass' then...
+            e.preventDefault();
+        var title = $('#title').val('');
+        var description = $('#description').val('');
+        var dateStart = $('#dateStart').val('');
+        var dateEnd = $('#dateEnd').val('');
+        var creatorID = $('#creatorID').val('');    
+        var location = $('#location').val('');
+        }
+    }
+
+     // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
+     title = $('#title').val('');
+     description = $('#description').val('');
+     location = $('#location').val('');
+     dateStart = $('#dateStart').val('');
+     dateEnd = $('#dateEnd').val('');
 
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
     $('#deletebtn').on('click',function(e) {
