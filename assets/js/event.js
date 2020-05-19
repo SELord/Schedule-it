@@ -350,8 +350,11 @@ function generateGrid() {
         var description = $('#description').val();
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
-        var creatorID = $('#creatorID').val('');    
-        var location = $('#location').val('');
+        var creatorID = $('#creatorID').val();    
+        var location = $('#location').val();
+        title = $('#title').val('');
+        description = $('#description').val('');
+        location = $('#location').val('');
       });
 
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
