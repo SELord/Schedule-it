@@ -236,10 +236,6 @@
               <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button>
               </center>
             </div>
-            <p>
-            <!-- div for create event button -->
-            <div class="col-sm-2" id="createEventDiv">
-            </div>
           </div>
           <br><button type="button" class="btn btn-large" id="createEvent">Create Event</button>
     </div>
