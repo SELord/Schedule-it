@@ -244,22 +244,11 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
       <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
       
-      <!-- Don't see why we need two date boxes since we're dealing with office hours,
-      so now we just have one -->
+      <label for="dateStart">Start Date: </label>
       <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all"></td>
 
-      <!-- TODO: Start Time and End Time need to be added back into database.
-      Please note "Duration" has been replaced with "End Time." -->
-      <table>
-        <tr>
-          <td>Start Time</td>
-          <td>End Time</td>
-        </tr>
-        <tr>
-          <td><input type="time" id="dateStartTime" name="dateStartTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
-          <td><input type="time" id="dateEndTime" name="dateEndTime" data-format="HH:mm" data-template="HH : mm" class="text ui-widget-content ui-corner-all" required></td>
-        </tr>
-      </table>
+      <label for="dateEnd">End Date: </label>
+      <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all"></td>
 
       <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
