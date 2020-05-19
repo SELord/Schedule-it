@@ -267,11 +267,6 @@
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="button" value="Submit" id="signupbtn" onclick="submitForm()">
-      <script>
-function myFunction() {
-    document.getElementById("calcreate").reset();
-}
-</script>
     </fieldset>
   </form>
 </div>
