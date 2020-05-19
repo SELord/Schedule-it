@@ -288,8 +288,6 @@
 
 <!-- FORM FOR EDIT EVENT -->
 <div id="edit-form" style="display:none;" title="Edit Current Event">
-   <p class="validateTips">All form fields are required.</p>
-      <button type="button" id="edit-slotbtn">Edit Slots</button>
 
 <form>
   <fieldset>
@@ -309,6 +307,7 @@
 
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <button type="button" id="edit-slotbtn">Edit Slots</button>
       <button type="button" id="edit-submit">Confirm Changes</button>
     </fieldset>
   </form>
