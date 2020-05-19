@@ -343,8 +343,7 @@ function generateGrid() {
     location = $('#location').val('');
     });
 
-    // CODE SPECIALLY TO CLEAR FORM IN CREATE EVENT AFTER SUBMITTING
-
+    // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
     $(document).on('click', '.ui-dialog-titlebar-close', function(){
         var title = $('#title').val();
         var description = $('#description').val();
@@ -354,6 +353,8 @@ function generateGrid() {
         var location = $('#location').val();
         title = $('#title').val('');
         description = $('#description').val('');
+        location = $('#location').val('');
+        creatorID = $('#creatorID').val('');    
         location = $('#location').val('');
     });
 
