@@ -60,10 +60,10 @@ FOREIGN KEY (`eventID`) REFERENCES `scheduleit_Event` (`id`) ON DELETE CASCADE O
 -- scheduleit_Reservation Table: Track the many-to-many relationship of scheduleit_Invite and slot.
 -- Tracks who has a reservation and for what slot
 CREATE TABLE `scheduleit_Reservation`(
-`scheduleit_InviteID` INT(11) NOT NULL,
+`inviteID` INT(11) NOT NULL,
 `slotID` INT(11) NOT NULL,
-PRIMARY KEY (`scheduleit_InviteID`,`slotID`),
-FOREIGN KEY (`scheduleit_InviteID`) REFERENCES `scheduleit_Invite` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+PRIMARY KEY (`inviteID`,`slotID`),
+FOREIGN KEY (`inviteID`) REFERENCES `scheduleit_Invite` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`slotID`) REFERENCES `scheduleit_Slot` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
