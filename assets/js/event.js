@@ -337,6 +337,23 @@ function generateGrid() {
                 console.log(error);
             }
         })
+    // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
+    // Don't try to use this for the dates or after submitting, no matter where
+    // you click on the calendar it will just say mm/dd/yyyy until you refresh
+    title = $('#title').val('');
+    description = $('#description').val('');
+    location = $('#location').val('');
+    });
+
+    // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
+    // Also does not work with dates
+    $(document).on('click', '.ui-dialog-titlebar-close', function(){
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var location = $('#location').val();
+        title = $('#title').val('');
+        description = $('#description').val('');
+        location = $('#location').val('');
     });
 
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
