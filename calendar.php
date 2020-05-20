@@ -248,33 +248,28 @@
 <div id="dialog-form" style="display:none;" title="Create new event">
    <p class="validateTips">All form fields are required.</p>
 
-<form>
+<form id ="calcreate">
   <fieldset>
-      <input type="hidden" id="date" name="date">
-      <label for="title">Event title: </label>
-      <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" required>
+  <input type="hidden" id="date" name="date">
+      <input type="text" name="title" id="title" placeholder="Event title" class="text ui-widget-content ui-corner-all" required>
 
-      <label for="description">Description: </label>
-      <input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-      <label for="location">Location:  </label>
-      <input type="text" name="location" id="location" class="text ui-widget-content ui-corner-all">  
+      <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
       <label for="dateStart">Start Date: </label>
           <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
 
       <label for="dateEnd">End Date: </label>
           <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
-
           <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" id="signupbtn">
+      <input type="button" value="Submit" id="signupbtn" onclick="submitForm()">
     </fieldset>
   </form>
 </div>
-
 
 <!-- FORM FOR EDIT AND DELETE BUTTONS -->
 <div id="edit-delete" style="display:none;" title="Edit or Delete">
@@ -292,29 +287,26 @@
 
 <!-- FORM FOR EDIT EVENT -->
 <div id="edit-form" style="display:none;" title="Edit Current Event">
-   <p class="validateTips">All form fields are required.</p>
-      <button type="button" id="edit-slotbtn">Edit Slots</button>
 
 <form>
   <fieldset>
-      <input type="hidden" id="dateedit" name="dateedit" value="">
-      <label for="titleedit">Event title: </label>
-      <input type="text" name="titleedit" id="titleedit" value="" class="text ui-widget-content ui-corner-all">
+  <input type="hidden" id="dateedit" name="dateedit" value="">
 
-      <label for="descriptionedit">Description: </label>
-      <input type="text" name="descriptionedit" id="descriptionedit" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="titleedit" id="titleedit" value="" placeholder="Event title" class="text ui-widget-content ui-corner-all">
 
-      <label for="locationedit">Location:  </label>
-      <input type="text" name="locationedit" id="locationedit" class="text ui-widget-content ui-corner-all">  
+  <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-      <label for="dateStartEdit">Start Date: </label>
-          <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-      <label for="dateEndEdit">End Date: </label>
-          <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
+  <label for="dateStartEdit">Start Date: </label>
+      <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
+
+  <label for="dateEndEdit">End Date: </label>
+      <input type="date" name="dateEndEdit" id="dateEndEdit" class="text ui-widget-content ui-corner-all">
 
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <button type="button" id="edit-slotbtn">Edit Slots</button>
       <button type="button" id="edit-submit">Confirm Changes</button>
     </fieldset>
   </form>
