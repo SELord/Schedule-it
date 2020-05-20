@@ -353,7 +353,7 @@
 // Output:  if user is found, then a 1D associative array containing their info, else NULL 
 // 		array keys: id, onidID, firstName, lastName, email
 function lookupUser($conn, $onidID){
-	$stmt = $conn->prepare("SELECT * FROM User WHERE onidID=?");
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_User WHERE onidID=?");
 	$stmt->bind_param("s", $onidID);
 	$stmt->execute();
 	
@@ -379,7 +379,7 @@ function lookupUser($conn, $onidID){
 //			onidID (OSU user name), firstName, lastName, email
 // Output: database id of new user if successful, else false 
 function newUser($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO User (onidID, firstName, lastName, email) VALUES (?, ?, ?, ?)");
+	$stmt = $conn->prepare("INSERT INTO scheduleit_User (onidID, firstName, lastName, email) VALUES (?, ?, ?, ?)");
 	$stmt->bind_param("ssss", $info['onidID'], $info['firstName'], $info['lastName'], $info['email']);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
@@ -398,7 +398,7 @@ function newUser($conn, $info){
 //			title, description, dateStart, dateEnd, RSVPslotLim, creatorID
 // Output: database id of new event if successful, else false
 function newEvent($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO Event (title, description, location, dateStart, dateEnd, creatorID)
+	$stmt = $conn->prepare("INSERT INTO scheduleit_Event (title, description, location, dateStart, dateEnd, creatorID)
 			VALUES (?, ?, ?, ?, ?, ?)");
 	$stmt->bind_param("sssssi", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'], $info['creatorID']);
 	if ($stmt->execute()){
@@ -419,7 +419,7 @@ function newEvent($conn, $info){
 // Output:  detail of the slot just created
 function newSlot($conn, $eventID){
 	$time = " 00:00:00";
-	$stmt = $conn->prepare("SELECT * FROM Event WHERE id = ?");
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_Event WHERE id = ?");
 	$stmt->bind_param("i", $eventID);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -427,7 +427,7 @@ function newSlot($conn, $eventID){
 		$date = $data[0]["dateStart"];
 		$location = $data[0]["location"];
 		$dateTime = $date . $time;
-		$stmt = $conn->prepare("INSERT INTO Slot (startDateTime, endDateTime, location, eventID)
+		$stmt = $conn->prepare("INSERT INTO scheduleit_Slot (startDateTime, endDateTime, location, eventID)
 		VALUES (?, ?, ?, ?)");
 		$stmt->bind_param("sssi", $dateTime, $dateTime, $location, $eventID);
 		if ($stmt->execute()) {
@@ -453,7 +453,7 @@ function newSlot($conn, $eventID){
 //		eventID = event ID from db
 // Output: database id of invite if found, else false
 function lookupInvite($conn, $receiverID, $eventID){
-	$stmt = $conn->prepare("SELECT * FROM Invite
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_Invite
 			WHERE receiverID = ? AND eventID = ?");
 	$stmt->bind_param("ii", $receiverID, $eventID);
 	$stmt->execute();
@@ -479,7 +479,7 @@ function lookupInvite($conn, $receiverID, $eventID){
 //			receiverID, eventID, email
 // Output: database id of new invite if successful, else false
 function newInvite($conn, $receiverID, $eventID){
-	$stmt = $conn->prepare("INSERT INTO Invite (receiverID, eventID)
+	$stmt = $conn->prepare("INSERT INTO scheduleit_Invite (receiverID, eventID)
 			VALUES (?, ?)");
 	$stmt->bind_param("ii", $receiverID, $eventID);
 	if ($stmt->execute()){
@@ -499,7 +499,7 @@ function newInvite($conn, $receiverID, $eventID){
 //			senderID, text, fileName, slotID
 // Output: database id of new post if successful, else false
 function newPost($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO Post (senderID, text, fileName, slotID)
+	$stmt = $conn->prepare("INSERT INTO scheduleit_Post (senderID, text, fileName, slotID)
 			VALUES (?, ?, ?, ?)");
 	$stmt->bind_param("issi", $info['senderID'], $info['text'], $info['fileName'], $info['slotID']);
 	if ($stmt->execute()){
@@ -530,7 +530,7 @@ function newReservation($conn, $info){
 	// check attendee limits
 	if ($slotInfo['RSVPlim'] > $RSVPs){
 		// there's room!  make the reservation 
-		$stmt = $conn->prepare("INSERT INTO Reservation (inviteID, slotID) VALUES (?, ?)");
+		$stmt = $conn->prepare("INSERT INTO scheduleit_Reservation (inviteID, slotID) VALUES (?, ?)");
 		$stmt->bind_param("ii", $info['inviteID'], $info['slotID']);
 		$success = $stmt->execute();  // reservations do not have an auto increment id 
 
@@ -564,7 +564,7 @@ function newReservation($conn, $info){
 //		2nd dim array keys: *
 //		It returns the endDate +1 day for the fullCalendar display.
 function eventCreateHist($conn, $id){
-	$stmt = $conn->prepare("SELECT * FROM Event 
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_Event 
 			WHERE creatorID=?
 			ORDER BY dateStart ASC");
 	$stmt->bind_param("i", $id);
@@ -593,9 +593,9 @@ function eventCreateHist($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys:  eventID, inviteID, title, description, dateStart, dateEnd firstName (of creator), lastName (of creator), status
 function inviteHist($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.description, E.location, E.dateStart, E.dateEnd, U.firstName, U.lastName, I.status FROM Event E 
-			INNER JOIN Invite I ON E.id = I.eventID 
-			INNER JOIN User U ON E.creatorID = U.id 
+	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.description, E.location, E.dateStart, E.dateEnd, U.firstName, U.lastName, I.status FROM scheduleit_Event E 
+			INNER JOIN scheduleit_Invite I ON E.id = I.eventID 
+			INNER JOIN scheduleit_User U ON E.creatorID = U.id 
 			WHERE I.receiverID = ?
 			ORDER BY E.dateStart ASC");
 	$stmt->bind_param("i", $id);
@@ -618,11 +618,11 @@ function inviteHist($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: eventID, inviteID, slotID, title, dateStart, dateEnd, startDateTime, location, endDateTime
 function reservedSlotHist($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startDateTime, S.endDateTime, S.location FROM Slot S 
-			INNER JOIN Reservation R ON S.id = R.slotID 
-			INNER JOIN Invite I ON R.inviteID = I.id
-			INNER JOIN User U ON I.receiverID = U.id 
-			INNER JOIN Event E ON I.eventID = E.id 
+	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startDateTime, S.endDateTime, S.location FROM scheduleit_Slot S 
+			INNER JOIN scheduleit_Reservation R ON S.id = R.slotID 
+			INNER JOIN scheduleit_Invite I ON R.inviteID = I.id
+			INNER JOIN scheduleit_User U ON I.receiverID = U.id 
+			INNER JOIN scheduleit_Event E ON I.eventID = E.id 
 			WHERE U.id = ?
 			ORDER BY E.dateStart ASC");
 	$stmt->bind_param("i", $id);
@@ -644,9 +644,9 @@ function reservedSlotHist($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: firstName, lastName, onidID, email
 function usersAccepted($conn, $id){
-	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM Reservation R
-			INNER JOIN Invite I ON R.inviteID = I.id 
-			INNER JOIN User U ON I.receiverID = U.id 
+	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM scheduleit_Reservation R
+			INNER JOIN scheduleit_Invite I ON R.inviteID = I.id 
+			INNER JOIN scheduleit_User U ON I.receiverID = U.id 
 			WHERE I.eventID = ?
 			ORDER BY U.lastName ASC");
 	$stmt->bind_param("i", $id);
@@ -668,8 +668,8 @@ function usersAccepted($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: firstName, lastName, onidID, email
 function usersDeclined($conn, $id){
-	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM Invite I
-			INNER JOIN User U ON I.receiverID = U.id 
+	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM scheduleit_Invite I
+			INNER JOIN scheduleit_User U ON I.receiverID = U.id 
 			WHERE I.status = 'declined' AND I.eventID = ?
 			ORDER BY U.lastName ASC");
 	$stmt->bind_param("i", $id);
@@ -691,8 +691,8 @@ function usersDeclined($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: firstName, lastName, onidID, email
 function usersNoResponse($conn, $id){
-	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM Invite I
-			INNER JOIN User U ON I.receiverID = U.id 
+	$stmt = $conn->prepare("SELECT U.firstName, U.lastName, U.onidID, U.email FROM scheduleit_Invite I
+			INNER JOIN scheduleit_User U ON I.receiverID = U.id 
 			WHERE I.status = 'no response' AND I.eventID = ?
 			ORDER BY U.lastName ASC");
 	$stmt->bind_param("i", $id);
@@ -714,9 +714,9 @@ function usersNoResponse($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: eventID, inviteID, title, dateStart, dateEnd, firstName, lastName
 function invitesUpcoming($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.dateStart, E.dateEnd, U.firstName, U.lastName FROM Invite I 
-			INNER JOIN Event E ON I.eventID = E.id 
-			INNER JOIN User U ON E.creatorID = U.id 
+	$stmt = $conn->prepare("SELECT I.eventID, I.id AS inviteID, E.title, E.dateStart, E.dateEnd, U.firstName, U.lastName FROM scheduleit_Invite I 
+			INNER JOIN scheduleit_Event E ON I.eventID = E.id 
+			INNER JOIN scheduleit_User U ON E.creatorID = U.id 
 			WHERE I.status = 'no response' AND E.dateStart >= NOW() AND I.receiverID = ?
 			ORDER BY E.dateStart ASC");
 	$stmt->bind_param("i", $id);
@@ -738,7 +738,7 @@ function invitesUpcoming($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: id, title, dateStart, dateEnd
 function eventsUpcoming($conn, $id){
-	$stmt = $conn->prepare("SELECT id, title, dateStart FROM Event 
+	$stmt = $conn->prepare("SELECT id, title, dateStart FROM scheduleit_Event 
 			WHERE dateStart >= NOW() AND creatorID = ?
 			ORDER BY dateStart ASC");
 	$stmt->bind_param("i", $id);
@@ -760,11 +760,11 @@ function eventsUpcoming($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: eventID, inviteID, slotID, title, dateStart, dateEnd, startDateTime, endDateTime, location
 function reservationsUpcoming($conn, $id){
-	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startDateTime, S.endDateTime, S.location FROM Slot S 
-			INNER JOIN Reservation R ON S.id = R.slotID 
-			INNER JOIN Invite I ON R.inviteID = I.id
-			INNER JOIN User U ON I.receiverID = U.id 
-			INNER JOIN Event E ON I.eventID = E.id 
+	$stmt = $conn->prepare("SELECT I.eventID, R.inviteID, R.slotID, E.title, E.dateStart, E.dateEnd, S.startDateTime, S.endDateTime, S.location FROM scheduleit_Slot S 
+			INNER JOIN scheduleit_Reservation R ON S.id = R.slotID 
+			INNER JOIN scheduleit_Invite I ON R.inviteID = I.id
+			INNER JOIN scheduleit_User U ON I.receiverID = U.id 
+			INNER JOIN scheduleit_Event E ON I.eventID = E.id 
 			WHERE E.dateStart >= NOW() AND U.id = ?
 			ORDER BY E.dateStart ASC, S.startDateTime ASC");
 	$stmt->bind_param("i",$id);
@@ -784,7 +784,7 @@ function reservationsUpcoming($conn, $id){
 //		id = id of event on database
 // Output: if found a string representing the ending time of the event in format HH:MM:00, else NULL
 function eventEndTime($conn, $id){
-	$stmt = $conn->prepare("SELECT MAX(endDateTime) AS endDateTime FROM Slot
+	$stmt = $conn->prepare("SELECT MAX(endDateTime) AS endDateTime FROM scheduleit_Slot
 			WHERE eventID = ?;");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
@@ -804,7 +804,7 @@ function eventEndTime($conn, $id){
 //		onidID = string containing an ONID user name (example: 'smithj')
 // Output: true if approved, else false 
 function adminCheck($conn, $onidID){
-	$stmt = $conn->prepare("SELECT * FROM AdminList WHERE onidID = ?;");
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_AdminList WHERE onidID = ?;");
 	$stmt->bind_param("s", $onidID);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -829,7 +829,7 @@ function adminCheck($conn, $onidID){
 // Output: if invite is found, then a 1D associative array containing the info, else NULL 
 // 		array keys: id, email, status, receiverID, eventID
 function inviteDetails($conn, $id){
-	$stmt = $conn->prepare("SELECT * FROM Invite WHERE id = ?");
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_Invite WHERE id = ?");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -849,7 +849,7 @@ function inviteDetails($conn, $id){
 // Output: if event is found, then a 1D associative array containing the info, else NULL 
 // 		array keys: id, title, description, dateStart, dateEnd, RSVPslotLim, creatorID
 function eventDetails($conn, $id){
-	$stmt = $conn->prepare("SELECT * FROM Event WHERE id = ?");
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_Event WHERE id = ?");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -870,7 +870,7 @@ function eventDetails($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: id, startDateTime, location, RSVPlim, eventID, endDateTime
 function eventSlots($conn, $id){
-	$stmt = $conn->prepare("SELECT * FROM Slot 
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_Slot 
 			WHERE eventID = ? ORDER BY startDateTime ASC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
@@ -893,19 +893,19 @@ function eventSlots($conn, $id){
 function eventAvailableSlots($conn, $eventID, $userID){
 	$sql = "SELECT S.id, S.startDateTime, S.endDateTime, S.location, S.RSVPlim, C.count AS RSVPs
 	FROM (
-	SELECT Slot.id, Slot.eventID, Slot.startDateTime, endDateTime, Slot.location, Slot.RSVPlim AS RSVPlim
-	FROM Slot
-	INNER JOIN Event ON Slot.eventID = Event.id
-	WHERE Slot.eventID = ?
+	SELECT scheduleit_Slot.id, scheduleit_Slot.eventID, startDateTime, endDateTime, scheduleit_Slot.location, scheduleit_Slot.RSVPlim AS RSVPlim
+	FROM scheduleit_Slot
+	INNER JOIN scheduleit_Event ON scheduleit_Slot.eventID = scheduleit_Event.id
+	WHERE scheduleit_Slot.eventID = ?
 	) AS S
 	LEFT JOIN (
 	SELECT slotID, COUNT( * ) AS count
-	FROM Reservation
+	FROM scheduleit_Reservation
 	GROUP BY slotID
 	) AS C ON C.slotID = S.id
-	INNER JOIN Invite I ON S.eventID = I.eventID AND I.receiverID = ?
-	LEFT JOIN Reservation ON S.id = Reservation.slotID AND I.ID = Reservation.inviteID
-	WHERE (S.RSVPlim > C.count OR C.count IS NULL) AND Reservation.inviteID IS NULL
+	INNER JOIN scheduleit_Invite I ON S.eventID = I.eventID AND I.receiverID = ?
+	LEFT JOIN scheduleit_Reservation R ON S.id = R.slotID AND I.ID = R.inviteID
+	WHERE (S.RSVPlim > C.count OR C.count IS NULL) AND R.inviteID IS NULL
 	ORDER by S.startDateTime ASC;
 	";
 	$stmt = $conn->prepare($sql);
@@ -927,9 +927,9 @@ function eventAvailableSlots($conn, $eventID, $userID){
 // Output: If any is found, then an 1d associative array is returned. The keys are id, title, description, dateStart, dateEnd, RSVPslotLim, and creatorID
 //         Otherwise, null is returned.
 function eventFromInviteID($conn, $inviteID) {
-	$sql = "SELECT * FROM Event 
-			INNER JOIN Invite ON Invite.eventID = Event.id
-			WHERE Invite.id = ?";
+	$sql = "SELECT * FROM scheduleit_Event 
+			INNER JOIN scheduleit_Invite ON scheduleit_Invite.eventID = scheduleit_Event.id
+			WHERE scheduleit_Invite.id = ?";
 	$stmt = $conn->prepare($sql);
 	$stmt->bind_param("i", $inviteID);
 	if ($stmt->execute()){
@@ -951,7 +951,7 @@ function eventFromInviteID($conn, $inviteID) {
 // Output: if slot is found, then a 1D associative array containing the info, else NULL 
 // 		array keys: id, startDateTime, endDateTime, location, RSVPlim, eventID, endDateTime
 function slotDetails($conn, $id){
-	$stmt = $conn->prepare("SELECT * FROM Slot WHERE id = ? ORDER BY endDateTime DESC");
+	$stmt = $conn->prepare("SELECT * FROM scheduleit_Slot WHERE id = ? ORDER BY endDateTime DESC");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -973,9 +973,9 @@ function slotDetails($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: id, text, fileName, timeStamp, userID, firstName, lastName
 function slotPosts($conn, $id){
-	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName, U.onidID, P.slotID FROM Slot S
-			INNER JOIN Post P ON S.id = P.slotID 
-			INNER JOIN User U ON P.senderID = U.id 
+	$stmt = $conn->prepare("SELECT P.id, P.text, P.fileName, P.timeStamp, U.id AS userID, U.firstName, U.lastName, U.onidID, P.slotID FROM scheduleit_Slot S
+			INNER JOIN scheduleit_Post P ON S.id = P.slotID 
+			INNER JOIN scheduleit_User U ON P.senderID = U.id 
 			WHERE S.id = ?
 			ORDER BY P.timeStamp ASC");
 	$stmt->bind_param("i", $id);
@@ -997,7 +997,7 @@ function slotPosts($conn, $id){
 //		userID = id of user / senderID
 // Output: if any are found, then a 1D associative array containing slot info with id, text, fileName, timeStamp, userID, firstName, lastName
 function userSlotPost($conn, $slotID, $userID){
-	$stmt = $conn->prepare("SELECT * FROM `Post` WHERE `senderID` = ? AND `slotID` = ?");
+	$stmt = $conn->prepare("SELECT * FROM `scheduleit_Post` WHERE `senderID` = ? AND `slotID` = ?");
 	$stmt->bind_param("ii",$userID, $slotID);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -1017,7 +1017,7 @@ function userSlotPost($conn, $slotID, $userID){
 //		postID = id of post on database
 // Output: if any are found, then a 1D associative array containing sender ID (post owner)
 function postOwner($conn, $postID){
-	$stmt = $conn->prepare("SELECT senderID FROM `Post` WHERE `id` = ?");
+	$stmt = $conn->prepare("SELECT senderID FROM `scheduleit_Post` WHERE `id` = ?");
 	$stmt->bind_param("i",$postID);
 	if ($stmt->execute()){
 		$result = $stmt->get_result();
@@ -1037,8 +1037,8 @@ function postOwner($conn, $postID){
 //		slotID = id of slot on database 
 // Output: if any are found, then a 1D associative array containing receiverID (reservation owner)
 function getReservationReceiverID($conn, $inviteID, $slotID){
-	$stmt = $conn->prepare("SELECT I.receiverID FROM Reservation R
-			INNER JOIN Invite I ON R.inviteID = I.id
+	$stmt = $conn->prepare("SELECT I.receiverID FROM scheduleit_Reservation R
+			INNER JOIN scheduleit_Invite I ON R.inviteID = I.id
 			WHERE R.inviteID = ? AND R.slotID = ?");
 	$stmt->bind_param("ii", $inviteID, $slotID);
 	if ($stmt->execute()){
@@ -1059,9 +1059,9 @@ function getReservationReceiverID($conn, $inviteID, $slotID){
 //		eventID = id of event on database 
 // Output: user's event reservation count 
 function userEventRSVPCount($conn, $userID, $eventID){
-	$stmt = $conn->prepare("SELECT COUNT(*) AS userRSVPcount FROM User U 
-			INNER JOIN Invite I ON U.id = I.receiverID 
-			INNER JOIN Reservation R on I.id = R.inviteID 
+	$stmt = $conn->prepare("SELECT COUNT(*) AS userRSVPcount FROM scheduleit_User U 
+			INNER JOIN scheduleit_Invite I ON U.id = I.receiverID 
+			INNER JOIN scheduleit_Reservation R on I.id = R.inviteID 
 			WHERE U.id = ? AND I.eventID = ?");
 	$stmt->bind_param("ii",$userID, $eventID);
 	if ($stmt->execute()){
@@ -1081,8 +1081,8 @@ function userEventRSVPCount($conn, $userID, $eventID){
 //		id = id of slot on database 
 // Output: slot reservation count 
 function slotRSVPCount($conn, $id){
-	$stmt = $conn->prepare("SELECT COUNT(*) AS slotRSVPcount FROM Reservation R 
-			INNER JOIN Slot S ON R.slotID = S.id 
+	$stmt = $conn->prepare("SELECT COUNT(*) AS slotRSVPcount FROM scheduleit_Reservation R 
+			INNER JOIN scheduleit_Slot S ON R.slotID = S.id 
 			WHERE S.id = ?");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
@@ -1104,10 +1104,10 @@ function slotRSVPCount($conn, $id){
 //         the first dimension being row number of result, else NULL.
 //		2nd dim array keys: lastName, firstName
 function slotAttendees($conn, $id){
-	$stmt = $conn->prepare("SELECT U.lastName, U.firstName FROM Slot S 
-			INNER JOIN Reservation R ON S.id = R.slotID 
-			INNER JOIN Invite I ON R.inviteID = I.id 
-			INNER JOIN User U ON I.receiverID = U.id 
+	$stmt = $conn->prepare("SELECT U.lastName, U.firstName FROM scheduleit_Slot S 
+			INNER JOIN scheduleit_Reservation R ON S.id = R.slotID 
+			INNER JOIN scheduleit_Invite I ON R.inviteID = I.id 
+			INNER JOIN scheduleit_User U ON I.receiverID = U.id 
 			WHERE S.id = ?
 			ORDER BY U.lastName ASC");
 	$stmt->bind_param("i", $id);
@@ -1127,9 +1127,9 @@ function slotAttendees($conn, $id){
 //		id = id of event in db 
 // Output: if any are found, then a 2D associative array containing attendees' emails
 function getEventEmails($conn, $id){
-	$stmt = $conn->prepare("SELECT I.id, U.email, E.title FROM Event E
-			INNER JOIN Invite I ON E.id = I.eventID
-			INNER JOIN User U ON I.receiverID = U.id
+	$stmt = $conn->prepare("SELECT I.id, U.email, E.title FROM scheduleit_Event E
+			INNER JOIN scheduleit_Invite I ON E.id = I.eventID
+			INNER JOIN scheduleit_User U ON I.receiverID = U.id
 			WHERE E.id = ?");
 	$stmt->bind_param("i", $id);
 	if ($stmt->execute()){
@@ -1150,7 +1150,7 @@ function getEventEmails($conn, $id){
 //				title, description, dateStart, dateEnd, RSVPslotLim
 // Output: true if successful, false if update failed 
 function eventUpdate($conn, $info){
-	$stmt = $conn->prepare("UPDATE Event 
+	$stmt = $conn->prepare("UPDATE scheduleit_Event 
 			SET title = ?, description = ?, location = ?, dateStart = ?, dateEnd = ?
 			WHERE id = ?");
 	$stmt->bind_param("sssssi", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'],  $info['id']);
@@ -1165,13 +1165,13 @@ function eventUpdate($conn, $info){
 // Output: true if successful, false if update failed 
 function slotUpdate($conn, $info){
 	if ($info["key"] == "startDateTime") {
-		$stmt = $conn->prepare("UPDATE Slot SET startDateTime = ? WHERE id = ?");
+		$stmt = $conn->prepare("UPDATE scheduleit_Slot SET startDateTime = ? WHERE id = ?");
 	} else if ($info["key"] == "endDateTime") {
-		$stmt = $conn->prepare("UPDATE Slot SET endDateTime = ? WHERE id = ?");
+		$stmt = $conn->prepare("UPDATE scheduleit_Slot SET endDateTime = ? WHERE id = ?");
 	} else if ($info["key"] == "location") {
-		$stmt = $conn->prepare("UPDATE Slot SET location = ? WHERE id = ?");
+		$stmt = $conn->prepare("UPDATE scheduleit_Slot SET location = ? WHERE id = ?");
 	} else if ($info["key"] == "RSVPlim") {
-		$stmt = $conn->prepare("UPDATE Slot SET RSVPlim = ? WHERE id = ?");
+		$stmt = $conn->prepare("UPDATE scheduleit_Slot SET RSVPlim = ? WHERE id = ?");
 	}
 	$stmt->bind_param("si", $info["value"], $info["id"]);
 	return $stmt->execute();
@@ -1186,7 +1186,7 @@ function slotUpdate($conn, $info){
 //				firstName, lastName, email
 // Output: true if successful, false if update failed 
 function userUpdate($conn, $id, $info){
-	$stmt = $conn->prepare("UPDATE User 
+	$stmt = $conn->prepare("UPDATE scheduleit_User 
 			SET firstName = ?, lastName = ?, email = ?
 			WHERE id = ?");
 	$stmt->bind_param("sssi", $info['firstName'], $info['lastName'], $info['email'], $id);
@@ -1201,7 +1201,7 @@ function userUpdate($conn, $id, $info){
 //		slotID = id of slot on database 
 // Output: true if successful, false if update failed 
 function reservationUpdate($conn, $inviteID, $slotID){
-	$stmt = $conn->prepare("UPDATE Reservation 
+	$stmt = $conn->prepare("UPDATE scheduleit_Reservation 
 			SET slotID = ?
 			WHERE inviteID = ?");
 	$stmt->bind_param("ii", $slotID, $inviteID);
@@ -1217,7 +1217,7 @@ function reservationUpdate($conn, $inviteID, $slotID){
 //		fileName = string containing new file name 
 // Output: true if successful, false if update failed 
 function postUpdate($conn, $id, $msg, $fileName){
-	$stmt = $conn->prepare("UPDATE Post 
+	$stmt = $conn->prepare("UPDATE scheduleit_Post 
 			SET text = ?, fileName = ?
 			WHERE id = ?");
 	$stmt->bind_param("ssi", $msg, $fileName, $id);
@@ -1233,7 +1233,7 @@ function postUpdate($conn, $id, $msg, $fileName){
 //      status = string of either 'accepted','declined','no response'
 // Output: true if successful, false if update failed 
 function inviteStatusUpdate($conn, $id, $status){
-	$stmt = $conn->prepare("UPDATE Invite 
+	$stmt = $conn->prepare("UPDATE scheduleit_Invite 
 			SET status = ?
 			WHERE id = ?");
 	$stmt->bind_param("si", $status, $id);
@@ -1252,7 +1252,7 @@ function inviteStatusUpdate($conn, $id, $status){
 //      id = id of event on database 
 // Output: true if successful, false if delete failed 
 function eventDelete($conn, $id){
-	$stmt = $conn->prepare("DELETE FROM Event WHERE id = ?");
+	$stmt = $conn->prepare("DELETE FROM scheduleit_Event WHERE id = ?");
 	$stmt->bind_param("i", $id);
 	return $stmt->execute();
 }
@@ -1264,7 +1264,7 @@ function eventDelete($conn, $id){
 //      id = id of slot on database 
 // Output: true if successful, false if delete failed 
 function slotDelete($conn, $id){
-	$stmt = $conn->prepare("DELETE FROM Slot WHERE id = ?");
+	$stmt = $conn->prepare("DELETE FROM scheduleit_Slot WHERE id = ?");
 	$stmt->bind_param("i", $id);
 	return $stmt->execute();
 }
@@ -1277,7 +1277,7 @@ function slotDelete($conn, $id){
 //		slotID = id of slot on database 
 // Output: true if successful, false if delete failed 
 function reservationDelete($conn, $inviteID, $slotID){
-	$stmt = $conn->prepare("DELETE FROM Reservation WHERE inviteID = ? AND slotID = ?");
+	$stmt = $conn->prepare("DELETE FROM scheduleit_Reservation WHERE inviteID = ? AND slotID = ?");
 	$stmt->bind_param("ii", $inviteID, $slotID);
 	return $stmt->execute();
 }
@@ -1289,7 +1289,7 @@ function reservationDelete($conn, $inviteID, $slotID){
 //      id = id of post on database 
 // Output: true if successful, false if delete failed 
 function postDelete($conn, $id){
-	$stmt = $conn->prepare("DELETE FROM Post WHERE id = ?");
+	$stmt = $conn->prepare("DELETE FROM scheduleit_Post WHERE id = ?");
 	$stmt->bind_param("i", $id);
 	return $stmt->execute();
 }
@@ -1302,7 +1302,7 @@ function postDelete($conn, $id){
 //      id = id of invite on database 
 // Output: true if successful, false if delete failed 
 function inviteDelete($conn, $id){
-	$stmt = $conn->prepare("DELETE FROM Invite WHERE id = ?");
+	$stmt = $conn->prepare("DELETE FROM scheduleit_Invite WHERE id = ?");
 	$stmt->bind_param("i", $id);
 	return $stmt->execute();
 }
