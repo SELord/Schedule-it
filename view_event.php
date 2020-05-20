@@ -233,8 +233,32 @@
         </div>
     </form>
 
+    <div class="container" id="slot-confirmations">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Slot Date and Start Time</th>
+                    <th scope="col" class="text-center">Total Number of Reserved Participants</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">5/19/2020 - 8:00AM</th>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <th scope="row">5/20/2020 - 2:00PM</th>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <th scope="row">5/20/2020 - 3:00PM</th>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-
+<!--
     <div class="container" id="slot-confirmations">
         <table class="table table-bordered">
             <thead>
@@ -274,7 +298,7 @@
         </table>
     </div>
 
-
+-->
 
 	<!-- Posts -->
 <!--
