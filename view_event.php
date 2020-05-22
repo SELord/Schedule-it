@@ -34,19 +34,28 @@
 	// query database for event info
 	$eventInfo = eventDetails($mysqli, $eventID);
 	$eventInfo['date'] = $eventInfo['dateStart'];
-	
 
-	// get posts to slot from database
-    // Commented out due to thought needed on how to display this data at the event level
-	//$posts = slotPosts($mysqli, $slotID);
-	
+    // build array of key value pairs for slots and associated reservation count
+    // slotDetails = detail of all slots in this event
+    $slotDetails = eventSlots($mysqli, $eventID);
+    
+    // get reservation count for each slot and store in key/value array
+    $reservationCountRow = array();
+    foreach($slotDetails as $arr){
+        $slotID = $arr['id'];
+        $slotDateTime = $arr['startDateTime'];
+        $slotReservationCount = slotRSVPCount($mysqli, $slotID);
+        $reservationCountRow[$slotDateTime] = $slotReservationCount;
+    }
+
+
 	// get list of attendees who have reserved the same slot 
 	//$attendees = slotAttendees($mysqli, $slotID);
 
 	// send to javascript on client
 	echo "<script>\n";
 	echo "let eventDetails = " . json_encode($eventInfo) . ";\n";
-	//echo "var slotDetails = " . json_encode($slotInfo) . ";\n";
+	echo "let slotDetails = " . json_encode($reservationCountRow) . ";\n";
 	//echo "var posts = " . json_encode($posts) . ";\n";
 	//echo "var attendees = " . json_encode($attendees) . ";\n";
 	echo "</script>";
@@ -237,88 +246,29 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Slot Date and Start Time</th>
-                    <th scope="col" class="text-center">Total Number of Reserved Participants</th>
+                    <th>Slot Date and Start Time</th>
+                    <th class="text-center">Total Number of Reserved Participants</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">5/19/2020 - 8:00AM</th>
+            <tbody id="reservationSlotTableBody">
+               <!-- <tr>
+                    <td>5/19/2020 - 8:00AM</td>
                     <td>2</td>
                 </tr>
                 <tr>
-                    <th scope="row">5/20/2020 - 2:00PM</th>
+                    <td>5/20/2020 - 2:00PM</td>
                     <td>1</td>
                 </tr>
                 <tr>
-                    <th scope="row">5/20/2020 - 3:00PM</th>
+                    <td>5/20/2020 - 3:00PM</td>
                     <td>5</td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>
 
-<!--
-    <div class="container" id="slot-confirmations">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col" class="text-center">Slot 1 Date/Time</th>
-                    <th scope="col" class="text-center">Slot 2 Date/Time</th>
-                    <th scope="col" class="text-center">Slot 3 Date/Time</th>
-                </tr>
-                <tr>
-                    <th scope="col"># of Participants</th>
-                    <th scope="col" class="text-center">Slot 1 total</th>
-                    <th scope="col" class="text-center">Slot 2 total</th>
-                    <th scope="col" class="text-center">Slot 3 total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">lords</th>
-                    <td></td>
-                    <td class="text-center">&#x2705</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">ohsa</th>
-                    <td class="text-center">&#x2705</td>
-                    <td class="text-center">&#x2705</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">fisherv</th>
-                    <td></td>
-                    <td class="text-center">&#x2705</td>
-                    <td class="text-center">&#x2705</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
--->
 
-	<!-- Posts -->
-<!--
-    <div class="container-fluid" id="content">
-
-        <table class="table-responsive table-bordered table-striped">
-
-			<thead>
-				<tr>
-					<th scope="col">Time</th>
-					<th scope="col">Attendee</th>
-					<th scope="col">Message</th>
-					<th scope="col">File</th>
-				</tr>
-			</thead>
-			<tbody id="posts">
-			</tbody>
-		</table>
-    </div>
--->    
 	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

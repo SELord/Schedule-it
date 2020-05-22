@@ -3,31 +3,40 @@
 function eventInfo(){
     document.getElementById("eventTitle").textContent = eventDetails.title;
     document.getElementById("eventDesc").textContent = eventDetails.description;
-    //document.getElementById("eventDate").textContent = eventDetails.date;
     document.getElementById("dateStart").textContent = 'Start: ' + eventDetails.dateStart;
     document.getElementById("dateEnd").textContent = 'End: ' + eventDetails.dateEnd;
-    //document.getElementById("location").textContent = 'Location: ' + slotDetails.location;
-    //document.getElementById("remainingRes").textContent = 'Available Reservations: ' + slotDetails.remainingRes;
+    createTable();
 }
 
 
-
-function showShareableEventLink(){
-    // fill bootstrap modal (popup box) with link for event reservation
-    let modalList = document.getElementById("eventLink");
-    //let len = attendees.length;
-           
-    // build list
-    //for(let i = 0; i < len; i++){
-    let link = document.createElement('li');
-    link.className = 'list-group-item';
-    link.textContent = attendees[i]['lastName'] + ', ' + attendees[i]['firstName'];
-    modalList.appendChild(item);
-    //}
+function createTable(){
+    // loop to add each slot to the table
+    for(x in slotDetails){
+        addRow("reservationSlotTableBody", x, slotDetails[x]);
+    }
 }
-/*
-$('#submitAnnouncement').on('click', function(){
-    let id = eventDetails.id;
-});
-*/
+
+// code referenced from https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement/insertRow
+function addRow(tableID, date, resCount){
+    let tableRef = document.getElementById(tableID);
+
+    // insert row at end of table
+    let newRow = tableRef.insertRow(-1)
+
+    // insert cell for dateTime
+    let newCell_1 = newRow.insertCell(0);
+
+    // insert cell for reservation count
+    let newCell_2 = newRow.insertCell(1);
+
+    // append the text to each cell
+    let newText_1 = document.createTextNode(date);
+    let newText_2 = document.createTextNode(resCount);
+
+    // insert into table
+    newCell_1.appendChild(newText_1);
+    newCell_2.appendChild(newText_2);
+}
+
+
 document.addEventListener('DOMContentLoaded', eventInfo);
