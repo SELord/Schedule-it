@@ -1,4 +1,10 @@
 <?php
+
+    // PHP error reporting for debug info. Commented out for production
+    //ini_set('display_errors', 1);
+    //ini_set('display_startup_errors', 1);
+    //error_reporting(E_ALL);
+
     include 'file_path.php';
 	// session 
 	session_start();
@@ -48,16 +54,14 @@
         $reservationCountRow[$slotDateTime] = $slotReservationCount;
     }
 
-
-	// get list of attendees who have reserved the same slot 
-	//$attendees = slotAttendees($mysqli, $slotID);
+    // Get table to export of event reservation status
+    $eventReservationForExport = getEventReservationStatus($mysqli, $eventID);
 
 	// send to javascript on client
 	echo "<script>\n";
 	echo "let eventDetails = " . json_encode($eventInfo) . ";\n";
 	echo "let slotDetails = " . json_encode($reservationCountRow) . ";\n";
-	//echo "var posts = " . json_encode($posts) . ";\n";
-	//echo "var attendees = " . json_encode($attendees) . ";\n";
+    echo "let csvExportArr = " . json_encode($eventReservationForExport) . ";\n";
 	echo "</script>";
 
     // event invite link to use in modal below
@@ -163,36 +167,33 @@
 			<div class="col-sm-6"><h3 class="text-center" id="eventTitle"></h3></div>
 			<div class="col-sm-3"></div>
 		</div>
-	<!--	<div class="row">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-6"><h4 class="text-center" id="eventDate"></h4></div>
-			<div class="col-sm-3"></div>
-		</div> -->
 		<div class="row">
             <div class="col-sm-2"></div>
 			<div class="col-sm-4"><h5 class="text-left" id="dateStart"></h5></div>
             <div class="col-sm-1"></div>
 			<div class="col-sm-4"><h5 class="text-center" id="dateEnd"></h5></div>
             <div class="col-sm-1"></div>
-			<!-- <div class="col-sm-4"><h5 class="text-right" id="location"></h5></div> -->
 		</div>
 		<div class="row">
             <div class="col-sm-1"></div>
 			<div class="col-sm-10"><p id="eventDesc"></p></div>
 			<div class="col-sm-1">
-			<!--	<a class="btn btn-block" href=<?php // echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a> -->
 			</div>
 		</div>
-	<!--	<div class="row">
-			<div class="col-sm-6"><h6 class="text-left" id="remainingRes"></h6></div>
-			<div class="col-sm-2"></div>
-			<div class="col-sm-4"><button type="button" class="btn btn-block" data-toggle="modal"
-			data-target="#attendeeListModal">Attendee List</button></div>
-		</div> -->
+        <div class="row">
+            <div class="col-sm-5"></div>
+			<div class="col-sm-2" id="csvExport">
+                <button type="button" class="btn btn-block" id="exportButton">CSV Export</button>
+                <!-- export code referenced from tutorial at https://www.youtube.com/watch?v=1tjGmAxpSRE
+                <form method="post" action="export.php">
+                    <input type="submit" name="export" value="CSV Export" class="btn btn-block">
+                </form> -->
+            </div>
+			<div class="col-sm-5">
+        </div>
 	</div>
 	
 	<!-- Modal to display and copy event invite link -->
-    <!-- TODO: Having a shareable link would require re-thinking the invite db table since it currently only creates a new invite id when a user email gets added/sent -->
 	<div id="eventLinkModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -242,6 +243,8 @@
         </div>
     </form>
 
+
+    <!-- Table displaying number of reservations per slot -->
     <div class="container" id="slot-confirmations">
         <table class="table table-bordered">
             <thead>
@@ -251,18 +254,6 @@
                 </tr>
             </thead>
             <tbody id="reservationSlotTableBody">
-               <!-- <tr>
-                    <td>5/19/2020 - 8:00AM</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>5/20/2020 - 2:00PM</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>5/20/2020 - 3:00PM</td>
-                    <td>5</td>
-                </tr> -->
             </tbody>
         </table>
     </div>

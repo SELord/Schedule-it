@@ -6,6 +6,7 @@ function eventInfo(){
     document.getElementById("dateStart").textContent = 'Start: ' + eventDetails.dateStart;
     document.getElementById("dateEnd").textContent = 'End: ' + eventDetails.dateEnd;
     createTable();
+    document.getElementById('csvExport').addEventListener('click', exportToCSV, false);
 }
 
 
@@ -15,6 +16,7 @@ function createTable(){
         addRow("reservationSlotTableBody", x, slotDetails[x]);
     }
 }
+
 
 // code referenced from https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement/insertRow
 function addRow(tableID, date, resCount){
@@ -36,6 +38,51 @@ function addRow(tableID, date, resCount){
     // insert into table
     newCell_1.appendChild(newText_1);
     newCell_2.appendChild(newText_2);
+}
+
+
+// reference: https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
+function exportToCSV(event){
+    event.stopPropagation();
+
+    // csvExportArr is defined in view_event.php
+    let len = csvExportArr.length;
+
+    // Set document type and header row info for csv file
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent = csvContent + "lastName,firstName,email,startDateTime,status\n";
+
+    // loop through each row of the 2D array
+    for(let row = 0; row < len; row++){
+        // new row so clear out the previous row string
+        let rowStr = "";
+
+        // append each element value to the row string separated by a comma
+        for(let key in csvExportArr[row]){
+            rowStr = rowStr + csvExportArr[row][key] + ",";
+
+        }
+        // remove the trailing comma
+        rowStr = rowStr.substring(0,rowStr.length - 1);
+        
+        // add a newline char to the end of the row string
+        rowStr = rowStr + "\n";
+
+        // append the completed row string to the output csvContent string
+        csvContent = csvContent + rowStr;
+    
+    }
+    // Encode the output csv string
+    let encodedUri = encodeURI(csvContent);
+
+    // create hidden link so that we can rename the output file to something more meaningful
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Schedule-it_Export.csv");
+    document.body.appendChild(link);
+
+    // automatically click the link to start the download
+    link.click();
 }
 
 
