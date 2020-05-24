@@ -1141,6 +1141,33 @@ function getEventEmails($conn, $id){
 	}
 }
 //--------------------------------------------------------------------------------------------------
+// Function: getEventReservationStatus(conn, id)
+// Description: all users who have been invited to an event with their reservation status for each slot
+// Input: 
+//		conn = MySQL database connection object 
+//		id = id of event in db 
+// Output: if any are found, then a 2D associative array containing invitees
+//         1st dimension = row number of result, else NULL
+//         2nd dimension = array keys: lastName, firstName, email, startDateTime, status
+function getEventReservationStatus($conn, $id){
+    $stmt = $conn->prepare("SELECT U.lastName, U.firstName, U.email, S.startDateTime, I.status
+            FROM Invite I INNER JOIN USER U ON I.receiverID = U.id
+            INNER JOIN Slot S ON I.eventID = S.eventID
+            WHERE I.eventID = ?
+            ORDER BY U.lastName ASC;");
+    $stmt->bind_param("i", $id);
+    if ($stmt->execute()){
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    else{
+        return NULL;
+    }
+}
+
+
+
+//--------------------------------------------------------------------------------------------------
 // Function: eventUpdate(conn, id, info[])
 // Description: update an event's details
 // Input: 
