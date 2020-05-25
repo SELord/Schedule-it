@@ -257,11 +257,15 @@
 
       <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
+      <label for="RSVPslotLim">Max Reservations per attendee: </label>
+          <input type="number" name="RSVPslotLim" id="RSVPslotLim" class="text ui-widget-content ui-corner-all" min="0">
+
       <label for="dateStart">Start Date: </label>
           <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
 
       <label for="dateEnd">End Date: </label>
           <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
+
           <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
@@ -297,6 +301,9 @@
   <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
   <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+
+  <label for="RSVPslotLimedit">Max Reservations per attendee: </label>
+      <input type="number" name="RSVPslotLimedit" id="RSVPslotLimedit" class="text ui-widget-content ui-corner-all" min="0">
 
   <label for="dateStartEdit">Start Date: </label>
       <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">
