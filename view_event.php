@@ -283,50 +283,6 @@
     </div>
 
 
-
-
-    <!-- Modal to receive input for announcement -->
-<!--	<form method="POST" id="announceModalForm">
-        <div id="eventAnnouncementModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <h4 class="modal-title">Send Announcement</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body mx-3">
-                        <form>
-                            <div class="form-group">
-                                <label for="subject-text" class="col-form-label">Subject</label>
-                                <input type="text" class="form-control" id="announce-subject">
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Message</label>
-                                <textarea type="text" class="form-control" id="announce-message"></textarea>
-                            </div>
-                        </form>
--->
-                    <!--
-                        <div class="md-form mb-5">
-                            <label data-error="wrong" data-success="right" for="announce-subject">Subject</label>
-                            <input type="text" id="announce-subject" class="form-control validate">
-                        </div>
-
-                        <div class="md-form">
-                            <label data-error="wrong" data-success="right" for="announce-message">Your message</label>
-                            <textarea type="text" id="announce-message" class="md-textarea form-control" rows="6"></textarea>
-                        </div>
-                    -->
-<!--                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="submitAnnouncement-button" class="btn btn-default">Send</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
--->
-
     <!-- Table displaying number of reservations per slot -->
     <div class="container" id="slot-confirmations">
         <table class="table table-bordered">
