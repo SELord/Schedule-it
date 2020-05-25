@@ -1,15 +1,51 @@
 // javascript for event management page
 
+function loadButtons(){
+    document.getElementById('csvExport').addEventListener('click', exportToCSV, false);
+    //document.getElementById('submitAnnouncement-button').addEventListener('click', sendAnnouncement);
+    // announcement button
+	//document.getElementById('createEventDiv').innerHTML = '<right><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br />';
+	$('#announcementButton').click(function(){
+		$( "#dialog-form-announcement" ).dialog();
+    });
+    
+    $('#submitAnnouncement-button').on('click',function(){     
+        let id = eventDetails['id'];  //eventID
+        let subject = $('#announce-subject').val();
+        let message = $('#announce-message').val();
+        let jsonPayload = {
+            id:id,
+            subject:subject,
+            message:message
+        };
+        $.ajax({
+            url:"../Schedule-it/database/event/announcement.php",
+            type:"POST",
+            data: jsonPayload,
+            success:function(data) {
+                alert("Emails have been sent!");
+                $("#dialog-form-announcement").dialog('close');
+                //console.log(data);  // Need this console.log to see any php echo statements in announcement.php and others called through this ajax
+            },
+            error: function(error) {
+                alert("Unable to send emails");
+                console.log(error);
+            }
+        }); 
+    });
+}
+
+
+// Populates Slot reservation data in table
 function eventInfo(){
     document.getElementById("eventTitle").textContent = eventDetails.title;
     document.getElementById("eventDesc").textContent = eventDetails.description;
     document.getElementById("dateStart").textContent = 'Start: ' + eventDetails.dateStart;
     document.getElementById("dateEnd").textContent = 'End: ' + eventDetails.dateEnd;
     createTable();
-    document.getElementById('csvExport').addEventListener('click', exportToCSV, false);
 }
 
-
+// Adds rows for each slot in event
 function createTable(){
     // loop to add each slot to the table
     for(x in slotDetails){
@@ -87,3 +123,4 @@ function exportToCSV(event){
 
 
 document.addEventListener('DOMContentLoaded', eventInfo);
+document.addEventListener('DOMContentLoaded', loadButtons);

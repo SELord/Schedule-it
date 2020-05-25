@@ -1,9 +1,8 @@
 <?php
-
     // PHP error reporting for debug info. Commented out for production
-    //ini_set('display_errors', 1);
-    //ini_set('display_startup_errors', 1);
-    //error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
     include 'file_path.php';
 	// session 
@@ -81,6 +80,12 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <!--Customized css-->
   <link rel="stylesheet" href="./assets/css/main.css" type="text/css">
+
+  <!--NEEDED FOR DIALOG-FORM DISPLAY -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script>
@@ -105,6 +110,55 @@
   <!-- <script src='../assets/js/fullcalendar/packages/interaction/main.js'></script> -->
   <script src='./assets/js/fullcalendar/packages/timegrid/main.js'></script>
 
+  <!--NEEDED FOR DIALOG-FORM DISPLAY -->
+  <style>
+
+  label, input { display:block; }
+  input.text { margin-bottom:12px; width:95%; padding: .4em; }
+  fieldset { padding:0; border:0; margin-top:25px; }
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  div#users-contain { width: 350px; margin: 20px 0; }
+  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+  .validateTips { border: 1px solid transparent; padding: 0.3em; }
+  #live_data .ui-dialog {
+  width: 100%;
+  padding: 0; }
+
+  .tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+  }
+
+  .tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+  }
+
+  .tooltip:hover .tooltiptext {
+	visibility: visible;
+  }
+
+  .hidden>div {
+	display:none;
+  }
+
+  .visible>div {
+	display:block;
+  }
+
+</style>
 
 </head>
 <body>
@@ -152,7 +206,7 @@
                 <button type="button" class="btn btn-block" data-toggle="modal" data-target="#eventLinkModal">Get Shareable Link</button>
             </div>
             <div class="col-sm-2">
-                <button type="button" class="btn btn-block" data-toggle="modal" data-target="#eventAnnouncementModal">Send Announcement</button>
+                <button type="button" class="btn btn-block" id="announcementButton">Send Announcement</button>
             </div>
             <div class="col-sm-2"><button type="button" class="btn btn-block" onclick="editEvent(event)" id="editEventButton">Edit Event</div>
             <div class="col-sm-3"></div>
@@ -213,10 +267,26 @@
 		</div>
 	</div>
 
+    <!-- form to create event announcement -->
+    <div id="dialog-form-announcement" style="display:none;" title="Send Email Announcement">
+        <p class="validateTips">All form fields are required.</p>
+        <form method="post">
+            <fieldset>
+                <input type="text" name="subject" id="announce-subject" placeholder="Subject" class="text ui-widget-content ui-corner-all" required>
+
+                <textarea type="text" name="message" id="announce-message" placeholder="Message" class="text ui-widget-content ui-corner-all"></textarea>
+
+                <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                <input type="button" value="Send Email To All Invitees" id="submitAnnouncement-button">
+            </fieldset>
+        </form>
+    </div>
+
+
 
 
     <!-- Modal to receive input for announcement -->
-	<form method="POST" id="announceModalForm">
+<!--	<form method="POST" id="announceModalForm">
         <div id="eventAnnouncementModal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -225,6 +295,18 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body mx-3">
+                        <form>
+                            <div class="form-group">
+                                <label for="subject-text" class="col-form-label">Subject</label>
+                                <input type="text" class="form-control" id="announce-subject">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Message</label>
+                                <textarea type="text" class="form-control" id="announce-message"></textarea>
+                            </div>
+                        </form>
+-->
+                    <!--
                         <div class="md-form mb-5">
                             <label data-error="wrong" data-success="right" for="announce-subject">Subject</label>
                             <input type="text" id="announce-subject" class="form-control validate">
@@ -234,15 +316,16 @@
                             <label data-error="wrong" data-success="right" for="announce-message">Your message</label>
                             <textarea type="text" id="announce-message" class="md-textarea form-control" rows="6"></textarea>
                         </div>
-                    </div>
+                    -->
+<!--                    </div>
                     <div class="modal-footer">
-                        <button type="button" id="submitAnnouncement" class="btn btn-default">Send</button>
+                        <button type="button" id="submitAnnouncement-button" class="btn btn-default">Send</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-
+-->
 
     <!-- Table displaying number of reservations per slot -->
     <div class="container" id="slot-confirmations">
@@ -262,7 +345,7 @@
 
 	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
