@@ -47,9 +47,8 @@
         $eventItem["id"] = $slotID;
         $eventItem["eventID"] = $res["eventID"];
         $eventItem["title"] = $res["title"];
-        $date = explode(" ", $res["dateStartTime"])[0];
-        $eventItem["start"] = $date."T".$res["startTime"];
-        $eventItem["end"] = $date."T".$res["endTime"];
+        $eventItem["start"] = $res["startDateTime"];
+        $eventItem["end"] = $res["endDateTime"];
         $eventItem["url"] = "view_reservation?slot=$slotID&inviteID=$inviteID";
         array_push($reservations, $eventItem);
     }

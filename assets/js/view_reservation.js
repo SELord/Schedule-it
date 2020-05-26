@@ -40,9 +40,8 @@ function postMessages() {
 function eventInfo(){
 	document.getElementById("eventTitle").textContent = eventDetails.title;
 	document.getElementById("eventDesc").textContent = eventDetails.description;
-	document.getElementById("eventDate").textContent = eventDetails.date;
-	document.getElementById("startTime").textContent = 'Start: ' + slotDetails.startTime;
-	document.getElementById("endTime").textContent = 'End: ' + slotDetails.endTime;
+	document.getElementById("startTime").textContent = 'Start: ' + slotDetails.startDateTime;
+	document.getElementById("endTime").textContent = 'End: ' + slotDetails.endDateTime;
 	document.getElementById("location").textContent = 'Location: ' + slotDetails.location;
 	document.getElementById("remainingRes").textContent = 'Available Reservations: ' + slotDetails.remainingRes;
 
