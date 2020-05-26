@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["ticket"])) {
         //var_dump($_SESSION);
 
       // connect to database and check if user exists, else create new user 
-      $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+      $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
       if ($mysqli->connect_errno) {
         die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error . "\n");
       } else {

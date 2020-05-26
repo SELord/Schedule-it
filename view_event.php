@@ -1,5 +1,6 @@
 <?php
     // PHP error reporting for debug info. Commented out for production
+    // For more information: https://stackify.com/display-php-errors/
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -20,7 +21,7 @@
 	require './database/dbquery.php';
 	
 	// connect to database 
-	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 	if ($mysqli->connect_errno) {
 		die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error . "\n");
 	}
