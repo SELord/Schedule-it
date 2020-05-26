@@ -1155,9 +1155,9 @@ function getEventEmails($conn, $id){
 //         2nd dimension = array keys: lastName, firstName, email, startDateTime, status
 function getEventReservationStatus($conn, $id){
     $stmt = $conn->prepare("SELECT U.lastName, U.firstName, U.email, S.startDateTime, I.status
-    FROM Invite I 
-    INNER JOIN User U ON I.receiverID = U.id
-    INNER JOIN Slot S ON I.eventID = S.eventID
+    FROM scheduleit_Invite I 
+    INNER JOIN scheduleit_User U ON I.receiverID = U.id
+    INNER JOIN scheduleit_Slot S ON I.eventID = S.eventID
     WHERE I.eventID = ?
     ORDER BY U.lastName ASC;");
     $stmt->bind_param("i", $id);
