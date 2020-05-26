@@ -26,7 +26,7 @@
     require_once './database/dbconfig.php';
     require_once './database/dbquery.php';
     
-    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
     if ($mysqli->connect_errno) {
           echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
           exit;

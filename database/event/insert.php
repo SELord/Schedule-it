@@ -51,7 +51,7 @@ if(!empty($_POST)) {
 
     //echo $dbhost . "\n" . $dbuser . "\n" . $dbpass . "\n" . $dbname;
 
-    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
     if (!$mysqli) {
         echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
         exit; 

@@ -7,7 +7,7 @@
 	require_once '../dbconfig.php';
 	require_once '../dbquery.php';
 
-	$connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+	$connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 	if ($connect->connect_errno) {
 		echo "Failed to connect to MySQL: (" . $connect->connect_errno . ") " . $connect->connect_error;
 	}

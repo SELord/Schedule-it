@@ -8,7 +8,7 @@ require_once '../dbquery.php';
 if(!empty($_POST))
 {
 
-  $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+  $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
   if (!$mysqli) {
       echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
       exit; 

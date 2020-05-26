@@ -13,7 +13,7 @@ require '../dbquery.php';   // functions for accessing database
 require '../../assets/php/emailer.php';  // email functions
 
 //connect to the database
-$connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+$connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
     if (!$connect) {
         echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
         exit; 

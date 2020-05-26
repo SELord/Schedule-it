@@ -15,7 +15,7 @@
 	require './database/dbquery.php';
 	
 	// connect to database 
-	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 	if ($mysqli->connect_errno) {
 		die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error . "\n");
 	}

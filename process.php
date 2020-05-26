@@ -10,7 +10,7 @@
 	require_once './database/dbquery.php';
 	//Post request is from backdoor
 	if ($_SERVER["REQUEST_METHOD"] == "POST") { //from backdoor
-		$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+		$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 		if ($mysqli->connect_errno) {
 	    	echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 			exit;

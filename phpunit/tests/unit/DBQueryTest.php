@@ -9,7 +9,7 @@ class DBQueryTest extends \PHPUnit\Framework\TestCase
         
         echo dirname(dirname(__FILE__)).'../../../database/dbconfig.php';
 
-        $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+        $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
         
         $this->assertEquals(0,$mysqli->connect_errno);
     }

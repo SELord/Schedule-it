@@ -46,7 +46,7 @@ function createdEventHist() {
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
         $.ajax({
-            url:"../Schedule-it/database/event/insert.php",
+            url:"../scheduleit/database/event/insert.php",
             type:"POST",
             data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
             complete: function() {
