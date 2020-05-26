@@ -209,6 +209,9 @@
                 <button type="button" class="btn btn-block" id="announcementButton">Send Announcement</button>
             </div>
             <div class="col-sm-2">
+                <!-- 
+                #TODO: Enable Edit Event button. Most code should be able to be reused from the calendar.php file
+                -->
                 <!-- <button type="button" class="btn btn-block" id="editbtn">Edit Event</button> -->
             </div>
             <div class="col-sm-3"></div>
