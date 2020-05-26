@@ -208,7 +208,9 @@
             <div class="col-sm-2">
                 <button type="button" class="btn btn-block" id="announcementButton">Send Announcement</button>
             </div>
-            <div class="col-sm-2"><button type="button" class="btn btn-block" onclick="editEvent(event)" id="editEventButton">Edit Event</div>
+            <div class="col-sm-2">
+                <!-- <button type="button" class="btn btn-block" id="editbtn">Edit Event</button> -->
+            </div>
             <div class="col-sm-3"></div>
         </div>
     </div>
@@ -282,7 +284,6 @@
         </form>
     </div>
 
-
     <!-- Table displaying number of reservations per slot -->
     <div class="container" id="slot-confirmations">
         <table class="table table-bordered">
@@ -296,8 +297,6 @@
             </tbody>
         </table>
     </div>
-
-
 
 	<!-- Optional JavaScript -->
     <!-- Popper.js, then Bootstrap JS -->

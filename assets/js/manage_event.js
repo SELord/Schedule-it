@@ -121,6 +121,5 @@ function exportToCSV(event){
     link.click();
 }
 
-
 document.addEventListener('DOMContentLoaded', eventInfo);
 document.addEventListener('DOMContentLoaded', loadButtons);
