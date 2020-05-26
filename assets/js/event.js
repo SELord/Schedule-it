@@ -57,6 +57,7 @@ function generateList() {
         dateClick: function(info) {
             $("#dateStart").attr("value", dateStr);
             $("#dateEnd").attr("value", dateStr);
+            $("#RSVPslotLim").attr("value", 1);
             $( "#dialog-form" ).dialog();
         }
     });
@@ -146,6 +147,7 @@ function generateGrid() {
             }
             $("#dateStart").attr("value", dateStr);
             $("#dateEnd").attr("value", dateStr);
+            $("#RSVPslotLim").attr("value", 1);
             $( "#dialog-form" ).dialog();
         }
     });
@@ -285,6 +287,7 @@ function generateGrid() {
         var location = $('#locationedit').val();
         var dateStart = $('#dateStartEdit').val();
         var dateEnd = $('#dateEndEdit').val();
+        var RSVPslotLim = $('#RSVPslotLim').val();
         $.ajax({
             url:"../Schedule-it/database/event/update_month.php",
             type:"POST",
@@ -293,6 +296,7 @@ function generateGrid() {
                 title:title,
                 description:description,
                 location:location,
+                RSVPslotLim:RSVPslotLim,
                 dateStart:dateStart,
                 dateEnd:dateEnd
             },
@@ -318,14 +322,23 @@ function generateGrid() {
         e.preventDefault();
         var title = $('#title').val();
         var description = $('#description').val();
+        var location = $('#location').val();
+        var RSVPslotLim = $('#RSVPslotLim').val();
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
         var creatorID = $('#creatorID').val();    
-        var location = $('#location').val();
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
-            data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
+            data: {
+                title:title,
+                description:description,
+                location:location,
+                RSVPslotLim:RSVPslotLim,
+                dateStart:dateStart,
+                dateEnd:dateEnd,
+                creatorID:creatorID
+            },
             complete: function() {
                 $( "#dialog-form" ).dialog( "close" );
             },
@@ -390,14 +403,17 @@ function generateGrid() {
         var titleedit = event.title;
         var descriptionedit = event.extendedProps.description;
         var locationedit = event.extendedProps.location;
+        var RSVPslotLimedit = event.extendedProps.RSVPslotLim;
+        console.log(event);
         var dateStartEdit = event.start.toISOString().split('T')[0];
         var dateEndEdit = new Date;                 // jump through hoops to display date - 1
-        dateEndEdit.setDate(event.end.getDate() - 1);
+        dateEndEdit.setUTCDate(event.end.getUTCDate() - 1);
         dateEndEdit = dateEndEdit.toISOString().split('T')[0];
         $("#date").attr("value", event.dateStr);
         $("#titleedit").attr("value", titleedit);
         $("#descriptionedit").attr("value", descriptionedit); 
         $("#locationedit").attr("value", locationedit); 
+        $("#RSVPslotLimedit").attr("value", RSVPslotLimedit); 
         $("#dateStartEdit").attr("value", dateStartEdit);
         $("#dateEndEdit").attr("value", dateEndEdit);
         $("#edit-form").dialog();

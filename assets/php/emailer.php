@@ -58,7 +58,7 @@ function updateEventEmail($conn, $eventID){
 // Output: none
 function updateSlotEmail($conn, $slotID){
 	global $FILE_PATH;
-	$stmt = $conn->prepare("SELECT U.email, E.title FROM Slot S
+	$stmt = $conn->prepare("SELECT U.email, E.title FROM scheduleit_Slot S
 			INNER JOIN Reservation R ON S.id = R.slotID 
 			INNER JOIN Invite I ON R.inviteID = I.id
 			INNER JOIN User U ON I.receiverID = U.id

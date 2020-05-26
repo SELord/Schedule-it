@@ -27,6 +27,7 @@
         $eventItem["title"] = $res["title"];
         $eventItem["description"] = $res["description"];
         $eventItem["location"] = $res["location"];
+        $eventItem["RSVPslotLim"] = $res["RSVPslotLim"];
         $eventItem["start"] = $res["dateStart"];
         $eventItem["end"] = $res["dateEnd"];
         $eventItem["allDay"] = true;

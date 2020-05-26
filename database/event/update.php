@@ -15,6 +15,8 @@ if(isset($_POST["id"]))
     }
     var_dump($connect);
 
+    eventUpdate($connect, $_POST);
+
 /*
   //Convert times to epoch time
   $epochStart = date("U", strtotime($start));
@@ -42,9 +44,9 @@ if(isset($_POST["id"]))
 //echo $query;
 $statement = $connect->prepare($query);
 $statement->execute();
-*/
 
-eventUpdate($connect, $_POST);
+
+
 
 //Calculate new duration based off of #of slots
 $numSlots = $connect->query("SELECT count(*) AS slots FROM Slot WHERE eventID='".$id."'");
@@ -84,8 +86,8 @@ $min_duration = ($min / $getSlot);
 
 $intervals = date("H:i",mktime(0,$min_duration,0,0,0,0));
 //echo "\nNew duration: " . $intervals;
-
-/**UPDATE EACH SLOT **/
+*/
+/**UPDATE EACH SLOT 
 //$updateSlot = "UPDATE Slot SET duration = '".$intervals."', WHERE id='".$id."'";
 $get_start = strtotime($newStart);
 
@@ -113,7 +115,7 @@ for($i = 0; $i < count($arraySlot); $i++) {
 
 //var_dump($query1);
 //echo var_dump($arraySlot);
-
+**/
 }
 
 ?>

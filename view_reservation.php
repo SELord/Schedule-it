@@ -153,11 +153,6 @@
 			<div class="col-sm-3"></div>
 		</div>
 		<div class="row">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-6"><h4 class="text-center" id="eventDate"></h4></div>
-			<div class="col-sm-3"></div>
-		</div>
-		<div class="row">
 			<div class="col-sm-4"><h5 class="text-left" id="startTime"></h5></div>
 			<div class="col-sm-4"><h5 class="text-center" id="endTime"></h5></div>
 			<div class="col-sm-4"><h5 class="text-right" id="location"></h5></div>
