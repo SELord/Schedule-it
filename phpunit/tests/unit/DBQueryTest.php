@@ -1,4 +1,9 @@
 <?php
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 
 class DBQueryTest extends \PHPUnit\Framework\TestCase
@@ -9,7 +14,7 @@ class DBQueryTest extends \PHPUnit\Framework\TestCase
         
         echo dirname(dirname(__FILE__)).'../../../database/dbconfig.php';
 
-        $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+        $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
         
         $this->assertEquals(0,$mysqli->connect_errno);
     }

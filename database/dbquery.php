@@ -1,4 +1,10 @@
 <?php
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
 //--------------------------------------------------------------------------------------------------
 // FUNCTION DOCUMENTATION
 //--------------------------------------------------------------------------------------------------
@@ -398,9 +404,8 @@ function newUser($conn, $info){
 //			title, description, dateStart, dateEnd, RSVPslotLim, creatorID
 // Output: database id of new event if successful, else false
 function newEvent($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO scheduleit_Event (title, description, location, dateStart, dateEnd, RSVPslotLim, creatorID)
-			VALUES (?, ?, ?, ?, ?, ?)");
-	$stmt->bind_param("sssssi", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'], $info['RSVPslotLim'], $info['creatorID']);
+	$stmt = $conn->prepare("INSERT INTO scheduleit_Event (title, description, location, dateStart, dateEnd, RSVPslotLim, creatorID) VALUES (?, ?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("sssssii", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'], $info['RSVPslotLim'], $info['creatorID']);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
 		return $conn->insert_id;
@@ -1140,6 +1145,34 @@ function getEventEmails($conn, $id){
 		return NULL;
 	}
 }
+//--------------------------------------------------------------------------------------------------
+// Function: getEventReservationStatus(conn, id)
+// Description: all users who have been invited to an event with their reservation status for each slot
+// Input: 
+//		conn = MySQL database connection object 
+//		id = id of event in db 
+// Output: if any are found, then a 2D associative array containing invitees
+//         1st dimension = row number of result, else NULL
+//         2nd dimension = array keys: lastName, firstName, email, startDateTime, status
+function getEventReservationStatus($conn, $id){
+    $stmt = $conn->prepare("SELECT U.lastName, U.firstName, U.email, S.startDateTime, I.status
+    FROM scheduleit_Invite I 
+    INNER JOIN scheduleit_User U ON I.receiverID = U.id
+    INNER JOIN scheduleit_Slot S ON I.eventID = S.eventID
+    WHERE I.eventID = ?
+    ORDER BY U.lastName ASC;");
+    $stmt->bind_param("i", $id);
+    if ($stmt->execute()){
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    else{
+        return NULL;
+    }
+}
+
+
+
 //--------------------------------------------------------------------------------------------------
 // Function: eventUpdate(conn, id, info[])
 // Description: update an event's details

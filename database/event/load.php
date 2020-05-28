@@ -1,11 +1,17 @@
 <?php
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
     //get onid parameter
     $onidID = $_GET["onidID"];
 
     require_once '../dbconfig.php';
     require_once '../dbquery.php';
     
-    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
     if ($mysqli->connect_errno) {
           echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
           exit;

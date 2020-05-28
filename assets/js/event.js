@@ -349,8 +349,9 @@ function generateGrid() {
             complete: function() {
                 $( "#dialog-form" ).dialog( "close" );
             },
-            success: function(){
+            success: function(data){
                 calendar.refetchEvents();
+                //console.log(data);  //Needed in order to see php debugging error messages in console
                 alert("Added Successfully");
             },
             error: function(error) {

@@ -1,11 +1,17 @@
 <?php 
-    include 'file_path.php';
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+    require_once 'file_path.php';
 
 	// session 
 	session_start();
 
     // Capture the current page with query string to be passed to the login.php page
-    $tempArr = explode("Schedule-it/", $_SERVER['REQUEST_URI']);
+    $tempArr = explode("scheduleit/", $_SERVER['REQUEST_URI']);
     $returnPage = urlencode($tempArr[1]);
 
     //check once again if the user is logged in
@@ -21,7 +27,7 @@
 	require './database/dbquery.php';
 		
 	// connect to database 
-	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 	if ($mysqli->connect_errno) {
 		die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error . "\n");
 	}

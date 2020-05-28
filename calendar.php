@@ -1,5 +1,11 @@
 <?php
-    include 'file_path.php';
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+    require_once 'file_path.php';
     session_start();
     //check once again if the user is logged in
     //if not, redirect back to login page
@@ -17,7 +23,7 @@
     require_once './database/dbconfig.php';
     require_once './database/dbquery.php';
     
-    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+    $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
     if ($mysqli->connect_errno) {
           echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
           exit;
@@ -270,7 +276,7 @@
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="button" value="Submit" id="signupbtn" onclick="submitForm()">
+      <input type="button" value="Submit" id="signupbtn">
     </fieldset>
   </form>
 </div>

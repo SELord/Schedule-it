@@ -1,4 +1,9 @@
  <?php 
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 /*******************************************************************
 TRIGGED BY EVENT.JS WHEN USER HITS "SUBMIT" AFTER SENDING EMAILS
@@ -15,7 +20,7 @@ require '../dbquery.php';   // functions for accessing database
 require '../../assets/php/emailer.php';  // email functions
 
  //connect to the database
- $connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+ $connect = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
     if (!$connect) {
         echo "Error: unable to connect to MySQL: Errorno - " . mysqli_connect_errno() . PHP_EOL;
         exit; 

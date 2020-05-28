@@ -1,5 +1,11 @@
 <?php
-    include 'file_path.php';
+    // PHP error reporting for debug info. Commented out for production
+    // For more information: https://stackify.com/display-php-errors/
+    //ini_set('display_errors', 1);
+    //ini_set('display_startup_errors', 1);
+    //error_reporting(E_ALL);
+
+    require_once 'file_path.php';
 	// session 
 	session_start();
     //check once again if the user is logged in
@@ -15,7 +21,7 @@
 	require './database/dbquery.php';
 	
 	// connect to database 
-	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 	if ($mysqli->connect_errno) {
 		die("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error . "\n");
 	}
@@ -34,21 +40,28 @@
 	// query database for event info
 	$eventInfo = eventDetails($mysqli, $eventID);
 	$eventInfo['date'] = $eventInfo['dateStart'];
-	
 
-	// get posts to slot from database
-    // Commented out due to thought needed on how to display this data at the event level
-	//$posts = slotPosts($mysqli, $slotID);
-	
-	// get list of attendees who have reserved the same slot 
-	//$attendees = slotAttendees($mysqli, $slotID);
+    // build array of key value pairs for slots and associated reservation count
+    // slotDetails = detail of all slots in this event
+    $slotDetails = eventSlots($mysqli, $eventID);
+    
+    // get reservation count for each slot and store in key/value array
+    $reservationCountRow = array();
+    foreach($slotDetails as $arr){
+        $slotID = $arr['id'];
+        $slotDateTime = $arr['startDateTime'];
+        $slotReservationCount = slotRSVPCount($mysqli, $slotID);
+        $reservationCountRow[$slotDateTime] = $slotReservationCount;
+    }
+
+    // Get table to export of event reservation status
+    $eventReservationForExport = getEventReservationStatus($mysqli, $eventID);
 
 	// send to javascript on client
 	echo "<script>\n";
 	echo "let eventDetails = " . json_encode($eventInfo) . ";\n";
-	//echo "var slotDetails = " . json_encode($slotInfo) . ";\n";
-	//echo "var posts = " . json_encode($posts) . ";\n";
-	//echo "var attendees = " . json_encode($attendees) . ";\n";
+	echo "let slotDetails = " . json_encode($reservationCountRow) . ";\n";
+    echo "let csvExportArr = " . json_encode($eventReservationForExport) . ";\n";
 	echo "</script>";
 
     // event invite link to use in modal below
@@ -68,6 +81,12 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <!--Customized css-->
   <link rel="stylesheet" href="./assets/css/main.css" type="text/css">
+
+  <!--NEEDED FOR DIALOG-FORM DISPLAY -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script>
@@ -92,6 +111,55 @@
   <!-- <script src='../assets/js/fullcalendar/packages/interaction/main.js'></script> -->
   <script src='./assets/js/fullcalendar/packages/timegrid/main.js'></script>
 
+  <!--NEEDED FOR DIALOG-FORM DISPLAY -->
+  <style>
+
+  label, input { display:block; }
+  input.text { margin-bottom:12px; width:95%; padding: .4em; }
+  fieldset { padding:0; border:0; margin-top:25px; }
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  div#users-contain { width: 350px; margin: 20px 0; }
+  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+  .validateTips { border: 1px solid transparent; padding: 0.3em; }
+  #live_data .ui-dialog {
+  width: 100%;
+  padding: 0; }
+
+  .tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+  }
+
+  .tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+  }
+
+  .tooltip:hover .tooltiptext {
+	visibility: visible;
+  }
+
+  .hidden>div {
+	display:none;
+  }
+
+  .visible>div {
+	display:block;
+  }
+
+</style>
 
 </head>
 <body>
@@ -139,9 +207,14 @@
                 <button type="button" class="btn btn-block" data-toggle="modal" data-target="#eventLinkModal">Get Shareable Link</button>
             </div>
             <div class="col-sm-2">
-                <button type="button" class="btn btn-block" data-toggle="modal" data-target="#eventAnnouncementModal">Send Announcement</button>
+                <button type="button" class="btn btn-block" id="announcementButton">Send Announcement</button>
             </div>
-            <div class="col-sm-2"><button type="button" class="btn btn-block" onclick="editEvent(event)" id="editEventButton">Edit Event</div>
+            <div class="col-sm-2">
+                <!-- 
+                #TODO: Enable Edit Event button. Most code should be able to be reused from the calendar.php file
+                -->
+                <!-- <button type="button" class="btn btn-block" id="editbtn">Edit Event</button> -->
+            </div>
             <div class="col-sm-3"></div>
         </div>
     </div>
@@ -154,36 +227,33 @@
 			<div class="col-sm-6"><h3 class="text-center" id="eventTitle"></h3></div>
 			<div class="col-sm-3"></div>
 		</div>
-	<!--	<div class="row">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-6"><h4 class="text-center" id="eventDate"></h4></div>
-			<div class="col-sm-3"></div>
-		</div> -->
 		<div class="row">
             <div class="col-sm-2"></div>
 			<div class="col-sm-4"><h5 class="text-left" id="dateStart"></h5></div>
             <div class="col-sm-1"></div>
 			<div class="col-sm-4"><h5 class="text-center" id="dateEnd"></h5></div>
             <div class="col-sm-1"></div>
-			<!-- <div class="col-sm-4"><h5 class="text-right" id="location"></h5></div> -->
 		</div>
 		<div class="row">
             <div class="col-sm-1"></div>
 			<div class="col-sm-10"><p id="eventDesc"></p></div>
 			<div class="col-sm-1">
-			<!--	<a class="btn btn-block" href=<?php // echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a> -->
 			</div>
 		</div>
-	<!--	<div class="row">
-			<div class="col-sm-6"><h6 class="text-left" id="remainingRes"></h6></div>
-			<div class="col-sm-2"></div>
-			<div class="col-sm-4"><button type="button" class="btn btn-block" data-toggle="modal"
-			data-target="#attendeeListModal">Attendee List</button></div>
-		</div> -->
+        <div class="row">
+            <div class="col-sm-5"></div>
+			<div class="col-sm-2" id="csvExport">
+                <button type="button" class="btn btn-block" id="exportButton">CSV Export</button>
+                <!-- export code referenced from tutorial at https://www.youtube.com/watch?v=1tjGmAxpSRE
+                <form method="post" action="export.php">
+                    <input type="submit" name="export" value="CSV Export" class="btn btn-block">
+                </form> -->
+            </div>
+			<div class="col-sm-5">
+        </div>
 	</div>
 	
 	<!-- Modal to display and copy event invite link -->
-    <!-- TODO: Having a shareable link would require re-thinking the invite db table since it currently only creates a new invite id when a user email gets added/sent -->
 	<div id="eventLinkModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -203,101 +273,37 @@
 		</div>
 	</div>
 
+    <!-- form to create event announcement -->
+    <div id="dialog-form-announcement" style="display:none;" title="Send Email Announcement">
+        <p class="validateTips">All form fields are required.</p>
+        <form method="post">
+            <fieldset>
+                <input type="text" name="subject" id="announce-subject" placeholder="Subject" class="text ui-widget-content ui-corner-all" required>
 
+                <textarea type="text" name="message" id="announce-message" placeholder="Message" class="text ui-widget-content ui-corner-all"></textarea>
 
-    <!-- Modal to receive input for announcement -->
-	<form method="POST" id="announceModalForm">
-        <div id="eventAnnouncementModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-                        <h4 class="modal-title">Send Announcement</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body mx-3">
-                        <div class="md-form mb-5">
-                            <label data-error="wrong" data-success="right" for="announce-subject">Subject</label>
-                            <input type="text" id="announce-subject" class="form-control validate">
-                        </div>
+                <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                <input type="button" value="Send Email To All Invitees" id="submitAnnouncement-button">
+            </fieldset>
+        </form>
+    </div>
 
-                        <div class="md-form">
-                            <label data-error="wrong" data-success="right" for="announce-message">Your message</label>
-                            <textarea type="text" id="announce-message" class="md-textarea form-control" rows="6"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="submitAnnouncement" class="btn btn-default">Send</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-
-
-
+    <!-- Table displaying number of reservations per slot -->
     <div class="container" id="slot-confirmations">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col"></th>
-                    <th scope="col" class="text-center">Slot 1 Date/Time</th>
-                    <th scope="col" class="text-center">Slot 2 Date/Time</th>
-                    <th scope="col" class="text-center">Slot 3 Date/Time</th>
-                </tr>
-                <tr>
-                    <th scope="col"># of Participants</th>
-                    <th scope="col" class="text-center">Slot 1 total</th>
-                    <th scope="col" class="text-center">Slot 2 total</th>
-                    <th scope="col" class="text-center">Slot 3 total</th>
+                    <th>Slot Date and Start Time</th>
+                    <th class="text-center">Total Number of Reserved Participants</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">lords</th>
-                    <td></td>
-                    <td class="text-center">&#x2705</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">ohsa</th>
-                    <td class="text-center">&#x2705</td>
-                    <td class="text-center">&#x2705</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row">fisherv</th>
-                    <td></td>
-                    <td class="text-center">&#x2705</td>
-                    <td class="text-center">&#x2705</td>
-                </tr>
+            <tbody id="reservationSlotTableBody">
             </tbody>
         </table>
     </div>
 
-
-
-	<!-- Posts -->
-<!--
-    <div class="container-fluid" id="content">
-
-        <table class="table-responsive table-bordered table-striped">
-
-			<thead>
-				<tr>
-					<th scope="col">Time</th>
-					<th scope="col">Attendee</th>
-					<th scope="col">Message</th>
-					<th scope="col">File</th>
-				</tr>
-			</thead>
-			<tbody id="posts">
-			</tbody>
-		</table>
-    </div>
--->    
 	<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <!-- Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
