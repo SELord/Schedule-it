@@ -1,9 +1,9 @@
 <?php
 // PHP error reporting for debug info. Commented out for production
 // For more information: https://stackify.com/display-php-errors/
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
     require_once 'file_path.php';
     session_start();
@@ -276,7 +276,7 @@ error_reporting(E_ALL);
       <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
 
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="button" value="Submit" id="signupbtn" onclick="submitForm()">
+      <input type="button" value="Submit" id="signupbtn">
     </fieldset>
   </form>
 </div>

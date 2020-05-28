@@ -404,9 +404,8 @@ function newUser($conn, $info){
 //			title, description, dateStart, dateEnd, RSVPslotLim, creatorID
 // Output: database id of new event if successful, else false
 function newEvent($conn, $info){
-	$stmt = $conn->prepare("INSERT INTO scheduleit_Event (title, description, location, dateStart, dateEnd, RSVPslotLim, creatorID)
-			VALUES (?, ?, ?, ?, ?, ?)");
-	$stmt->bind_param("sssssi", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'], $info['RSVPslotLim'], $info['creatorID']);
+	$stmt = $conn->prepare("INSERT INTO scheduleit_Event (title, description, location, dateStart, dateEnd, RSVPslotLim, creatorID) VALUES (?, ?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("sssssii", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'], $info['RSVPslotLim'], $info['creatorID']);
 	if ($stmt->execute()){
 		// execute() returns true on success, false on failure
 		return $conn->insert_id;
