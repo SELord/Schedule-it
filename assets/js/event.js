@@ -326,7 +326,14 @@ function generateGrid() {
         var RSVPslotLim = $('#RSVPslotLim').val();
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
-        var creatorID = $('#creatorID').val();    
+        var creatorID = $('#creatorID').val();
+
+        // input validation for dates
+        if ((Date.parse(dateStart) > Date.parse(dateEnd))) {
+            alert("Error: start date cannot be after end date!");
+            document.getElementById("dateEnd").value = "";
+        }
+        else {    
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
@@ -356,6 +363,8 @@ function generateGrid() {
     title = $('#title').val('');
     description = $('#description').val('');
     location = $('#location').val('');
+    }
+
     });
 
     // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
@@ -489,6 +498,12 @@ function generateGrid() {
     });  
 }
 
+/**
+ * showList() displays the list.
+ * It disables the list button, since the list is already being shown.
+ * Also enables the calendar button (click to show calendar instead of list).
+ * @param {*} event 
+ */
 function showList(event) {
     event.stopPropagation();
     document.getElementById("listButton").disabled = true;
@@ -497,6 +512,12 @@ function showList(event) {
     generateList();
 }
 
+/**
+ * showCalendar() displays the calendar.
+ * It disables the calendar button, since the calendar is already being shown.
+ * Also enables the list button (click to show list instead of calendar).
+ * @param {*} event 
+ */
 function showCalendar(event) {
     event.stopPropagation();
     document.getElementById("listButton").disabled = false;
