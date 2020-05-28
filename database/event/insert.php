@@ -1,5 +1,10 @@
 
 <?php
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 //INSERT.PHP = CREATE NEW EVENT ON CALENDAR/WEEKLY/DAY VIEW (SETS TIME AUTOMATICALLY TO 12:00AM ON CALENDAR VIEW)
 

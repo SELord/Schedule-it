@@ -1,8 +1,10 @@
 <?php
-// error reporting. Comment out before production
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
 //--------------------------------------------------------------------------------------------------
 // FUNCTION DOCUMENTATION
 //--------------------------------------------------------------------------------------------------

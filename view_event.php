@@ -1,11 +1,11 @@
 <?php
     // PHP error reporting for debug info. Commented out for production
     // For more information: https://stackify.com/display-php-errors/
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+    //ini_set('display_errors', 1);
+    //ini_set('display_startup_errors', 1);
+    //error_reporting(E_ALL);
 
-    include 'file_path.php';
+    require_once 'file_path.php';
 	// session 
 	session_start();
     //check once again if the user is logged in

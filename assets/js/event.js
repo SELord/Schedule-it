@@ -53,7 +53,7 @@ function generateList() {
         navLinks: true,  //can click day/week names to navigate views
         editable: true,
         eventLimit: true, //allow "more" link when too many events
-        events: '../scheduleit/database/event/load.php?onidID='+ onidID,
+        events: '../Schedule-it/database/event/load.php?onidID='+ onidID,
         dateClick: function(info) {
             $("#dateStart").attr("value", dateStr);
             $("#dateEnd").attr("value", dateStr);
@@ -85,10 +85,10 @@ function generateGrid() {
         selectable: true,
         eventSources: [
         {
-            url: '../scheduleit/database/event/reservations.php?onidID='+ onidID,
+            url: '../Schedule-it/database/event/reservations.php?onidID='+ onidID,
         },
         {
-            url: '../scheduleit/database/event/load.php?onidID='+ onidID,
+            url: '../Schedule-it/database/event/load.php?onidID='+ onidID,
             color: 'coral'
         }
         ],
@@ -101,7 +101,7 @@ function generateGrid() {
             var dateEnd = info.event.dateEnd.toISOString();
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
-                    url:"../scheduleit/database/event/update.php",
+                    url:"../Schedule-it/database/event/update.php",
                     type:"POST",
                     data:{id:id, dateStart:dateStart, dateEnd:dateEnd},
                     success:function() {
@@ -121,7 +121,7 @@ function generateGrid() {
             var end = event.end.toISOString();
             if (confirm("Are you sure about this change?")) {
                 $.ajax({
-                    url:"../scheduleit/database/event/update.php",
+                    url:"../Schedule-it/database/event/update.php",
                     type:"POST",
                     data:{id:id, start:start, end:end},
                     success:function() {
@@ -177,7 +177,7 @@ function generateGrid() {
     // for editing slot data, used below
     function edit_data(id, key, value) {  
         $.ajax({  
-            url:"../scheduleit/database/event/update_slot.php",  
+            url:"../Schedule-it/database/event/update_slot.php",  
             method:"POST",  
             data:{
                 id:id,
@@ -256,7 +256,7 @@ function generateGrid() {
         });
         // get the list of slots from db
         $.ajax({
-            url:"../scheduleit/database/event/get_slots.php",
+            url:"../Schedule-it/database/event/get_slots.php",
             type:"POST",
             data: {id:eventID}, 
             success:function(data){
@@ -289,7 +289,7 @@ function generateGrid() {
         var dateEnd = $('#dateEndEdit').val();
         var RSVPslotLim = $('#RSVPslotLim').val();
         $.ajax({
-            url:"../scheduleit/database/event/update_month.php",
+            url:"../Schedule-it/database/event/update_month.php",
             type:"POST",
             data: {
                 id:id,
@@ -328,7 +328,7 @@ function generateGrid() {
         var dateEnd = $('#dateEnd').val();
         var creatorID = $('#creatorID').val();    
         $.ajax({
-            url:"../scheduleit/database/event/insert.php",
+            url:"../Schedule-it/database/event/insert.php",
             type:"POST",
             data: {
                 title:title,
@@ -377,7 +377,7 @@ function generateGrid() {
         e.preventDefault();
         if(confirm("Are you sure you want to remove " + event.title + "?")) {
             $.ajax({
-                url:"../scheduleit/database/event/delete.php",
+                url:"../Schedule-it/database/event/delete.php",
                 type:"POST",
                 data:{id:id},
                 success:function() {
@@ -468,7 +468,7 @@ function generateGrid() {
             }
         };
         $.ajax({
-            url:"../scheduleit/database/event/emails.php",
+            url:"../Schedule-it/database/event/emails.php",
             type:"POST",
             data: jsonPayload,
             success:function(data) {

@@ -1,4 +1,9 @@
  <?php 
+// PHP error reporting for debug info. Commented out for production
+// For more information: https://stackify.com/display-php-errors/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 /*******************************************************************
 TRIGGED BY EVENT.JS WHEN USER HITS "SUBMIT" AFTER SENDING EMAILS

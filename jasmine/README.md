@@ -9,9 +9,9 @@ Jasmine will work on many different browsers: Safari, Chrome, Firefox, Micorsoft
 
 Open up whichever browser you choose and navigate to the following page:
 ```
-http://web.engr.oregonstate.edu/~lords/scheduleit/jasmine/SpecRunner.html?random=false
+http://web.engr.oregonstate.edu/~lords/Schedule-it/jasmine/SpecRunner.html?random=false
 ```
-or [Click this Link](http://web.engr.oregonstate.edu/~lords/scheduleit/jasmine/SpecRunner.html?random=false) to be taken to the above URL.
+or [Click this Link](http://web.engr.oregonstate.edu/~lords/Schedule-it/jasmine/SpecRunner.html?random=false) to be taken to the above URL.
 
 
 ## Options
