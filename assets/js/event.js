@@ -326,7 +326,14 @@ function generateGrid() {
         var RSVPslotLim = $('#RSVPslotLim').val();
         var dateStart = $('#dateStart').val();
         var dateEnd = $('#dateEnd').val();
-        var creatorID = $('#creatorID').val();    
+        var creatorID = $('#creatorID').val();
+
+        // input validation for dates
+        if ((Date.parse(dateStart) > Date.parse(dateEnd))) {
+            alert("Error: start date cannot be after end date!");
+            document.getElementById("dateEnd").value = "";
+        }
+        else {    
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
@@ -356,6 +363,8 @@ function generateGrid() {
     title = $('#title').val('');
     description = $('#description').val('');
     location = $('#location').val('');
+    }
+
     });
 
     // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
