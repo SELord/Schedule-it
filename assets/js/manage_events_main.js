@@ -1,5 +1,13 @@
-// javascript for event management page
-function createdEventHist() {
+/**
+ * This file is used for the Event Management page.
+ * It displays created events and event history.
+ */
+
+ /**
+  * createdEventHist() uses the FullCalendar.io interface to display 
+  *     all events the user has created.
+  */
+ function createdEventHist() {
     let mostRecent;
     if (pastEvents.length > 0) {
         mostRecent = pastEvents[pastEvents.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
@@ -23,13 +31,13 @@ function createdEventHist() {
 		
         defaultView: 'listWeek',
         defaultDate: mostRecent,
-        navLinks: true,  //can click day/week names to navigate views
+        navLinks: true,     //can click day/week names to navigate views
         editable: false,
-        eventLimit: true, //allow "more" link when too many events
+        eventLimit: true,   //allows "more" link when too many events
         events: pastEvents,
     });
 
-    // create event button
+    // Displays the create event button.
 	document.getElementById('createEventDiv').innerHTML = '<right><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br />';
 	$('#createEvent').click(function(){
 		$( "#dialog-form" ).dialog();
@@ -77,6 +85,10 @@ function eventInfo(){
 }
 */
 
+/**
+ * showEventHist() displays all events created by the user.
+ * @param {*} event 
+ */
 function showEventHist(event){
 	event.stopPropagation();
 	document.getElementById("viewTitle").innerHTML = 'All Events You Created';

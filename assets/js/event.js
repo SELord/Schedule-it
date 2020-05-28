@@ -489,6 +489,12 @@ function generateGrid() {
     });  
 }
 
+/**
+ * showList() displays the list.
+ * It disables the list button, since the list is already being shown.
+ * Also enables the calendar button (click to show calendar instead of list).
+ * @param {*} event 
+ */
 function showList(event) {
     event.stopPropagation();
     document.getElementById("listButton").disabled = true;
@@ -497,6 +503,12 @@ function showList(event) {
     generateList();
 }
 
+/**
+ * showCalendar() displays the calendar.
+ * It disables the calendar button, since the calendar is already being shown.
+ * Also enables the list button (click to show list instead of calendar).
+ * @param {*} event 
+ */
 function showCalendar(event) {
     event.stopPropagation();
     document.getElementById("listButton").disabled = false;
