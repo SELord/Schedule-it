@@ -1,9 +1,16 @@
-// java script for user's event history page
-// *VERY IMPORTANT: ALSO FOR THE HOMEPAGE
+/**
+ * view_history.js is used on the homepage and in view_history.php.
+ * It displays all events the user has either created, RSVPed for, or been invited to.
+ */
+
+/**
+ * createdEventHist() uses fullcalendar.io to display events the user has created.
+ */
 function createdEventHist() {
     let mostRecent;
     if (pastEvents.length > 0) {
-        mostRecent = pastEvents[pastEvents.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+        // fullcalendar.io can handle getting the date from a string with the date and time
+        mostRecent = pastEvents[pastEvents.length - 1]['start']; 
     }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
@@ -24,13 +31,13 @@ function createdEventHist() {
 		
         defaultView: 'listWeek',
         defaultDate: mostRecent,
-        navLinks: true,  //can click day/week names to navigate views
+        navLinks: true,     //can click day/week names to navigate views
         editable: false,
-        eventLimit: true, //allow "more" link when too many events
+        eventLimit: true,   //allow "more" link when too many events
         events: pastEvents,
 	});
 
-	// create event button
+	// Displays the create event button.
 	document.getElementById('createEventDiv').innerHTML = '<right><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br />';
 	$('#createEvent').click(function(){
 		$( "#dialog-form" ).dialog();
@@ -45,6 +52,13 @@ function createdEventHist() {
         var dateEnd = $('#dateEnd').val();
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
+
+        // input validation for dates
+        if ((Date.parse(dateStart) > Date.parse(dateEnd))) {
+            alert("Error: start date cannot be after end date!");
+            document.getElementById("dateEnd").value = "";
+        }
+        else {
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
@@ -64,7 +78,7 @@ function createdEventHist() {
     title = $('#title').val('');
     description = $('#description').val('');
     location = $('#location').val('');
-    });
+    }});
 
     calendar.render();
 }
@@ -81,10 +95,14 @@ function createdEventHist() {
 		dateEnd = $('#dateEnd').val('');
     });
 
+/**
+ * reservationHist() uses fullcalendar.io to display events user has RSVPed to.
+ */
 function reservationHist() {
     let mostRecent;
     if (pastEvents.length > 0) {
-        mostRecent = pastReservations[pastReservations.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+        // fullcalendar.io can handle getting the date from a string with the date and time
+        mostRecent = pastReservations[pastReservations.length - 1]['start']; 
     }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
@@ -105,18 +123,22 @@ function reservationHist() {
 		
         defaultView: 'listWeek',
         defaultDate: mostRecent,
-        navLinks: true,  //can click day/week names to navigate views
+        navLinks: true,     //can click day/week names to navigate views
         editable: false,
-        eventLimit: true, //allow "more" link when too many events
+        eventLimit: true,   //allow "more" link when too many events
         events: pastReservations,
     });
     calendar.render();
 }
 
+/**
+ * inviteHist() uses fullcalendar.io to display events user has been invited to.
+ */
 function inviteHist() {
     let mostRecent;
     if (pastEvents.length > 0) {
-        mostRecent = pastInvites[pastInvites.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
+        // fullcalendar.io can handle getting the date from a string with the date and time
+        mostRecent = pastInvites[pastInvites.length - 1]['start']; 
     }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
@@ -137,14 +159,20 @@ function inviteHist() {
 		
         defaultView: 'listWeek',
         defaultDate: mostRecent,
-        navLinks: true,  //can click day/week names to navigate views
+        navLinks: true,     //can click day/week names to navigate views
         editable: false,
-        eventLimit: true, //allow "more" link when too many events
+        eventLimit: true,   //allow "more" link when too many events
         events: pastInvites,
     });
     calendar.render();
 }
 
+/**
+ * showResHist() displays the user's reservation history.
+ * It also disables the reservation history button, since it's already being displayed.
+ * Enables event history button and invite history button.
+ * @param {*} event 
+ */
 function showResHist(event){
 	event.stopPropagation();
 	document.getElementById("resHistButton").disabled = true;
@@ -157,6 +185,12 @@ function showResHist(event){
 	
 }
 
+/**
+ * showInviteHist() displays the user's invite history.
+ * It also disables the invite history button, since it's already being displayed.
+ * Enables event history button and reservation history button.
+ * @param {*} event 
+ */
 function showInviteHist(event){
 	event.stopPropagation();
 	document.getElementById("inviteHistButton").disabled = true;
@@ -169,6 +203,12 @@ function showInviteHist(event){
 	
 }
 
+/**
+ * showEventHist() displays the user's created event history.
+ * It also disables the event history button, since it's already being displayed.
+ * Enables reservation history button and invite history button.
+ * @param {*} event 
+ */
 function showEventHist(event){
 	event.stopPropagation();
 	document.getElementById("eventHistButton").disabled = true;
