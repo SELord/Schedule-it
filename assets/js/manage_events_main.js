@@ -1,13 +1,5 @@
-/**
- * This file is used for the Event Management page.
- * It displays created events and event history.
- */
-
- /**
-  * createdEventHist() uses the FullCalendar.io interface to display 
-  *     all events the user has created.
-  */
- function createdEventHist() {
+// javascript for event management page
+function createdEventHist() {
     let mostRecent;
     if (pastEvents.length > 0) {
         mostRecent = pastEvents[pastEvents.length - 1]['start']; // fullcalendar.io can handle getting the date from a string with the date and time
@@ -31,13 +23,13 @@
 		
         defaultView: 'listWeek',
         defaultDate: mostRecent,
-        navLinks: true,     //can click day/week names to navigate views
+        navLinks: true,  //can click day/week names to navigate views
         editable: false,
-        eventLimit: true,   //allows "more" link when too many events
+        eventLimit: true, //allow "more" link when too many events
         events: pastEvents,
     });
 
-    // Displays the create event button.
+    // create event button
 	document.getElementById('createEventDiv').innerHTML = '<right><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br />';
 	$('#createEvent').click(function(){
 		$( "#dialog-form" ).dialog();
@@ -52,25 +44,11 @@
         var dateEnd = $('#dateEnd').val();
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
-
-      // input validation for dates
-        if ((Date.parse(dateStart) > Date.parse(dateEnd))) {
-            alert("Error: start date cannot be after end date!");
-            document.getElementById("dateEnd").value = "";
-        }
-        else {    
+        //var RSVPLim = $('#RSVPLim').val();
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
-            data: {
-                title:title,
-                description:description,
-                location:location,
-                RSVPslotLim:RSVPslotLim,
-                dateStart:dateStart,
-                dateEnd:dateEnd,
-                creatorID:creatorID
-            },
+            data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
             complete: function() {
                 $( "#dialog-form" ).dialog( "close" );
             },
@@ -82,15 +60,10 @@
                 console.log(error);
             }
         })
+    });
 
-        // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
-        title = $('#title').val('');
-        description = $('#description').val('');
-        location = $('#location').val('');
-        }});
-        
-        calendar.render();
-    }
+    calendar.render();
+}
 
 /*
 function eventInfo(){
@@ -104,10 +77,6 @@ function eventInfo(){
 }
 */
 
-/**
- * showEventHist() displays all events created by the user.
- * @param {*} event 
- */
 function showEventHist(event){
 	event.stopPropagation();
 	document.getElementById("viewTitle").innerHTML = 'All Events You Created';

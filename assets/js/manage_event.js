@@ -1,14 +1,5 @@
-/**
- * This file is used for the Event Management page.
- * It displays event information and the shareable event link.
- * NOTE: Actually, I don't think this file is currently being used...
- */
+// javascript for event management page
 
- /**
-  * eventInfo() displays the event information --
-  *     title, description, start date, and end date.
-  * The eventDate, location, and remainingRes items are no longer being used.
-  */
 function eventInfo(){
     document.getElementById("eventTitle").textContent = eventDetails.title;
     document.getElementById("eventDesc").textContent = eventDetails.description;
@@ -20,10 +11,7 @@ function eventInfo(){
 }
 
 
-/**
- * showShareableEventLink() displays the shareable event link.
- * It displays attendees' first and last name.
- */
+
 function showShareableEventLink(){
     // fill bootstrap modal (popup box) with link for event reservation
     let modalList = document.getElementById("eventLink");

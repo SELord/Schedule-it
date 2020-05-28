@@ -1,10 +1,4 @@
-/**
- * This is the JS file for view_reservation.php.
- */
-
-/** 
- * postMessages() displays the reservation information.
- */
+// real functions
 function postMessages() {
 
 	let len = posts.length;
@@ -43,10 +37,6 @@ function postMessages() {
 	}
 }
 
-/** 
- * eventInfo() displays event information -- title, description, start time, end time,
- * 		location, and the number of reservation slots remaining.
- */
 function eventInfo(){
 	document.getElementById("eventTitle").textContent = eventDetails.title;
 	document.getElementById("eventDesc").textContent = eventDetails.description;
@@ -57,9 +47,6 @@ function eventInfo(){
 
 }
 
-/**
- * buildAttendeeList() displays all attendees for any given event.
- */
 function buildAttendeeList(){
 	// fill bootstrap modal (popup box) with list of people who have reserved slot
 	let modalList = document.getElementById("attendeeList");
