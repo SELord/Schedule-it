@@ -52,11 +52,25 @@
         var dateEnd = $('#dateEnd').val();
         var creatorID = $('#creatorID').val();    
         var location = $('#location').val();
-        //var RSVPLim = $('#RSVPLim').val();
+
+      // input validation for dates
+        if ((Date.parse(dateStart) > Date.parse(dateEnd))) {
+            alert("Error: start date cannot be after end date!");
+            document.getElementById("dateEnd").value = "";
+        }
+        else {    
         $.ajax({
             url:"../Schedule-it/database/event/insert.php",
             type:"POST",
-            data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
+            data: {
+                title:title,
+                description:description,
+                location:location,
+                RSVPslotLim:RSVPslotLim,
+                dateStart:dateStart,
+                dateEnd:dateEnd,
+                creatorID:creatorID
+            },
             complete: function() {
                 $( "#dialog-form" ).dialog( "close" );
             },
@@ -68,10 +82,15 @@
                 console.log(error);
             }
         })
-    });
 
-    calendar.render();
-}
+        // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
+        title = $('#title').val('');
+        description = $('#description').val('');
+        location = $('#location').val('');
+        }});
+        
+        calendar.render();
+    }
 
 /*
 function eventInfo(){
