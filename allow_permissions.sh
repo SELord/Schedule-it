@@ -16,6 +16,7 @@ changePerm() {
 			chmod 664 $f
 
 		fi
+		chgrp tkbtswww $f
 	done
 }
 
