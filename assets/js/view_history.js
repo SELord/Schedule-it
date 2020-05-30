@@ -12,7 +12,6 @@ let mm = String(today.getMonth() + 1).padStart(2, "0");
 let yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 
-
 /**
  * createdEventHist() uses fullcalendar.io to display events the user has created.
  */
