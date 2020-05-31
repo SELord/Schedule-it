@@ -23,7 +23,7 @@ function loadButtons(){
             message:message
         };
         $.ajax({
-            url:"../Schedule-it/database/event/announcement.php",
+            url:"../scheduleit/database/event/announcement.php",
             type:"POST",
             data: jsonPayload,
             success:function(data) {

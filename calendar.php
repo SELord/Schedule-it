@@ -10,6 +10,19 @@
     //check once again if the user is logged in
     //if not, redirect back to login page
 
+    // Capture the current page with query string to be passed to the login.php page
+    $tempArr = explode("scheduleit/", $_SERVER['REQUEST_URI']);
+    $returnPage = urlencode($tempArr[1]);
+    //echo "<script> console.log('" . $tempArr[1] . "');</script>";  //debug code to see what the page is
+
+    //check once again if the user is logged in
+    //if not, redirect back to login page
+    if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {   
+        session_destroy();   
+        //header("Location: " . $FILE_PATH . "login.php?returnPage=" . $returnPage);
+        echo "<script type='text/javascript'> document.location = '" . $FILE_PATH . "login.php?returnPage=" . $returnPage . "'; </script>";
+    }  
+/*
     if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {
         session_destroy();
         session_unset();
@@ -17,7 +30,7 @@
         //header("Location: " . $FILE_PATH . "login.php");
         echo "<script type='text/javascript'> document.location = '" . $FILE_PATH . "login.php'; </script>";
     }
-       
+  */     
     //TODO: Retrieve the upcoming events and meetings, and reserved meetings 
     //of the user to populate the calendar
     require_once './database/dbconfig.php';

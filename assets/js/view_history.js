@@ -3,15 +3,19 @@
  * It displays all events the user has either created, RSVPed for, or been invited to.
  */
 
+// Get today's date
+// Today's date is used to default the list view to the current date so the 
+// user sees which events are coming up next by default
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, "0");
+let yyyy = today.getFullYear();
+today = yyyy + '-' + mm + '-' + dd;
+
 /**
  * createdEventHist() uses fullcalendar.io to display events the user has created.
  */
 function createdEventHist() {
-    let mostRecent;
-    if (pastEvents.length > 0) {
-        // fullcalendar.io can handle getting the date from a string with the date and time
-        mostRecent = pastEvents[pastEvents.length - 1]['start']; 
-    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
@@ -30,7 +34,7 @@ function createdEventHist() {
 		},
 		
         defaultView: 'listWeek',
-        defaultDate: mostRecent,
+        defaultDate: today,
         navLinks: true,     //can click day/week names to navigate views
         editable: false,
         eventLimit: true,   //allow "more" link when too many events
@@ -60,7 +64,7 @@ function createdEventHist() {
         }
         else {
         $.ajax({
-            url:"../Schedule-it/database/event/insert.php",
+            url:"../scheduleit/database/event/insert.php",
             type:"POST",
             data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
             complete: function() {
