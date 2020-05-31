@@ -103,11 +103,6 @@ function createdEventHist() {
  * reservationHist() uses fullcalendar.io to display events user has RSVPed to.
  */
 function reservationHist() {
-    let mostRecent;
-    if (pastReservations.length > 0) {
-        // fullcalendar.io can handle getting the date from a string with the date and time
-        mostRecent = pastReservations[pastReservations.length - 1]['start']; 
-    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
@@ -126,7 +121,7 @@ function reservationHist() {
 		},
 		
         defaultView: 'listWeek',
-        defaultDate: mostRecent,
+        defaultDate: today,
         navLinks: true,     //can click day/week names to navigate views
         editable: false,
         eventLimit: true,   //allow "more" link when too many events
@@ -139,11 +134,6 @@ function reservationHist() {
  * inviteHist() uses fullcalendar.io to display events user has been invited to.
  */
 function inviteHist() {
-    let mostRecent;
-    if (pastInvites.length > 0) {
-        // fullcalendar.io can handle getting the date from a string with the date and time
-        mostRecent = pastInvites[pastInvites.length - 1]['start']; 
-    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
@@ -162,7 +152,7 @@ function inviteHist() {
 		},
 		
         defaultView: 'listWeek',
-        defaultDate: mostRecent,
+        defaultDate: today,
         navLinks: true,     //can click day/week names to navigate views
         editable: false,
         eventLimit: true,   //allow "more" link when too many events
