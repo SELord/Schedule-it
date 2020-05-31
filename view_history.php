@@ -143,10 +143,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="eventmanagement.php">Manage Events</a>
                     </li>
+					<!--
                     <li class="nav-item">
                         <a class="nav-link" href="view_history.php">Past Meetings</a>
                     </li>
-                </ul>
+					-->
+                    </ul>
                 <ul class="navbar-nav schedule-it-main-menu ml-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>

@@ -181,7 +181,7 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 </head>
 <body>
    
-    <!-- Miobile responsive navbar -->
+    <!-- Mobile responsive navbar -->
     <nav class="navbar navbar-expand-md schedule-it-top-hat">
         <div class="container-fluid">
             <a class="navbar-brand logo" href="https://oregonstate.edu"><img src="https://oregonstate.edu/themes/osu/drupal8-osuhomepage/logo.svg"></a>
@@ -201,9 +201,11 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
                     <li class="nav-item">
                         <a class="nav-link" href="eventmanagement.php">Manage Events</a>
                     </li>
+					<!--
                     <li class="nav-item">
                         <a class="nav-link" href="view_history.php">Past Meetings</a>
                     </li>
+					-->
                 </ul>
                 <ul class="navbar-nav schedule-it-main-menu ml-auto">
                     <li class="nav-item">
