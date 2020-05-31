@@ -41,7 +41,7 @@ body {
     margin-left:10px;
 }
 
-// Reduce image margin as screen gets small to give links more space before collapse happens
+/* Reduce image margin as screen gets small to give links more space before collapse happens */
 @media (max-width: 955px){
     .schedule-it-top-hat .logo img{
         margin-right:5px;
