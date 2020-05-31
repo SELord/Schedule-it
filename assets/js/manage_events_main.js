@@ -64,7 +64,7 @@ today = yyyy + '-' + mm + '-' + dd;
         }
         else {    
         $.ajax({
-            url:"../Schedule-it/database/event/insert.php",
+            url:"../scheduleit/database/event/insert.php",
             type:"POST",
             data: {
                 title:title,

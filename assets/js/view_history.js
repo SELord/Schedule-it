@@ -64,7 +64,7 @@ function createdEventHist() {
         }
         else {
         $.ajax({
-            url:"../Schedule-it/database/event/insert.php",
+            url:"../scheduleit/database/event/insert.php",
             type:"POST",
             data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
             complete: function() {
