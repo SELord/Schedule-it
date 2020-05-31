@@ -219,11 +219,11 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 	<!-- buttons to switch between past events created by user and slots reserved by user -->
 	<div class="container-fluid">
 	    <div class="row">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showResHist(event)" id="resHistButton" disabled>Reservations</div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
-			<div class="col-sm-3"></div>
+			<div class="col-sm"></div>
+			<div class="col-sm"><button type="button" class="btn btn-block" onclick="showResHist(event)" id="resHistButton" disabled>Reservations</div>
+			<div class="col-sm"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
+			<div class="col-sm"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
+			<div class="col-sm"></div>
 		</div>
 	</div>
 	<div class="container-fluid">
