@@ -100,7 +100,7 @@ function createdEventHist() {
  */
 function reservationHist() {
     let mostRecent;
-    if (pastEvents.length > 0) {
+    if (pastReservations.length > 0) {
         // fullcalendar.io can handle getting the date from a string with the date and time
         mostRecent = pastReservations[pastReservations.length - 1]['start']; 
     }
@@ -136,7 +136,7 @@ function reservationHist() {
  */
 function inviteHist() {
     let mostRecent;
-    if (pastEvents.length > 0) {
+    if (pastInvites.length > 0) {
         // fullcalendar.io can handle getting the date from a string with the date and time
         mostRecent = pastInvites[pastInvites.length - 1]['start']; 
     }
