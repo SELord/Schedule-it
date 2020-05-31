@@ -288,6 +288,22 @@ function generateGrid() {
         var dateStart = $('#dateStartEdit').val();
         var dateEnd = $('#dateEndEdit').val();
         var RSVPslotLim = $('#RSVPslotLim').val();
+
+        if (title.length < 1) {
+            alert("Event Title is required.");
+            return;
+        } 
+
+         // input validation for dates
+         const dateStartParsed = Date.parse(dateStart);
+         const dateEndParsed = Date.parse(dateEnd);
+         if (dateStartParsed > dateEndParsed) {
+             alert("Error: start date cannot be after end date.");
+             return;
+         } else if (isNaN(dateStartParsed) || isNaN(dateEndParsed)) {
+             alert("Please enter a valid date.");
+             return;
+         } else {
         $.ajax({
             url:"../scheduleit/database/event/update_month.php",
             type:"POST",
@@ -315,6 +331,7 @@ function generateGrid() {
                 $("#edit-delete").dialog("close");
             }
         })
+    }
     });
 
     //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
@@ -328,12 +345,22 @@ function generateGrid() {
         var dateEnd = $('#dateEnd').val();
         var creatorID = $('#creatorID').val();
 
-        // input validation for dates
-        if ((Date.parse(dateStart) > Date.parse(dateEnd))) {
-            alert("Error: start date cannot be after end date!");
-            document.getElementById("dateEnd").value = "";
+        // title required validation
+        if (title.length < 1) {
+            alert("Event Title is required.");
+            return;
         }
-        else {    
+
+        // input validation for dates
+        const dateStartParsed = Date.parse(dateStart);
+        const dateEndParsed = Date.parse(dateEnd);
+        if (dateStartParsed > dateEndParsed) {
+            alert("Error: start date cannot be after end date.");
+            return;
+        } else if (isNaN(dateStartParsed) || isNaN(dateEndParsed)) {
+            alert("Please enter a valid date.");
+            return;
+        } else {
         $.ajax({
             url:"../scheduleit/database/event/insert.php",
             type:"POST",
