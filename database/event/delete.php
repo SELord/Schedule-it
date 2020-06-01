@@ -15,7 +15,7 @@ if(isset($_POST["id"]))
 {
 	$id = $_POST["id"];
 
-  $connect = new mysqli($dbhost, $dbuser, $dbpass,$dbname);
+  $connect = new mysqli($dbhost, $dbuser, $dbpass,$dbname, $dbport);
   if(!$connect) {
       die('Could not connect: ' . mysqli_error());
     }
