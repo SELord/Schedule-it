@@ -7,7 +7,7 @@ This is a multi-term student project for the CS-467 capstone course.
 
 https://github.com/GTMcArthur-OSU/Schedule-it
 
-2) Spring 2020 Team: Victoria Fisher, Sae Hyoung, Steven Lord.
+2) Spring 2020 Team: Victoria Fisher, Sae Hyoung Oh, Steven Lord.
 
 https://github.com/SELord/scheduleit
 
