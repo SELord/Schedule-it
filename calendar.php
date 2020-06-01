@@ -214,7 +214,7 @@
                     $eventStartDate = $event["dateStart"];
                     $upcomingEvents = $eventStartDate;
                     $eventCreator = $event["firstName"]." ".$event["lastName"];
-                    $li = "<a href=\"make_reservation?invite=$inviteID\" class=\"list-group-item list-group-item-action\" id=inviteID>Please RSVP to $eventTitle, starting on $eventStartDate, created by $eventCreator</a>";
+                    $li = "<a href=\"make_reservation.php?invite=$inviteID\" class=\"list-group-item list-group-item-action\" id=inviteID>Please RSVP to $eventTitle, starting on $eventStartDate, created by $eventCreator</a>";
                     echo $li;
                 }
             ?>
