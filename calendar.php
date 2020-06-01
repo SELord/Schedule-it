@@ -290,14 +290,14 @@
   <fieldset>
   <input type="hidden" id="dateedit" name="dateedit" value="">
 
-  <input type="text" name="titleedit" id="titleedit" value="" placeholder="Event title" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="titleEdit" id="titleEdit" value="" placeholder="Event title" class="text ui-widget-content ui-corner-all">
 
-  <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="descriptionEdit" id="descriptionEdit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-  <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+  <input type="text" name="locationEdit" id="locationEdit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-  <label for="RSVPslotLimedit">Max Reservations per attendee: </label>
-      <input type="number" name="RSVPslotLimedit" id="RSVPslotLimedit" class="text ui-widget-content ui-corner-all" min="0">
+  <label for="RSVPslotLimEdit">Max Reservations per attendee: </label>
+      <input type="number" name="RSVPslotLimEdit" id="RSVPslotLimEdit" class="text ui-widget-content ui-corner-all" min="0">
 
   <label for="dateStartEdit">Start Date: </label>
       <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">

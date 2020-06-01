@@ -1184,9 +1184,9 @@ function getEventReservationStatus($conn, $id){
 // Output: true if successful, false if update failed 
 function eventUpdate($conn, $info){
 	$stmt = $conn->prepare("UPDATE scheduleit_Event 
-			SET title = ?, description = ?, location = ?, dateStart = ?, dateEnd = ?
+			SET title = ?, description = ?, location = ?, dateStart = ?, dateEnd = ?, RSVPslotLim = ?
 			WHERE id = ?");
-	$stmt->bind_param("sssssi", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'],  $info['id']);
+	$stmt->bind_param("sssssii", $info['title'], $info['description'], $info['location'], $info['dateStart'], $info['dateEnd'], $info['RSVPslotLim'], $info['id']);
 	return $stmt->execute();
 }
 //--------------------------------------------------------------------------------------------------
