@@ -184,9 +184,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="eventmanagement.php">Manage Events</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="view_history.php">Past Meetings</a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav schedule-it-main-menu ml-auto">
                     <li class="nav-item">
@@ -202,20 +199,19 @@
     <!-- Buttons to perform actions related to the event -->
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-2">
+            <div class="col-sm"></div>
+            <div class="col-sm">
                 <button type="button" class="btn btn-block" data-toggle="modal" data-target="#eventLinkModal">Get Shareable Link</button>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm">
                 <button type="button" class="btn btn-block" id="announcementButton">Send Announcement</button>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm">
                 <!-- 
                 #TODO: Enable Edit Event button. Most code should be able to be reused from the calendar.php file
                 -->
                 <!-- <button type="button" class="btn btn-block" id="editbtn">Edit Event</button> -->
             </div>
-            <div class="col-sm-3"></div>
         </div>
     </div>
 

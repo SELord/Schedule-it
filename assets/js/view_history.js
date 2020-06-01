@@ -40,50 +40,6 @@ function createdEventHist() {
         eventLimit: true,   //allow "more" link when too many events
         events: pastEvents,
 	});
-
-	// Displays the create event button.
-	document.getElementById('createEventDiv').innerHTML = '<right><button type="button" class="btn btn-large" id="createEvent">Create Event</button><br />';
-	$('#createEvent').click(function(){
-		$( "#dialog-form" ).dialog();
-	});
-
-    //BUTTON TO CREATE NEW EVENT - SUBMIT BUTTON IN CREATE_EVENT.PHP
-    $('#signupbtn').on('click',function(e){
-        e.preventDefault();
-        var title = $('#title').val();
-        var description = $('#description').val();
-        var dateStart = $('#dateStart').val();
-        var dateEnd = $('#dateEnd').val();
-        var creatorID = $('#creatorID').val();    
-        var location = $('#location').val();
-
-        // input validation for dates
-        if ((Date.parse(dateStart) > Date.parse(dateEnd))) {
-            alert("Error: start date cannot be after end date!");
-            document.getElementById("dateEnd").value = "";
-        }
-        else {
-        $.ajax({
-            url:"../scheduleit/database/event/insert.php",
-            type:"POST",
-            data: {title:title, description:description, dateStart:dateStart, dateEnd:dateEnd, creatorID:creatorID, location:location},
-            complete: function() {
-                $( "#dialog-form" ).dialog( "close" );
-            },
-            success: function(){
-                calendar.refetchEvents();
-                alert("Added Successfully");
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        })
-    // THIS CODE CLEARS THE FORM. Without it, data stays even after submitting
-    title = $('#title').val('');
-    description = $('#description').val('');
-    location = $('#location').val('');
-    }});
-
     calendar.render();
 }
 
@@ -103,11 +59,6 @@ function createdEventHist() {
  * reservationHist() uses fullcalendar.io to display events user has RSVPed to.
  */
 function reservationHist() {
-    let mostRecent;
-    if (pastReservations.length > 0) {
-        // fullcalendar.io can handle getting the date from a string with the date and time
-        mostRecent = pastReservations[pastReservations.length - 1]['start']; 
-    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
@@ -126,7 +77,7 @@ function reservationHist() {
 		},
 		
         defaultView: 'listWeek',
-        defaultDate: mostRecent,
+        defaultDate: today,
         navLinks: true,     //can click day/week names to navigate views
         editable: false,
         eventLimit: true,   //allow "more" link when too many events
@@ -139,11 +90,6 @@ function reservationHist() {
  * inviteHist() uses fullcalendar.io to display events user has been invited to.
  */
 function inviteHist() {
-    let mostRecent;
-    if (pastInvites.length > 0) {
-        // fullcalendar.io can handle getting the date from a string with the date and time
-        mostRecent = pastInvites[pastInvites.length - 1]['start']; 
-    }
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         plugins: [ 'list' ],
@@ -162,7 +108,7 @@ function inviteHist() {
 		},
 		
         defaultView: 'listWeek',
-        defaultDate: mostRecent,
+        defaultDate: today,
         navLinks: true,     //can click day/week names to navigate views
         editable: false,
         eventLimit: true,   //allow "more" link when too many events
@@ -184,7 +130,7 @@ function showResHist(event){
 	document.getElementById("inviteHistButton").disabled = false;
 	document.getElementById("viewTitle").innerHTML = 'All Your Reservations';
 	document.getElementById("content").innerHTML = "";
-	document.getElementById("createEventDiv").innerHTML = "";
+	//document.getElementById("createEventDiv").innerHTML = "";
 	reservationHist();
 	
 }
@@ -202,7 +148,7 @@ function showInviteHist(event){
 	document.getElementById("resHistButton").disabled = false;
 	document.getElementById("viewTitle").innerHTML = 'All Events You Are Invited To';
 	document.getElementById("content").innerHTML = "";
-	document.getElementById("createEventDiv").innerHTML = "";
+	//document.getElementById("createEventDiv").innerHTML = "";
 	inviteHist();
 	
 }
@@ -220,7 +166,7 @@ function showEventHist(event){
 	document.getElementById("inviteHistButton").disabled = false;
 	document.getElementById("viewTitle").innerHTML = 'All Events You Created';
 	document.getElementById("content").innerHTML = "";
-	document.getElementById("createEventDiv").innerHTML = "";
+	//document.getElementById("createEventDiv").innerHTML = "";
 	createdEventHist();
 }
 

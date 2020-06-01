@@ -19,20 +19,9 @@
     //if not, redirect back to login page
     if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {   
         session_destroy();   
-        //header("Location: " . $FILE_PATH . "login.php?returnPage=" . $returnPage);
         echo "<script type='text/javascript'> document.location = '" . $FILE_PATH . "login.php?returnPage=" . $returnPage . "'; </script>";
     }  
-/*
-    if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == FALSE) {
-        session_destroy();
-        session_unset();
-        $_SESSION = array();
-        //header("Location: " . $FILE_PATH . "login.php");
-        echo "<script type='text/javascript'> document.location = '" . $FILE_PATH . "login.php'; </script>";
-    }
-  */     
-    //TODO: Retrieve the upcoming events and meetings, and reserved meetings 
-    //of the user to populate the calendar
+   
     require_once './database/dbconfig.php';
     require_once './database/dbquery.php';
     
@@ -46,7 +35,6 @@
     //Find userID based off of onid
      $data = lookupUser($mysqli, $_SESSION["onidID"]);
      $user = json_decode($data);
-     //echo "USER: " . $user->id;
 
     // Output: if any are found, then a 2D associative array containing event info with
     //         the first dimension being row number of result, else NULL.
@@ -71,7 +59,6 @@
         $eventItem["id"] = $slotID;
         $eventItem["eventID"] = $res["eventID"];
         $eventItem["title"] = $res["title"];
-        //$date = $res["dateStart"];
         $eventItem["start"] = $res["startDateTime"];
         $eventItem["end"] = $res["endDateTime"];
         $eventItem["url"] = "view_reservation?slot=$slotID&inviteID=$inviteID";
@@ -108,7 +95,6 @@
   
   <!-- javascript files -->
   <script src="./assets/js/main.js"></script> 
-  <!-- <script src="./assets/js/homepage.js"></script> -->
   <script src="./assets/js/event.js"></script> 
 
   <!-- fontawesome for icon usage eg. navbar hamburger icon -->
@@ -200,9 +186,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="eventmanagement.php">Manage Events</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="view_history.php">Past Meetings</a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav schedule-it-main-menu ml-auto">
                     <li class="nav-item">
@@ -241,19 +224,11 @@
     <!-- div for Calendar-->
     <div class="container-fluid">
             <center><p><i>
-            To create an event, while in <b>"Calendar View"</b>, click anywhere on any date in calendar month-view, week-view, or day-view and a <b>pop-up</b> will appear to create a new event/meeting. 
+            To create an event, click anywhere on any date in calendar month-view, week-view, or day-view and a <b>pop-up</b> will appear to create a new event/meeting. Additionally, you can also use the <b>Create Event</b> button on the right.
             </i></p>
-<!--          <button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
-            <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button>
-            </center>
--->
           <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
-              <center>
-              <button type="button" class="btn btn-large" onclick="showList(event)" id="listButton">List View</button>
-              <button type="button" class="btn btn-large" onclick="showCalendar(event)" id="calendarButton">Calendar View</button>
-              </center>
             </div>
             <!-- div for create event button -->
             <div class="col-sm-2" id="createEventDiv" style="display: flex; justify-content: flex-end">
@@ -405,8 +380,7 @@ $(document).ready(function(){
 
 </script>
     <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!--<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
+    <!-- Popper.js, then Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 

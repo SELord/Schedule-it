@@ -17,6 +17,13 @@ function loadButtons(){
         let id = eventDetails['id'];  //eventID
         let subject = $('#announce-subject').val();
         let message = $('#announce-message').val();
+        
+        // Validation to make sure subject and message are not blank.
+        if ((subject.length < 1) || (message.length < 1)) {
+            alert("Both subject and message are required.");
+            return;
+        } 
+
         let jsonPayload = {
             id:id,
             subject:subject,

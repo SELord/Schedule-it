@@ -45,7 +45,6 @@
 		$tmp['title'] = $events[$i]['title'];
 		$tmp['start'] = $events[$i]['dateStart'];
 		$tmp['end'] = $events[$i]['dateEnd'];
-		//$tmp['end'] = substr($events[$i]['dateStartTime'],0,10) . " " . eventEndTime($mysqli, $events[$i]['id']);
 		$pastEvents[$i] = $tmp;
 	}
 	
@@ -201,9 +200,6 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
                     <li class="nav-item">
                         <a class="nav-link" href="eventmanagement.php">Manage Events</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="view_history.php">Past Meetings</a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav schedule-it-main-menu ml-auto">
                     <li class="nav-item">
@@ -219,53 +215,23 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 	<!-- buttons to switch between past events created by user and slots reserved by user -->
 	<div class="container-fluid">
 	    <div class="row">
-			<div class="col-sm-3"></div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showResHist(event)" id="resHistButton" disabled>Reservations</div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
-			<div class="col-sm-2"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
-			<div class="col-sm-3"></div>
+			<div class="col-sm"></div>
+			<div class="col-sm"><button type="button" class="btn btn-block" onclick="showResHist(event)" id="resHistButton" disabled>Reservations</div>
+			<div class="col-sm"><button type="button" class="btn btn-block" onclick="showInviteHist(event)" id="inviteHistButton" >Invites</div>
+			<div class="col-sm"><button type="button" class="btn btn-block" onclick="showEventHist(event)" id="eventHistButton">Created Events</div>
+			<div class="col-sm"></div>
 		</div>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8"><h5 class="text-center" id="viewTitle"></h5></div>
-			<!-- div for create event button -->
-			<div class="col-sm-2" id="createEventDiv" style="display: flex; justify-content: flex-end"></div>
 		</div>
 	</div>
 	<!-- div for calendar-->
     <div class="container-fluid" id="content">
         
     </div>
-
-<!-- form to create a new event -->
-<div id="dialog-form" style="display:none;" title="Create new event">
-<p class="validateTips">All form fields are required.</p>
-
-<form>
-<fieldset>
-  <input type="hidden" id="date" name="date">
-      <input type="text" name="title" id="title" placeholder="Event title" class="text ui-widget-content ui-corner-all" required>
-
-      <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
-
-      <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
-
-      <label for="dateStart">Start Date: </label>
-          <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
-
-      <label for="dateEnd">End Date: </label>
-          <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>
-
-          <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
-      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
-
-      <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" id="signupbtn">
-    </fieldset>
-  </form>
-</div>
 
 	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
