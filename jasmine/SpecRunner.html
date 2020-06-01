@@ -26,8 +26,8 @@
   <!-- following variables needed to bypasses loading errors in event.js and fullcalendar main.js -->
   <script>
       let onidID = "lords";
-      let urlPrefix = "http://web.engr.oregonstate.edu/~lords/scheduleit/";  //dev env
-      //let urlPrefix = "https://eecs.oregonstate.edu/education/scheduleit/";  //production env
+      //let urlPrefix = "http://web.engr.oregonstate.edu/~lords/scheduleit/";  //dev env
+      let urlPrefix = "https://eecs.oregonstate.edu/education/scheduleit/";  //production env
       let dummyElement = document.createElement('div');
       document.getElementById = jasmine.createSpy('HTML Element').and.returnValue(dummyElement);
   </script>
