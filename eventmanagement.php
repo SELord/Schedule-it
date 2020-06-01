@@ -187,45 +187,15 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 		<div class="row">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8"><h5 class="text-center" id="viewTitle"></h5></div>
-			<!-- div for create event button -->
-			<div class="col-sm-2" id="createEventDiv" style="display: flex; justify-content: flex-end"></div>
 		</div>
 	</div>
 	<!-- div for calendar-->
-    <div class="container-fluid" id="content">
-        
+    <div class="container-fluid" id="content"> 
     </div>
 
-<!-- form to create a new event -->
-<div id="dialog-form" style="display:none;" title="Create new event">
-<p class="validateTips">All form fields are required.</p>
-
-<form>
-<fieldset>
-  <input type="hidden" id="date" name="date">
-      <input type="text" name="title" id="title" placeholder="Event title" class="text ui-widget-content ui-corner-all" required>
-
-      <input type="text" name="description" id="description" placeholder="Description" class="text ui-widget-content ui-corner-all">
-
-      <input type="text" name="location" id="location" placeholder="Location" class="text ui-widget-content ui-corner-all">  
-
-      <label for="dateStart">Start Date: </label>
-          <input type="date" name="dateStart" id="dateStart" class="text ui-widget-content ui-corner-all" required>
-
-      <label for="dateEnd">End Date: </label>
-          <input type="date" name="dateEnd" id="dateEnd" class="text ui-widget-content ui-corner-all" required>  
-
-          <!--THIS IS CREATOR_ID -- SHOULD GET FROM SESSION -->
-      <input type="hidden" name="creatorID" id="creatorID" value="<?php echo $user->id;?>" />   
-
-      <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" id="signupbtn">
-    </fieldset>
-  </form>
-</div>
 
 	<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
