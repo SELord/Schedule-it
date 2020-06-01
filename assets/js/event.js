@@ -66,6 +66,7 @@ function generateList() {
 
 //For calendaring-viewing capabilities
 function generateGrid() {
+    document.getElementById("calendarButton").disabled = true;
     let calendarE1 = document.getElementById('content');
     let calendar = new FullCalendar.Calendar(calendarE1, {
         contentHeight: 600,
@@ -153,8 +154,18 @@ function generateGrid() {
     });
     calendar.render();
 
+    // Calendar Button clicked
+    $('#calendarButton').click(function(e){
+        e.stopPropagation();
+        document.getElementById("listButton").disabled = false;
+        document.getElementById("calendarButton").disabled = true;
+        document.getElementById("content").innerHTML = "";
+        generateGrid();
+    });
+
     // Create Event button
-    $('#createEvent').click(function(){
+    $('#createEvent').click(function(e){
+        e.stopPropagation();
         $( "#dialog-form" ).dialog();
     });
 
@@ -280,7 +291,6 @@ function generateGrid() {
     //TRIGGER EDIT CHANGES FROM EDIT-FORM ON "CONFIRM CHANGES" BUTTON (click "Confirm Changes" button on event)
     $('#edit-submit').on('click',function(e){
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
-        //var event = calendar.getEventById(id);
         e.preventDefault();
         var title = $('#titleedit').val();
         var description = $('#descriptionedit').val();
@@ -364,6 +374,7 @@ function generateGrid() {
     title = $('#title').val('');
     description = $('#description').val('');
     location = $('#location').val('');
+    RSVPslotLim = $('#RSVPslotLim').val(1);
     }
 
     });
@@ -371,12 +382,14 @@ function generateGrid() {
     // GIVES FUNCTIONALITY TO X BUTTON. Now actually clears form when clicked
     // Also does not work with dates
     $(document).on('click', '.ui-dialog-titlebar-close', function(){
-        var title = $('#title').val();
-        var description = $('#description').val();
-        var location = $('#location').val();
+        let title = $('#title').val();
+        let description = $('#description').val();
+        let location = $('#location').val();
+        let RSVPslotLim = $('#RSVPslotLim').val();
         title = $('#title').val('');
         description = $('#description').val('');
         location = $('#location').val('');
+        RSVPslotLim = $('#RSVPslotLim').val(1);
     });
 
     //BUTTON TO TRIGGER DELETE - THIS GETS FORM DATA FOR EDIT-FORM 
@@ -519,6 +532,7 @@ function showList(event) {
  * Also enables the list button (click to show list instead of calendar).
  * @param {*} event 
  */
+/*
 function showCalendar(event) {
     event.stopPropagation();
     document.getElementById("listButton").disabled = false;
@@ -526,6 +540,8 @@ function showCalendar(event) {
     document.getElementById("content").innerHTML = "";
     generateGrid();
 }
+*/
+
 
 //Call to generateGrid once Homepage is loaded
 document.addEventListener('DOMContentLoaded', generateGrid);
