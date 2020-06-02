@@ -196,7 +196,8 @@
 	<div class="container-fluid" id="content">
 
         <table class="table-responsive table-bordered table-striped">
-
+			<br />
+			<h5 class="font-weight-bold">Attendee Posts</h5>
 			<thead>
 				<tr>
 					<th scope="col">Time</th>
