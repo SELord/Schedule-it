@@ -61,7 +61,7 @@
         $eventItem["title"] = $res["title"];
         $eventItem["start"] = $res["startDateTime"];
         $eventItem["end"] = $res["endDateTime"];
-        $eventItem["url"] = "view_reservation?slot=$slotID&inviteID=$inviteID";
+        $eventItem["url"] = "view_reservation.php?slot=$slotID&inviteID=$inviteID";
         array_push($reservations, $eventItem);
     }
 
@@ -214,7 +214,7 @@
                     $eventStartDate = $event["dateStart"];
                     $upcomingEvents = $eventStartDate;
                     $eventCreator = $event["firstName"]." ".$event["lastName"];
-                    $li = "<a href=\"make_reservation?invite=$inviteID\" class=\"list-group-item list-group-item-action\" id=inviteID>Please RSVP to $eventTitle, starting on $eventStartDate, created by $eventCreator</a>";
+                    $li = "<a href=\"make_reservation.php?invite=$inviteID\" class=\"list-group-item list-group-item-action\" id=inviteID>Please RSVP to $eventTitle, starting on $eventStartDate, created by $eventCreator</a>";
                     echo $li;
                 }
             ?>
@@ -290,14 +290,14 @@
   <fieldset>
   <input type="hidden" id="dateedit" name="dateedit" value="">
 
-  <input type="text" name="titleedit" id="titleedit" value="" placeholder="Event title" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="titleEdit" id="titleEdit" value="" placeholder="Event title" class="text ui-widget-content ui-corner-all">
 
-  <input type="text" name="descriptionedit" id="descriptionedit" placeholder="Description" class="text ui-widget-content ui-corner-all">
+  <input type="text" name="descriptionEdit" id="descriptionEdit" placeholder="Description" class="text ui-widget-content ui-corner-all">
 
-  <input type="text" name="locationedit" id="locationedit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
+  <input type="text" name="locationEdit" id="locationEdit" placeholder="Location" class="text ui-widget-content ui-corner-all">  
 
-  <label for="RSVPslotLimedit">Max Reservations per attendee: </label>
-      <input type="number" name="RSVPslotLimedit" id="RSVPslotLimedit" class="text ui-widget-content ui-corner-all" min="0">
+  <label for="RSVPslotLimEdit">Max Reservations per attendee: </label>
+      <input type="number" name="RSVPslotLimEdit" id="RSVPslotLimEdit" class="text ui-widget-content ui-corner-all" min="0">
 
   <label for="dateStartEdit">Start Date: </label>
       <input type="date" name="dateStartEdit" id="dateStartEdit" class="text ui-widget-content ui-corner-all">

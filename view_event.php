@@ -49,7 +49,7 @@
     $reservationCountRow = array();
     foreach($slotDetails as $arr){
         $slotID = $arr['id'];
-        $slotDateTime = $arr['startDateTime'];
+        $slotDateTime = date('m/d/Y g:i A', strtotime($arr['startDateTime']));
         $slotReservationCount = slotRSVPCount($mysqli, $slotID);
         $reservationCountRow[$slotDateTime] = $slotReservationCount;
     }
@@ -65,7 +65,7 @@
 	echo "</script>";
 
     // event invite link to use in modal below
-    $eventLink = $FILE_PATH . "make_reservation?event=" . $eventID;
+    $eventLink = $FILE_PATH . "make_reservation.php?event=" . $eventID;
 
 	$mysqli->close();
 ?>

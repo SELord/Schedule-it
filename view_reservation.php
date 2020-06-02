@@ -47,13 +47,11 @@
 
 	//BUG: Could not get "slotDetails" to work - redo function slotDetails_elaine
 	$slotInfo = slotDetails($mysqli, $slotID);
+	$slotInfo['startDateTime'] = date('m/d/Y g:i A', strtotime($slotInfo['startDateTime']));
+	$slotInfo['endDateTime'] = date('m/d/Y g:i A', strtotime($slotInfo['endDateTime']));
 	
 	// query database for event info
 	$eventInfo = eventDetails($mysqli, $slotInfo['eventID']);
-	$eventDate = substr($eventInfo['dateStartTime'], 0, 10);
-	$eventInfo['date'] = $eventDate;
-	
-
 	
 	// get reservation count from database
 	$RSVPcnt = slotRSVPCount($mysqli, $slotID);
@@ -163,7 +161,7 @@
 		<div class="row">
 			<div class="col-sm-8"><p id="eventDesc"></p></div>
 			<div class="col-sm-4">
-				<a class="btn btn-block" href=<?php echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a>
+				<a class="btn btn-block" href=<?php echo "edit_reservation.php?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a>
 			</div>
 		</div>
 		<div class="row">
@@ -198,7 +196,8 @@
 	<div class="container-fluid" id="content">
 
         <table class="table-responsive table-bordered table-striped">
-
+			<br />
+			<h5 class="font-weight-bold">Attendee Posts</h5>
 			<thead>
 				<tr>
 					<th scope="col">Time</th>

@@ -283,12 +283,12 @@ function generateGrid() {
     $('#edit-submit').on('click',function(e){
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
         e.preventDefault();
-        var title = $('#titleedit').val();
-        var description = $('#descriptionedit').val();
-        var location = $('#locationedit').val();
+        var title = $('#titleEdit').val();
+        var description = $('#descriptionEdit').val();
+        var location = $('#locationEdit').val();
         var dateStart = $('#dateStartEdit').val();
         var dateEnd = $('#dateEndEdit').val();
-        var RSVPslotLim = $('#RSVPslotLim').val();
+        var RSVPslotLim = $('#RSVPslotLimEdit').val();
 
         if (title.length < 1) {
             alert("Event Title is required.");
@@ -441,20 +441,19 @@ function generateGrid() {
         e.preventDefault();
         var id = $("#edit-delete").data('id');  //to get ID from event-click variable
         var event = calendar.getEventById(id);
-        var titleedit = event.title;
-        var descriptionedit = event.extendedProps.description;
-        var locationedit = event.extendedProps.location;
-        var RSVPslotLimedit = event.extendedProps.RSVPslotLim;
-        console.log(event);
+        var titleEdit = event.title;
+        var descriptionEdit = event.extendedProps.description;
+        var locationEdit = event.extendedProps.location;
+        var RSVPslotLimEdit = event.extendedProps.RSVPslotLim;
         var dateStartEdit = event.start.toISOString().split('T')[0];
         var dateEndEdit = new Date;                 // jump through hoops to display date - 1
         dateEndEdit.setUTCDate(event.end.getUTCDate() - 1);
         dateEndEdit = dateEndEdit.toISOString().split('T')[0];
         $("#date").attr("value", event.dateStr);
-        $("#titleedit").attr("value", titleedit);
-        $("#descriptionedit").attr("value", descriptionedit); 
-        $("#locationedit").attr("value", locationedit); 
-        $("#RSVPslotLimedit").attr("value", RSVPslotLimedit); 
+        $("#titleEdit").attr("value", titleEdit);
+        $("#descriptionEdit").attr("value", descriptionEdit); 
+        $("#locationEdit").attr("value", locationEdit); 
+        $("#RSVPslotLimEdit").attr("value", RSVPslotLimEdit); 
         $("#dateStartEdit").attr("value", dateStartEdit);
         $("#dateEndEdit").attr("value", dateEndEdit);
         $("#edit-form").dialog();

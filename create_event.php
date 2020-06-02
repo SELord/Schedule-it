@@ -70,7 +70,7 @@
         $date = explode(" ", $res["dateStartTime"])[0];
         $eventItem["start"] = $date."T".$res["startTime"];
         $eventItem["end"] = $date."T".$res["endTime"];
-        $eventItem["url"] = "view_reservation?slot=$slotID&inviteID=$inviteID";
+        $eventItem["url"] = "view_reservation.php?slot=$slotID&inviteID=$inviteID";
         array_push($reservations, $eventItem);
     }
     $mysqli->close();

@@ -47,6 +47,8 @@
 	// 		array keys: id, startTime, location, RSVPlim, eventID, endTime
 	//
 	$slotInfo = slotDetails($mysqli, $slotID);
+	$slotInfo['startDateTime'] = date('m/d/Y g:i A', strtotime($slotInfo['startDateTime']));
+	$slotInfo['endDateTime'] = date('m/d/Y g:i A', strtotime($slotInfo['endDateTime']));
 
 	// query database for user post of this slot
 	// Output: if any are found, then a 1D associative array containing slot info with id, text, fileName, timeStamp, userID, firstName, lastName
@@ -165,18 +167,22 @@
 		<div class="row">
 			<div class="col-sm-2"><h4>Slot:</h4></div>
 			<div class="col-sm-6"></div>
-			<div class="col-sm-4">
+			<div class="col-sm-4" style="display: flex; justify-content: flex-end">
 				<form action="reservation_process.php" method="post" id="deleteReservation">
 					<input type="hidden"  name="postID" value=<?php echo $postID ?>>
 					<input type="hidden"  name="slotID" value=<?php echo $slotID ?>>
 					<input type="hidden"  name="delete" value="true">
 					<input type="hidden"  name="inviteID" value=<?php echo $inviteID ?>>
-					<button class="btn btn-primary" type="submit">Cancel Reservation</button>
+					<button class="btn btn-danger" type="submit">Cancel Reservation</button>
 				</form>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4">Time: <?php echo $slotInfo["startTime"] ?> to <?php echo $slotInfo["endTime"] ?>, <?php echo $eventDate ?></div>
+			<div class="col-sm-4">Start: <?php echo $slotInfo['startDateTime'] ?></div>
+			<div class="col-sm-8"></div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">End: <?php echo $slotInfo['endDateTime'] ?></div>
 			<div class="col-sm-8"></div>
 		</div>
 		<div class="row">
@@ -203,21 +209,23 @@
 					?>
 				</label>
 				<input type="file" class="form-control-file" id="postFile" name="postFile" accept="application/pdf">
-			</div>
 			<!--hidden field-->
 			<input type="hidden" id="postID" name="postID" value=<?php echo $postID ?>>
 			<input type="hidden" id="slotID" name="slotID" value=<?php echo $slotID ?>>
-			<button class="btn btn-primary" type="submit" id="updatePost">Submit</button>
-			<!-- <button class="btn btn-primary" value="submit" type="submit">Submit</button> -->
+			<input type="hidden" id="inviteID" name="inviteID" value=<?php echo $inviteID ?>>
+			</div>
+			<button class="btn btn-primary col-sm-2" type="submit" id="updatePost">Submit Post</button>
 		</form>
 		<!--delete post-->
+		<br />
 		<form action="reservation_process.php" method="post" enctype="multipart/form-data">
 			<input type="hidden" id="postID" name="postID" value=<?php echo $postID ?>>
 			<input type="hidden" id="slotID" name="slotID" value=<?php echo $slotID ?>>
+			<input type="hidden" id="inviteID" name="inviteID" value=<?php echo $inviteID ?>>
 			<input type="hidden" id="deletePost" name="deletePost" value="true">
-			<button class="btn btn-primary">Delete</button>
-        </form>
-    </div>
+			<button class="btn btn-danger col-sm-2">Delete Post</button>
+		</form>
+   </div>
 	<script>
 		//source :https://stackoverflow.com/questions/5697605/limit-the-size-of-an-file-upload-html-input/17173301#17173301
 		let uploadField = document.getElementById("postFile");
