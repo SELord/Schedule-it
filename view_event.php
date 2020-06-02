@@ -65,7 +65,7 @@
 	echo "</script>";
 
     // event invite link to use in modal below
-    $eventLink = $FILE_PATH . "make_reservation?event=" . $eventID;
+    $eventLink = $FILE_PATH . "make_reservation.php?event=" . $eventID;
 
 	$mysqli->close();
 ?>

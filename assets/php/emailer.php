@@ -83,7 +83,7 @@ function updateSlotEmail($conn, $slotID){
 	if ($result != NULL){
 		for ($i = 0; $i < count($result); $i++){
 			$subject = "Reservation to event " . $result[$i]['title'];
-			$url = $FILE_PATH . "view_reservation?slot=" . $result[$i]['id'];
+			$url = $FILE_PATH . "view_reservation.php?slot=" . $result[$i]['id'];
 			$message = "An update has been made to your reservation for an event.  Use this link to get more details: " . $url;
 			sendEmail($result[$i]['email'], $subject, $message, 'update');
 		}
