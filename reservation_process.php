@@ -38,6 +38,9 @@
 	$userID = $user->id;
 
 	$status;	// for later use
+	$slotID = $_POST['slotID'];
+	$inviteID = $_POST['inviteID'];
+	$display = '';
 
 	// function used for verifying the user and deleting post
 	function deletePost($conn, $user, $postID, $slotID, &$status) {
@@ -132,12 +135,9 @@
 				$status = "Reservation Canceled";
 				$event = eventFromInviteID($mysqli, $_POST["inviteID"]);
 				$RSVPs = userEventRSVPCount($mysqli, $userID, $event["id"]);
+				$display = 'style="display: none;"';
 				if ($RSVPs == 0)
 					inviteStatusUpdate($mysqli, $_POST["inviteID"], "no response");
-				//delete the file if user had uploaded one.
-				//To reduce a query to the database, just try to delete the file no matter whether it exists.
-				//$target_file = "files/FILE_".strval($_POST["slotID"])."_".strval($userID);
-				//unlink($target_file);
 			} else 
 				$status = "Unable to cancel reservation. Please try again later.";
 		}
@@ -231,7 +231,10 @@
 			<div class="col-sm-2">
 				<a href="homepage.php" class="btn btn-block">Homepage</a>
 			</div>
-			<div class="col-sm-10"></div>
+			<div class="col-sm-2" id="back_button">
+				<a href="./view_reservation.php?slot=<?php echo $slotID; ?>&inviteID=<?php echo $inviteID; ?>" class="btn btn-block" <?php echo $display; ?>>Back to Reservation</a>
+			</div>
+			<div class="col-sm-8"></div>
 		</div>
 	</div>
 

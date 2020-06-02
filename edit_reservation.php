@@ -212,6 +212,7 @@
 			<!--hidden field-->
 			<input type="hidden" id="postID" name="postID" value=<?php echo $postID ?>>
 			<input type="hidden" id="slotID" name="slotID" value=<?php echo $slotID ?>>
+			<input type="hidden" id="inviteID" name="inviteID" value=<?php echo $inviteID ?>>
 			</div>
 			<button class="btn btn-primary col-sm-2" type="submit" id="updatePost">Submit Post</button>
 		</form>
@@ -220,6 +221,7 @@
 		<form action="reservation_process.php" method="post" enctype="multipart/form-data">
 			<input type="hidden" id="postID" name="postID" value=<?php echo $postID ?>>
 			<input type="hidden" id="slotID" name="slotID" value=<?php echo $slotID ?>>
+			<input type="hidden" id="inviteID" name="inviteID" value=<?php echo $inviteID ?>>
 			<input type="hidden" id="deletePost" name="deletePost" value="true">
 			<button class="btn btn-danger col-sm-2">Delete Post</button>
 		</form>
