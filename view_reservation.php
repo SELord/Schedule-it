@@ -161,7 +161,7 @@
 		<div class="row">
 			<div class="col-sm-8"><p id="eventDesc"></p></div>
 			<div class="col-sm-4">
-				<a class="btn btn-block" href=<?php echo "edit_reservation?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a>
+				<a class="btn btn-block" href=<?php echo "edit_reservation.php?invite=$inviteID&slotID=$slotID"?>>Edit Reservation</a>
 			</div>
 		</div>
 		<div class="row">
