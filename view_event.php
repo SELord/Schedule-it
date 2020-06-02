@@ -49,7 +49,7 @@
     $reservationCountRow = array();
     foreach($slotDetails as $arr){
         $slotID = $arr['id'];
-        $slotDateTime = $arr['startDateTime'];
+        $slotDateTime = date('m/d/Y g:i A', strtotime($arr['startDateTime']));
         $slotReservationCount = slotRSVPCount($mysqli, $slotID);
         $reservationCountRow[$slotDateTime] = $slotReservationCount;
     }

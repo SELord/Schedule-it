@@ -47,13 +47,11 @@
 
 	//BUG: Could not get "slotDetails" to work - redo function slotDetails_elaine
 	$slotInfo = slotDetails($mysqli, $slotID);
+	$slotInfo['startDateTime'] = date('m/d/Y g:i A', strtotime($slotInfo['startDateTime']));
+	$slotInfo['endDateTime'] = date('m/d/Y g:i A', strtotime($slotInfo['endDateTime']));
 	
 	// query database for event info
 	$eventInfo = eventDetails($mysqli, $slotInfo['eventID']);
-	$eventDate = substr($eventInfo['dateStartTime'], 0, 10);
-	$eventInfo['date'] = $eventDate;
-	
-
 	
 	// get reservation count from database
 	$RSVPcnt = slotRSVPCount($mysqli, $slotID);

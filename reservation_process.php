@@ -129,7 +129,7 @@
 		if(!isset($status)) {
 			$result = reservationDelete($mysqli, $_POST["inviteID"], $_POST["slotID"]);
 			if ($result) {
-				$status = "Reservation Deleted";
+				$status = "Reservation Canceled";
 				$event = eventFromInviteID($mysqli, $_POST["inviteID"]);
 				$RSVPs = userEventRSVPCount($mysqli, $userID, $event["id"]);
 				if ($RSVPs == 0)
@@ -139,7 +139,7 @@
 				//$target_file = "files/FILE_".strval($_POST["slotID"])."_".strval($userID);
 				//unlink($target_file);
 			} else 
-				$status = "Unable to delete reservation. Please try again later.";
+				$status = "Unable to cancel reservation. Please try again later.";
 		}
 	} 
 	 

@@ -52,8 +52,9 @@
 	
 	// get event & slot info from database for page display purposes 
 	$eventInfo = eventDetails($mysqli, $eventID);
-	$eventDate = substr($eventInfo['dateStartTime'], 0, 10);
 	$slotInfo = slotDetails($mysqli, $slotID);
+	$start = date('m/d/Y g:i A', strtotime($slotInfo['startDateTime']));
+	$end = date('m/d/Y g:i A', strtotime($slotInfo['endDateTime']));
 	
 	
 	$mysqli->close();
@@ -131,8 +132,8 @@
 			<div class="col-sm-12"><h4 class="text-center" id="status"><?php echo $status; ?></h4></div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4"><h6 class="text-left" id="date"><?php echo "Date: " . $eventDate; ?></h6></div>
-			<div class="col-sm-4"><h6 class="text-center" id="time"><?php echo "Time: " . $slotInfo['startTime'] . "-" . $slotInfo['endTime']; ?></h6></div>
+			<div class="col-sm-4"><h6 class="text-left" id="start"><?php echo "Start: " . $start; ?></h6></div>
+			<div class="col-sm-4"><h6 class="text-center" id="end"><?php echo "End: " . $end; ?></h6></div>
 			<div class="col-sm-4"><h6 class="text-right" id="location"><?php echo "Location: " . $slotInfo['location']; ?></h6></div>
 		</div>
 	</div>
